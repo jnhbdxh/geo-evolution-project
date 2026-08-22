@@ -1,0 +1,29 @@
+{
+  "manifest_version": "1.0",
+  "gate_id": "G0-01",
+  "candidate_status": "OPEN / PENDING REVIEW",
+  "approval_status": "NOT APPROVED",
+  "created_at": "2026-08-21T14:11:01+08:00",
+  "immutability_policy": {
+    "overwrite_allowed": false,
+    "approved_frozen_allowed_before_review": false,
+    "change_rule": "Any review-driven content change must be published as a new version; the candidate files listed here must remain byte-identical.",
+    "closure_rule": "Only the final approved version may be marked APPROVED / FROZEN and referenced by a Gate Closure Record."
+  },
+  "artifacts": [
+    {
+      "file": "GEO_OS_G0-01_Authority_Change_Control_ADR-001_V1.0.docx",
+      "size_bytes": 47554,
+      "sha256": "4D3ECE1241D2A41392BB0F7BFE70C16E9936D78C1D31F5151BC6061C18A87053",
+      "last_write_utc": "2026-08-21T04:39:46.1112322Z",
+      "role": "review candidate"
+    },
+    {
+      "file": "GEO_OS_G0-01_Scope_Matrix_V1.0.xlsx",
+      "size_bytes": 23128,
+      "sha256": "710BB94187C6F57B40484EB0E7EF5AC0A4659ED75C2A06C95CA4D7FF3D5EE74E",
+      "last_write_utc": "2026-08-21T04:37:10.0798941Z",
+      "role": "review candidate"
+    }
+  ]
+}

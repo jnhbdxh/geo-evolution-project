@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1160" viewBox="0 0 1800 1160">
+<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#64748B"/></marker></defs>
+<rect width="100%" height="100%" fill="#F8FAFC"/>
+<text x="60" y="73.7" fill="#0B2545" font-family="Microsoft YaHei" font-size="42" font-weight="700" text-anchor="start">GEO OS 产品业务架构</text>
+<text x="60" y="110.7" fill="#667085" font-family="Microsoft YaHei" font-size="22" font-weight="400" text-anchor="start">从租户与项目边界出发，贯通需求、真实观测、决议、快照、行动与交付</text>
+<line x1="60" y1="130" x2="1740" y2="130" stroke="#2E74B5" stroke-width="4"/>
+<text x="70" y="177.6" fill="#2E74B5" font-family="Microsoft YaHei" font-size="23" font-weight="700" text-anchor="start">用户与经营边界</text>
+<rect x="70" y="196" width="330" height="104" rx="16" fill="#FFFFFF" stroke="#93C5FD" stroke-width="2"/>
+<text x="88" y="227.0" fill="#0B2545" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">项目唯一负责人</text>
+<text x="88" y="256.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">业务/产品/技术/Gate Owner</text>
+<rect x="470" y="196" width="330" height="104" rx="16" fill="#FFFFFF" stroke="#93C5FD" stroke-width="2"/>
+<text x="488" y="227.0" fill="#0B2545" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">内部交付团队</text>
+<text x="488" y="256.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">建档、监测、复核、交付</text>
+<rect x="870" y="196" width="330" height="104" rx="16" fill="#FFFFFF" stroke="#93C5FD" stroke-width="2"/>
+<text x="888" y="227.0" fill="#0B2545" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">受控第三方 Tenant</text>
+<text x="888" y="256.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">管理本机构成员与自有客户</text>
+<rect x="1270" y="196" width="330" height="104" rx="16" fill="#FFFFFF" stroke="#93C5FD" stroke-width="2"/>
+<text x="1288" y="227.0" fill="#0B2545" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">客户/品牌方</text>
+<text x="1288" y="256.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">项目级只读与交付查看</text>
+<text x="70" y="351.6" fill="#167D8D" font-family="Microsoft YaHei" font-size="23" font-weight="700" text-anchor="start">端到端产品价值链</text>
+<rect x="70" y="372" width="240" height="146" rx="16" fill="#E7F4F5" stroke="#5FB3BE" stroke-width="2"/>
+<text x="88" y="403.0" fill="#0F5F6B" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">业务建档</text>
+<text x="88" y="432.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Tenant</text>
+<text x="88" y="456.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Customer / Brand / Project</text>
+<rect x="360" y="372" width="240" height="146" rx="16" fill="#E7F4F5" stroke="#5FB3BE" stroke-width="2"/>
+<text x="378" y="403.0" fill="#0F5F6B" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">需求与事实</text>
+<text x="378" y="432.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Demand &amp; Question</text>
+<text x="378" y="456.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Brand Truth &amp; Evidence</text>
+<rect x="650" y="372" width="240" height="146" rx="16" fill="#E7F4F5" stroke="#5FB3BE" stroke-width="2"/>
+<text x="668" y="403.0" fill="#0F5F6B" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">监测与执行</text>
+<text x="668" y="432.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Monitoring / Sample Slot</text>
+<text x="668" y="456.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Execution Run</text>
+<rect x="940" y="372" width="240" height="146" rx="16" fill="#E7F4F5" stroke="#5FB3BE" stroke-width="2"/>
+<text x="958" y="403.0" fill="#0F5F6B" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">观测与决议</text>
+<text x="958" y="432.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Raw Observation</text>
+<text x="958" y="456.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Assessment / Resolution</text>
+<rect x="1230" y="372" width="240" height="146" rx="16" fill="#E7F4F5" stroke="#5FB3BE" stroke-width="2"/>
+<text x="1248" y="403.0" fill="#0F5F6B" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">测量与洞察</text>
+<text x="1248" y="432.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Metric Contribution</text>
+<text x="1248" y="456.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Snapshot / Intelligence</text>
+<rect x="1520" y="372" width="240" height="146" rx="16" fill="#E7F4F5" stroke="#5FB3BE" stroke-width="2"/>
+<text x="1538" y="403.0" fill="#0F5F6B" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">行动与交付</text>
+<text x="1538" y="432.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Intervention / Validation</text>
+<text x="1538" y="456.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Report &amp; Delivery</text>
+<line x1="310" y1="445" x2="352" y2="445" stroke="#167D8D" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="600" y1="445" x2="642" y2="445" stroke="#167D8D" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="890" y1="445" x2="932" y2="445" stroke="#167D8D" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="1180" y1="445" x2="1222" y2="445" stroke="#167D8D" stroke-width="3" marker-end="url(#arrow)"/>
+<line x1="1470" y1="445" x2="1512" y2="445" stroke="#167D8D" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="70" y="577.5" fill="#2F6B45" font-family="Microsoft YaHei" font-size="23" font-weight="700" text-anchor="start">产品能力域</text>
+<rect x="70" y="598" width="280" height="154" rx="16" fill="#E8F3EC" stroke="#86B89A" stroke-width="2"/>
+<text x="88" y="629.0" fill="#2F6B45" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">GEO Control Plane</text>
+<text x="88" y="658.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">IAM &amp; Tenant</text>
+<text x="88" y="682.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">客户/品牌/项目</text>
+<text x="88" y="706.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">任务、权限、审计</text>
+<rect x="390" y="598" width="280" height="154" rx="16" fill="#E8F3EC" stroke="#86B89A" stroke-width="2"/>
+<text x="408" y="629.0" fill="#2F6B45" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Demand &amp; Truth</text>
+<text x="408" y="658.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">需求信号与问题版本</text>
+<text x="408" y="682.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">品牌事实与证据</text>
+<text x="408" y="706.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">行业规则注入</text>
+<rect x="710" y="598" width="280" height="154" rx="16" fill="#E8F3EC" stroke="#86B89A" stroke-width="2"/>
+<text x="728" y="629.0" fill="#2F6B45" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Observation</text>
+<text x="728" y="658.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">采样与真实端执行</text>
+<text x="728" y="682.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">捕获、质量、Correction</text>
+<text x="728" y="706.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">事实不可变</text>
+<rect x="1030" y="598" width="280" height="154" rx="16" fill="#E8F3EC" stroke="#86B89A" stroke-width="2"/>
+<text x="1048" y="629.0" fill="#2F6B45" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Measurement</text>
+<text x="1048" y="658.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Assessment / Review</text>
+<text x="1048" y="682.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Resolution</text>
+<text x="1048" y="706.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">两层 Snapshot Membership</text>
+<rect x="1350" y="598" width="280" height="154" rx="16" fill="#E8F3EC" stroke="#86B89A" stroke-width="2"/>
+<text x="1368" y="629.0" fill="#2F6B45" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Intelligence &amp; Delivery</text>
+<text x="1368" y="658.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Citation / Source</text>
+<text x="1368" y="682.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">策略与干预</text>
+<text x="1368" y="706.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">报告只消费 Snapshot</text>
+<text x="70" y="811.5" fill="#9A6700" font-family="Microsoft YaHei" font-size="23" font-weight="700" text-anchor="start">语义与历史可信层</text>
+<rect x="70" y="830" width="370" height="112" rx="16" fill="#FFF4CE" stroke="#E5BF62" stroke-width="2"/>
+<text x="88" y="861.0" fill="#7A5A00" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Pack A</text>
+<text x="88" y="890.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Observation / Validity / Eligibility</text>
+<text x="88" y="914.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Review / Snapshot</text>
+<rect x="500" y="830" width="370" height="112" rx="16" fill="#FFF4CE" stroke="#E5BF62" stroke-width="2"/>
+<text x="518" y="861.0" fill="#7A5A00" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Pack B</text>
+<text x="518" y="890.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Mention ≠ Consideration</text>
+<text x="518" y="914.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">≠ Recommendation；贡献三态</text>
+<rect x="930" y="830" width="370" height="112" rx="16" fill="#FFF4CE" stroke="#E5BF62" stroke-width="2"/>
+<text x="948" y="861.0" fill="#7A5A00" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Pack C</text>
+<text x="948" y="890.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Citation / Source / Qualification</text>
+<text x="948" y="914.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Coverage Context</text>
+<rect x="1360" y="830" width="370" height="112" rx="16" fill="#FFF4CE" stroke="#E5BF62" stroke-width="2"/>
+<text x="1378" y="861.0" fill="#7A5A00" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">事实分层</text>
+<text x="1378" y="890.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Fact → Assessment → Resolution</text>
+<text x="1378" y="914.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">→ Snapshot</text>
+<text x="70" y="1001.5" fill="#9B1C1C" font-family="Microsoft YaHei" font-size="23" font-weight="700" text-anchor="start">产品分期边界</text>
+<rect x="70" y="1020" width="505" height="92" rx="16" fill="#FDECEC" stroke="#E6A2A2" stroke-width="2"/>
+<text x="88" y="1051.0" fill="#9B1C1C" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Walking Skeleton</text>
+<text x="88" y="1080.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">先验证 Tenant → Observation → Snapshot → Basic Report</text>
+<rect x="645" y="1020" width="505" height="92" rx="16" fill="#FDECEC" stroke="#E6A2A2" stroke-width="2"/>
+<text x="663" y="1051.0" fill="#9B1C1C" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">最小语义扩展</text>
+<text x="663" y="1080.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Pack B Mention/Recommendation + Pack C Citation Presence</text>
+<rect x="1220" y="1020" width="510" height="92" rx="16" fill="#FDECEC" stroke="#E6A2A2" stroke-width="2"/>
+<text x="1238" y="1051.0" fill="#9B1C1C" font-family="Microsoft YaHei" font-size="20" font-weight="700" text-anchor="start">Commercial Complete</text>
+<text x="1238" y="1080.8" fill="#475467" font-family="Microsoft YaHei" font-size="15" font-weight="400" text-anchor="start">Coverage Context 后开放正式 KPI，再扩干预与效果验证</text>
+</svg>

@@ -1,0 +1,10 @@
+.build/
+.codex-tmp/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+coverage/
+.env
+*.log
+.pnpm-store/

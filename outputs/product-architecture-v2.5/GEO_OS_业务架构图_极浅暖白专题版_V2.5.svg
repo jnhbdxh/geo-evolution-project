@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2400" height="1500" viewBox="0 0 2400 1500">
+<defs>
+<marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+<path d="M 0 0 L 12 6 L 0 12 z" fill="#B65F43"/>
+</marker>
+<marker id="arrow-muted" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+<path d="M 0 0 L 12 6 L 0 12 z" fill="#E9DFD6"/>
+</marker>
+<filter id="paper-shadow" x="-10%" y="-20%" width="120%" height="150%">
+<feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#2A211D" flood-opacity="0.065"/>
+</filter>
+</defs>
+<rect width="2400" height="1500" fill="#FFFDF9"/>
+<text x="110" y="74" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="600" text-anchor="start" dominant-baseline="hanging">GEO OS  /  产品业务架构</text>
+<text x="2190" y="78" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="600" text-anchor="end" dominant-baseline="hanging">持续优化步骤</text>
+<text x="2190" y="105" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="13" font-weight="400" text-anchor="end" dominant-baseline="hanging">CONTINUOUS LOOP</text>
+<text x="2290" y="58" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="72" font-weight="600" text-anchor="end" dominant-baseline="hanging">08</text>
+<text x="110" y="118" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="56" font-weight="600" text-anchor="start" dominant-baseline="hanging">独立模块，持续优化闭环</text>
+<text x="110" y="202" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="24" font-weight="400" text-anchor="start" dominant-baseline="hanging">围绕同一客户目标，各领域模块保持清晰边界；监测、行动与复盘循环推进，而不是一次性交付。</text>
+<path d="M 110 258 L 2290 258" fill="none" stroke="#24211F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="110" y="292" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="600" text-anchor="start" dominant-baseline="hanging">独立支撑模块  /  SUPPORTING MODULES</text>
+<rect x="110" y="330" width="380" height="150" rx="14" fill="#FBF1E9" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="130" y="352" width="5" height="106" rx="3" fill="#B65F43"/>
+<text x="156" y="352" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">支撑模块 01</text>
+<text x="156" y="380" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">项目与权限</text>
+<text x="156" y="423" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">管理客户、品牌、项目和策略</text>
+<text x="156" y="450" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">Tenant · Project · Policy</text>
+<rect x="560" y="330" width="380" height="150" rx="14" fill="#FBF1E9" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="580" y="352" width="5" height="106" rx="3" fill="#B65F43"/>
+<text x="606" y="352" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">支撑模块 02</text>
+<text x="606" y="380" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">需求洞察</text>
+<text x="606" y="423" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">明确用户真正关心的问题</text>
+<text x="606" y="450" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">DemandSignal · QuestionVersion</text>
+<rect x="1010" y="330" width="380" height="150" rx="14" fill="#FBF1E9" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="1030" y="352" width="5" height="106" rx="3" fill="#B65F43"/>
+<text x="1056" y="352" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">支撑模块 03</text>
+<text x="1056" y="380" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">品牌事实与证据</text>
+<text x="1056" y="423" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">维护可核验的品牌事实</text>
+<text x="1056" y="450" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">Evidence · FactClaim</text>
+<rect x="1460" y="330" width="380" height="150" rx="14" fill="#FBF1E9" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="1480" y="352" width="5" height="106" rx="3" fill="#B65F43"/>
+<text x="1506" y="352" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">支撑模块 04</text>
+<text x="1506" y="380" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">信源洞察</text>
+<text x="1506" y="423" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">分析引用与信源结构</text>
+<text x="1506" y="450" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">Citation · Source · Relationship</text>
+<rect x="1910" y="330" width="380" height="150" rx="14" fill="#FBF1E9" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="1930" y="352" width="5" height="106" rx="3" fill="#B65F43"/>
+<text x="1956" y="352" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">支撑模块 05</text>
+<text x="1956" y="380" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">报告交付</text>
+<text x="1956" y="423" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">展示快照与复测结论</text>
+<text x="1956" y="450" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">Report · Dashboard · Brief</text>
+<path d="M 170 525 L 2230 525" fill="none" stroke="#E9DFD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1200" y="503" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" dominant-baseline="hanging">模块各自管理数据和规则，通过明确的版本、证据、决议与快照协同</text>
+<text x="110" y="566" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="600" text-anchor="start" dominant-baseline="hanging">核心业务闭环  /  CORE BUSINESS LOOP</text>
+<rect x="170" y="610" width="420" height="170" rx="14" fill="#FFFFFF" stroke="#B65F43" stroke-width="2" filter="url(#paper-shadow)"/>
+<rect x="190" y="632" width="5" height="126" rx="3" fill="#B65F43"/>
+<text x="216" y="632" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">第 1 步</text>
+<text x="216" y="660" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">定义监测</text>
+<text x="216" y="703" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">决定问什么、在哪问、何时问</text>
+<text x="216" y="730" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">SamplingDesign · SampleSlot</text>
+<rect x="680" y="610" width="420" height="170" rx="14" fill="#FFFFFF" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="700" y="632" width="5" height="126" rx="3" fill="#B65F43"/>
+<text x="726" y="632" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">第 2 步</text>
+<text x="726" y="660" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">真实执行</text>
+<text x="726" y="703" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">在真实 AI 端面提问并留证</text>
+<text x="726" y="730" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">ExecutionRun · Context</text>
+<rect x="1190" y="610" width="420" height="170" rx="14" fill="#FFFFFF" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="1210" y="632" width="5" height="126" rx="3" fill="#B65F43"/>
+<text x="1236" y="632" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">第 3 步</text>
+<text x="1236" y="660" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">形成观测</text>
+<text x="1236" y="703" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">只记录用户真正看到的结果</text>
+<text x="1236" y="730" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">RawObservation · Evidence</text>
+<rect x="1700" y="610" width="420" height="170" rx="14" fill="#FFFFFF" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="1720" y="632" width="5" height="126" rx="3" fill="#B65F43"/>
+<text x="1746" y="632" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">第 4 步</text>
+<text x="1746" y="660" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">冻结快照</text>
+<text x="1746" y="703" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">按规则汇总有效结果并冻结</text>
+<text x="1746" y="730" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">Assessment · Resolution · Snapshot</text>
+<rect x="1700" y="930" width="420" height="170" rx="14" fill="#FFFFFF" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="1720" y="952" width="5" height="126" rx="3" fill="#B65F43"/>
+<text x="1746" y="952" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">第 5 步</text>
+<text x="1746" y="980" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">归因分析</text>
+<text x="1746" y="1023" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">识别可能原因，不宣称严格因果</text>
+<text x="1746" y="1050" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">Attribution Analysis · Hypothesis</text>
+<rect x="1190" y="930" width="420" height="170" rx="14" fill="#FFFFFF" stroke="#B65F43" stroke-width="2" filter="url(#paper-shadow)"/>
+<rect x="1210" y="952" width="5" height="126" rx="3" fill="#B65F43"/>
+<text x="1236" y="952" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">第 6 步</text>
+<text x="1236" y="980" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">制定策略</text>
+<text x="1236" y="1023" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">选择优化方向、动作和优先级</text>
+<text x="1236" y="1050" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">StrategyAction · Priority</text>
+<rect x="680" y="930" width="420" height="170" rx="14" fill="#FFFFFF" stroke="#E9DFD6" stroke-width="2"/>
+<rect x="700" y="952" width="5" height="126" rx="3" fill="#B65F43"/>
+<text x="726" y="952" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">第 7 步</text>
+<text x="726" y="980" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">执行优化</text>
+<text x="726" y="1023" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">记录内容、技术或信源动作</text>
+<text x="726" y="1050" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">Intervention · ActionVersion</text>
+<rect x="170" y="930" width="420" height="170" rx="14" fill="#FFFFFF" stroke="#B65F43" stroke-width="2" filter="url(#paper-shadow)"/>
+<rect x="190" y="952" width="5" height="126" rx="3" fill="#B65F43"/>
+<text x="216" y="952" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">第 8 步</text>
+<text x="216" y="980" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="25" font-weight="600" text-anchor="start" dominant-baseline="hanging">复测复盘</text>
+<text x="216" y="1023" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">对比变化并决定下一步</text>
+<text x="216" y="1050" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" dominant-baseline="hanging">EffectValidation · Evidence</text>
+<path d="M 590 695 L 680 695" fill="none" stroke="#B65F43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1100 695 L 1190 695" fill="none" stroke="#B65F43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1610 695 L 1700 695" fill="none" stroke="#B65F43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1910 780 L 1910 930" fill="none" stroke="#B65F43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1700 1015 L 1610 1015" fill="none" stroke="#B65F43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 1190 1015 L 1100 1015" fill="none" stroke="#B65F43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M 680 1015 L 590 1015" fill="none" stroke="#B65F43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="635" y="664" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" dominant-baseline="hanging">生成任务</text>
+<text x="1145" y="664" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" dominant-baseline="hanging">留存证据</text>
+<text x="1655" y="664" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" dominant-baseline="hanging">规则计算</text>
+<text x="1950" y="842" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="start" dominant-baseline="hanging">快照（Snapshot）</text>
+<text x="1655" y="1045" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" dominant-baseline="hanging">归因结论</text>
+<text x="1145" y="1045" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" dominant-baseline="hanging">策略方案</text>
+<text x="635" y="1045" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="middle" dominant-baseline="hanging">执行动作</text>
+<path d="M 170 1015 L 130 1015 L 130 695 L 170 695" fill="none" stroke="#B65F43" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="175" y="1135" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="15" font-weight="600" text-anchor="start" dominant-baseline="hanging">进入下一轮  /  NEXT CYCLE</text>
+<text x="175" y="1165" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="22" font-weight="600" text-anchor="start" dominant-baseline="hanging">复盘结论 → 更新问题与监测设计 → 定制下一步优化动作</text>
+<path d="M 750 480 L 750 560 L 380 560 L 380 610" fill="none" stroke="#E9DFD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 10" marker-end="url(#arrow-muted)"/>
+<path d="M 1200 480 L 1200 560 L 1400 560 L 1400 610" fill="none" stroke="#E9DFD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 10" marker-end="url(#arrow-muted)"/>
+<path d="M 1650 480 L 1650 880 L 1810 880 L 1810 930" fill="none" stroke="#E9DFD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 10" marker-end="url(#arrow-muted)"/>
+<path d="M 2100 610 L 2245 610 L 2245 480 L 2100 480" fill="none" stroke="#E9DFD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 10" marker-end="url(#arrow-muted)"/>
+<text x="1200" y="830" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="30" font-weight="600" text-anchor="middle" dominant-baseline="hanging">行动不是终点</text>
+<text x="1200" y="872" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="400" text-anchor="middle" dominant-baseline="hanging">每一次行动都触发新的监测、复盘与下一轮优化</text>
+<path d="M 110 1270 L 2290 1270" fill="none" stroke="#E9DFD6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="110" y="1310" fill="#B65F43" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="600" text-anchor="start" dominant-baseline="hanging">模块边界  /  MODULE OWNERSHIP</text>
+<text x="110" y="1340" fill="#24211F" font-family="Microsoft YaHei, Arial, sans-serif" font-size="18" font-weight="400" text-anchor="start" dominant-baseline="hanging">每个模块独立拥有职责、核心对象与版本历史；跨模块只传递显式契约、证据、决议与快照。</text>
+<text x="2290" y="1310" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" dominant-baseline="hanging">GEO OS · 业务架构 · V2.5</text>
+<text x="2290" y="1340" fill="#716961" font-family="Microsoft YaHei, Arial, sans-serif" font-size="16" font-weight="400" text-anchor="end" dominant-baseline="hanging">产品基线仍为 V1.0</text>
+</svg>

@@ -1,0 +1,353 @@
+{"kind":"deck","id":"pr/8iytcn","name":"Deck"}
+{"kind":"layout","layoutId":"e3b11c0e-1aea-47d6-af96-1a704f84d1a2","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"3f2d5d21-6ffb-4646-8e7a-22f2c10a740a","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/ckeirq","slide":1,"title":"GEO OS / PRODUCT DIRECTION REVIEW","textShapes":6}
+{"kind":"shape","id":"sh/94zipsju","slide":1,"bbox":[0,0,14,720]}
+{"kind":"textbox","id":"sh/m1ozex0j","slide":1,"text":"GEO OS / PRODUCT DIRECTION REVIEW","textPreview":"GEO OS / PRODUCT DIRECTION REVIEW","textChars":33,"textLines":1,"bbox":[54,42,540,28]}
+{"kind":"textbox","id":"sh/n2h0n214","slide":1,"text":"GEO OS 产品方向与\nCommercial MVP 决策汇报","textPreview":"GEO OS 产品方向与 | Commercial MVP 决策汇报","textChars":32,"textLines":2,"bbox":[54,176,990,220]}
+{"kind":"textbox","id":"sh/w7qhk7il","slide":1,"text":"产品形态、商业闭环、MVP 边界与待决策事项","textPreview":"产品形态、商业闭环、MVP 边界与待决策事项","textChars":22,"textLines":1,"bbox":[56,432,860,52]}
+{"kind":"shape","id":"sh/x8zitcz6","slide":1,"bbox":[56,525,1168,0]}
+{"kind":"textbox","id":"sh/a58zix0f","slide":1,"text":"2026.08  |  产品方向评审","textPreview":"2026.08  |  产品方向评审","textChars":18,"textLines":1,"bbox":[56,556,460,30]}
+{"kind":"shape","id":"sh/b6h0r2h0","slide":1,"bbox":[1018,550,204,34]}
+{"kind":"textbox","id":"sh/cb6h8nih","slide":1,"text":"DECISION DECK","textPreview":"DECISION DECK","textChars":13,"textLines":1,"bbox":[1028,556,184,22]}
+{"kind":"textbox","id":"sh/dcfih8jm","slide":1,"text":"内部决策材料","textPreview":"内部决策材料","textChars":6,"textLines":1,"bbox":[56,650,180,20]}
+{"kind":"notes","id":"nt/ckeirq","slide":1,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_业务背景定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_需求方案定稿版_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n\n[Presenter Note]\n开场只讲结论：这是产品方向与商业 MVP 边界决策，不是技术方案宣讲。 "}
+{"kind":"slide","id":"sl/h5x3tk","slide":2,"title":"EXECUTIVE DECISION","textShapes":13}
+{"kind":"textbox","id":"sh/7ylcjq58","slide":2,"text":"EXECUTIVE DECISION","textPreview":"EXECUTIVE DECISION","textChars":18,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/szutsv6t","slide":2,"text":"方向已经明确：先证明一个客户闭环可重复，再扩平台与商业模式","textPreview":"方向已经明确：先证明一个客户闭环可重复，再扩平台与商业模式","textChars":29,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/t0nul0ne","slide":2,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/i9cbmlor","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"textbox","id":"sh/jalcfq5w","slide":2,"text":"GEO OS 是面向企业与受控第三方的 Managed SaaS：真实观测 AI 决策过程，形成可解释、可行动、可复测的业务闭环。","textPreview":"GEO OS 是面向企业与受控第三方的 Managed SaaS：真实观测 AI 决策过程，形成可解释、可行动、可复测的业务闭环。","textChars":65,"textLines":1,"bbox":[48,177,1180,84]}
+{"kind":"shape","id":"sh/kbutob6h","slide":2,"bbox":[48,308,360,174]}
+{"kind":"textbox","id":"sh/5c3uhgn2","slide":2,"text":"产品定位","textPreview":"产品定位","textChars":4,"textLines":1,"bbox":[70,330,310,24]}
+{"kind":"textbox","id":"sh/a5sbi1of","slide":2,"text":"企业业务操作系统\n不是单点监测工具","textPreview":"企业业务操作系统 | 不是单点监测工具","textChars":17,"textLines":2,"bbox":[70,374,316,76]}
+{"kind":"shape","id":"sh/v61cb6p0","slide":2,"bbox":[446,308,360,174]}
+{"kind":"textbox","id":"sh/nedojaxs","slide":2,"text":"数据基础","textPreview":"数据基础","textChars":4,"textLines":1,"bbox":[468,330,310,24]}
+{"kind":"textbox","id":"sh/mt47q5w7","slide":2,"text":"真实 AI 端面观测\n不是模拟问答数据","textPreview":"真实 AI 端面观测 | 不是模拟问答数据","textChars":19,"textLines":2,"bbox":[468,374,316,76]}
+{"kind":"shape","id":"sh/9gv6lkfy","slide":2,"bbox":[844,308,360,174]}
+{"kind":"textbox","id":"sh/ofmpsfed","slide":2,"text":"渠道边界","textPreview":"渠道边界","textChars":4,"textLines":1,"bbox":[866,330,310,24]}
+{"kind":"textbox","id":"sh/bixonuxo","slide":2,"text":"受控第三方工作区\n不是开放代理平台","textPreview":"受控第三方工作区 | 不是开放代理平台","textChars":17,"textLines":2,"bbox":[866,374,316,76]}
+{"kind":"shape","id":"sh/ah47upwj","slide":2,"bbox":[48,520,1156,100]}
+{"kind":"textbox","id":"sh/xkfqpkfu","slide":2,"text":"本次请确认","textPreview":"本次请确认","textChars":5,"textLines":1,"bbox":[72,544,160,22]}
+{"kind":"textbox","id":"sh/wj6pwze9","slide":2,"text":"Intelligence / Intervention / Publisher / 正式 KPI 的 Commercial MVP 边界","textPreview":"Intelligence / Intervention / Publisher / 正式 KPI 的 Commercial MVP 边界","textChars":68,"textLines":1,"bbox":[238,538,930,40]}
+{"kind":"textbox","id":"sh/rmtobqxk","slide":2,"text":"建议：批准产品方向；范围契约仍按 Gate 0 正式关闭机制推进。","textPreview":"建议：批准产品方向；范围契约仍按 Gate 0 正式关闭机制推进。","textChars":33,"textLines":1,"bbox":[238,582,930,24]}
+{"kind":"notes","id":"nt/h5x3tk","slide":2,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_需求方案定稿版_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n- D:/code/geo-evolution-project/outputs/g0-01/GEO_OS_G0-01_Authority_Change_Control_ADR-001_V1.0.docx\n\n[Presenter Note]\n这一页给领导 60 秒抓住产品是什么、凭什么成立、这次要决定什么。 "}
+{"kind":"slide","id":"sl/2eus38","slide":3,"title":"WHY NOW","textShapes":22}
+{"kind":"textbox","id":"sh/sju58zep","slide":3,"text":"WHY NOW","textPreview":"WHY NOW","textChars":7,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/ril4fud4","slide":3,"text":"客户需要的不是“AI 提到没有”，而是可解释、可行动、可复测的增长闭环","textPreview":"客户需要的不是“AI 提到没有”，而是可解释、可行动、可复测的增长闭环","textChars":35,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/6hcn6pwz","slide":3,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/1onml4vm","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"textbox","id":"sh/0nu5cze1","slide":3,"text":"旧方式","textPreview":"旧方式","textChars":3,"textLines":1,"bbox":[50,186,200,28]}
+{"kind":"textbox","id":"sh/fml4judg","slide":3,"text":"目标方式","textPreview":"目标方式","textChars":4,"textLines":1,"bbox":[676,186,200,28]}
+{"kind":"shape","id":"sh/elcnapwv","slide":3,"bbox":[48,226,546,326]}
+{"kind":"shape","id":"sh/pcn6povi","slide":3,"bbox":[650,226,554,326]}
+{"kind":"textbox","id":"sh/ore5gjex","slide":3,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[76,260,36,28]}
+{"kind":"textbox","id":"sh/2p43ml4n","slide":3,"text":"人工抽查，样本不可复现","textPreview":"人工抽查，样本不可复现","textChars":11,"textLines":1,"bbox":[122,256,430,40]}
+{"kind":"textbox","id":"sh/3qdkv6ls","slide":3,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[76,324,36,28]}
+{"kind":"textbox","id":"sh/4rmlobmd","slide":3,"text":"只看 Mention，无法解释原因","textPreview":"只看 Mention，无法解释原因","textChars":17,"textLines":1,"bbox":[122,320,430,40]}
+{"kind":"textbox","id":"sh/psf2xg3y","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[76,388,36,28]}
+{"kind":"textbox","id":"sh/qto3ql4j","slide":3,"text":"监测、内容、复测彼此割裂","textPreview":"监测、内容、复测彼此割裂","textChars":12,"textLines":1,"bbox":[122,384,430,40]}
+{"kind":"textbox","id":"sh/rux4zql4","slide":3,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[76,452,36,28]}
+{"kind":"textbox","id":"sh/cv6lsvmp","slide":3,"text":"交付依赖个人经验，难规模化","textPreview":"交付依赖个人经验，难规模化","textChars":13,"textLines":1,"bbox":[122,448,430,40]}
+{"kind":"textbox","id":"sh/dwfm103a","slide":3,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[680,260,36,28]}
+{"kind":"textbox","id":"sh/6xk3e14f","slide":3,"text":"真实观测，保留证据与上下文","textPreview":"真实观测，保留证据与上下文","textChars":13,"textLines":1,"bbox":[728,256,438,40]}
+{"kind":"textbox","id":"sh/7ytknm5k","slide":3,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[680,324,36,28]}
+{"kind":"textbox","id":"sh/v290f2lc","slide":3,"text":"测量 + 诊断，识别差距与根因","textPreview":"测量 + 诊断，识别差距与根因","textChars":15,"textLines":1,"bbox":[728,320,438,40]}
+{"kind":"textbox","id":"sh/a1gzmxk7","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[680,388,36,28]}
+{"kind":"textbox","id":"sh/x4rihsji","slide":3,"text":"干预进入任务，复测验证效果","textPreview":"干预进入任务，复测验证效果","textChars":13,"textLines":1,"bbox":[728,384,438,40]}
+{"kind":"textbox","id":"sh/w3ihon2x","slide":3,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[680,452,36,28]}
+{"kind":"textbox","id":"sh/nyp0bilg","slide":3,"text":"快照与规则可追溯，形成可重复交付","textPreview":"快照与规则可追溯，形成可重复交付","textChars":16,"textLines":1,"bbox":[728,448,438,40]}
+{"kind":"textbox","id":"sh/mxgzidkv","slide":3,"text":"从“结果截图”升级为“决策证据链”","textPreview":"从“结果截图”升级为“决策证据链”","textChars":17,"textLines":1,"bbox":[48,586,1156,42]}
+{"kind":"notes","id":"nt/2eus38","slide":3,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_业务背景定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n\n[Presenter Note]\n不要讨论所有功能，强调客户问题从监测走向闭环。 "}
+{"kind":"slide","id":"sl/rmgcl8","slide":4,"title":"PRODUCT SHAPE","textShapes":17}
+{"kind":"textbox","id":"sh/v6xgjeh4","slide":4,"text":"PRODUCT SHAPE","textPreview":"PRODUCT SHAPE","textChars":13,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/w76xsjip","slide":4,"text":"产品形态是“企业工作台 + 真实观测网络 + 数据决策引擎 + 专业服务”","textPreview":"产品形态是“企业工作台 + 真实观测网络 + 数据决策引擎 + 专业服务”","textChars":37,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/x8fyloza","slide":4,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/i9ofut0v","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"shape","id":"sh/jaxgnyhg","slide":4,"bbox":[72,204,1082,70]}
+{"kind":"textbox","id":"sh/kv6xwjil","slide":4,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[94,222,40,26]}
+{"kind":"textbox","id":"sh/5wfypoz6","slide":4,"text":"企业工作台 / Control Plane","textPreview":"企业工作台 / Control Plane","textChars":21,"textLines":1,"bbox":[150,217,485,30]}
+{"kind":"textbox","id":"sh/ydkfip0b","slide":4,"text":"客户、品牌、项目、需求、报告与权限管理","textPreview":"客户、品牌、项目、需求、报告与权限管理","textChars":19,"textLines":1,"bbox":[650,220,470,28]}
+{"kind":"shape","id":"sh/zedwbu1w","slide":4,"bbox":[86,300,1054,70]}
+{"kind":"textbox","id":"sh/jmdg7yd4","slide":4,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[108,318,40,26]}
+{"kind":"textbox","id":"sh/il4zytcz","slide":4,"text":"真实 AI 端面观测 / Query Engine","textPreview":"真实 AI 端面观测 / Query Engine","textChars":25,"textLines":1,"bbox":[164,313,485,30]}
+{"kind":"textbox","id":"sh/5ovy98va","slide":4,"text":"真实 Web AI 端面执行、证据留存、可重放观测","textPreview":"真实 Web AI 端面执行、证据留存、可重放观测","textChars":25,"textLines":1,"bbox":[650,316,452,28]}
+{"kind":"shape","id":"sh/knmh03up","slide":4,"bbox":[100,396,1026,70]}
+{"kind":"textbox","id":"sh/vidg3ed8","slide":4,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[122,414,40,26]}
+{"kind":"textbox","id":"sh/ahkzutcn","slide":4,"text":"数据决策与任务引擎 / AI & Data Worker","textPreview":"数据决策与任务引擎 / AI & Data Worker","textChars":28,"textLines":1,"bbox":[178,409,485,30]}
+{"kind":"textbox","id":"sh/xkvy5ove","slide":4,"text":"抽取、测量、诊断、快照、干预任务与效果验证","textPreview":"抽取、测量、诊断、快照、干预任务与效果验证","textChars":21,"textLines":1,"bbox":[650,412,434,28]}
+{"kind":"shape","id":"sh/wjmhwjut","slide":4,"bbox":[114,492,998,70]}
+{"kind":"textbox","id":"sh/nutgzedc","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[136,510,40,26]}
+{"kind":"textbox","id":"sh/mtkzq9cr","slide":4,"text":"GEO 专业服务与行业规则 / Managed Service","textPreview":"GEO 专业服务与行业规则 / Managed Service","textChars":31,"textLines":1,"bbox":[192,505,485,30]}
+{"kind":"textbox","id":"sh/qp0z29gj","slide":4,"text":"行业规则、策略判断、交付运营与客户成功","textPreview":"行业规则、策略判断、交付运营与客户成功","textChars":19,"textLines":1,"bbox":[650,508,416,28]}
+{"kind":"shape","id":"sh/rq90bex4","slide":4,"bbox":[976,172,180,34]}
+{"kind":"textbox","id":"sh/cr2h4jyp","slide":4,"text":"Managed SaaS","textPreview":"Managed SaaS","textChars":12,"textLines":1,"bbox":[986,178,160,22]}
+{"kind":"textbox","id":"sh/dsbidofu","slide":4,"text":"V1 的竞争单元不是一个页面，而是一套可交付、可审计的业务闭环。","textPreview":"V1 的竞争单元不是一个页面，而是一套可交付、可审计的业务闭环。","textChars":32,"textLines":1,"bbox":[72,594,1080,36]}
+{"kind":"notes","id":"nt/rmgcl8","slide":4,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_技术方案定稿版_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n\n[Presenter Note]\n先讲四层职责，再强调四层合起来才是产品。 "}
+{"kind":"slide","id":"sl/rjw3hh","slide":5,"title":"USERS & JOBS","textShapes":22}
+{"kind":"textbox","id":"sh/0je94n6p","slide":5,"text":"USERS & JOBS","textPreview":"USERS & JOBS","textChars":12,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/fi58vi54","slide":5,"text":"同一平台服务交付团队、策略团队、管理层与受控第三方","textPreview":"同一平台服务交付团队、策略团队、管理层与受控第三方","textChars":25,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/ehcr2doz","slide":5,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/p8nq1snm","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"textbox","id":"sh/o7e98n61","slide":5,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[48,194,44,22]}
+{"kind":"textbox","id":"sh/n658z25g","slide":5,"text":"交付 / 运营","textPreview":"交付 / 运营","textChars":7,"textLines":1,"bbox":[48,228,250,32]}
+{"kind":"shape","id":"sh/25wr6xov","slide":5,"bbox":[48,276,248,0]}
+{"kind":"textbox","id":"sh/5c3qp8n2","slide":5,"text":"建项目、跑观测、处理异常、交付报告","textPreview":"建项目、跑观测、处理异常、交付报告","textChars":17,"textLines":1,"bbox":[48,300,248,110]}
+{"kind":"textbox","id":"sh/4bupw36h","slide":5,"text":"标准化交付","textPreview":"标准化交付","textChars":5,"textLines":1,"bbox":[48,446,248,30]}
+{"kind":"textbox","id":"sh/2lsj65sn","slide":5,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[342,194,44,22]}
+{"kind":"textbox","id":"sh/3m1kfa98","slide":5,"text":"策略 / 分析","textPreview":"策略 / 分析","textChars":7,"textLines":1,"bbox":[342,228,250,32]}
+{"kind":"shape","id":"sh/ona18fad","slide":5,"bbox":[342,276,248,0]}
+{"kind":"textbox","id":"sh/po32hkry","slide":5,"text":"诊断差距、提出干预、判断复测效果","textPreview":"诊断差距、提出干预、判断复测效果","textChars":16,"textLines":1,"bbox":[342,300,248,110]}
+{"kind":"textbox","id":"sh/qpcjapsj","slide":5,"text":"证据化决策","textPreview":"证据化决策","textChars":5,"textLines":1,"bbox":[342,446,248,30]}
+{"kind":"textbox","id":"sh/bqlkju94","slide":5,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[636,194,44,22]}
+{"kind":"textbox","id":"sh/crulczap","slide":5,"text":"管理层","textPreview":"管理层","textChars":3,"textLines":1,"bbox":[636,228,250,32]}
+{"kind":"shape","id":"sh/ds32lkra","slide":5,"bbox":[636,276,248,0]}
+{"kind":"textbox","id":"sh/ytc3epsv","slide":5,"text":"看客户价值、资源效率、风险与进度","textPreview":"看客户价值、资源效率、风险与进度","textChars":16,"textLines":1,"bbox":[636,300,248,110]}
+{"kind":"textbox","id":"sh/zulknu90","slide":5,"text":"可经营透明度","textPreview":"可经营透明度","textChars":6,"textLines":1,"bbox":[636,446,248,30]}
+{"kind":"textbox","id":"sh/vi50vup8","slide":5,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[930,194,44,22]}
+{"kind":"textbox","id":"sh/axwj2p8n","slide":5,"text":"第三方工作区","textPreview":"第三方工作区","textChars":6,"textLines":1,"bbox":[930,228,250,32]}
+{"kind":"shape","id":"sh/xkn2x47e","slide":5,"bbox":[930,276,248,0]}
+{"kind":"textbox","id":"sh/wje14zqt","slide":5,"text":"管理自有客户、品牌与项目，边界内协作","textPreview":"管理自有客户、品牌与项目，边界内协作","textChars":18,"textLines":1,"bbox":[930,300,248,110]}
+{"kind":"textbox","id":"sh/nul0rupc","slide":5,"text":"渠道可扩展","textPreview":"渠道可扩展","textChars":5,"textLines":1,"bbox":[930,446,248,30]}
+{"kind":"shape","id":"sh/mtcjyp8r","slide":5,"bbox":[48,530,1130,78]}
+{"kind":"textbox","id":"sh/9wnit472","slide":5,"text":"V1 渠道边界","textPreview":"V1 渠道边界","textChars":7,"textLines":1,"bbox":[70,550,180,26]}
+{"kind":"textbox","id":"sh/8ve10zqx","slide":5,"text":"受控开通、只管理自有客户；不含自助注册、代理层级、白标、计费与开放 API。","textPreview":"受控开通、只管理自有客户；不含自助注册、代理层级、白标、计费与开放 API。","textChars":38,"textLines":1,"bbox":[248,546,888,36]}
+{"kind":"textbox","id":"sh/zql0nap0","slide":5,"text":"客户侧只读授权访问可作为 P1，不阻塞首条闭环。","textPreview":"客户侧只读授权访问可作为 P1，不阻塞首条闭环。","textChars":24,"textLines":1,"bbox":[248,583,888,20]}
+{"kind":"notes","id":"nt/rjw3hh","slide":5,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_需求方案定稿版_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n\n[Presenter Note]\n第三方能力是租户隔离上的受控工作区，不等于 V1 建代理商商业平台。 "}
+{"kind":"slide","id":"sl/eg5fo2","slide":6,"title":"CORE CUSTOMER LOOP","textShapes":24}
+{"kind":"textbox","id":"sh/4rm5cvqd","slide":6,"text":"CORE CUSTOMER LOOP","textPreview":"CORE CUSTOMER LOOP","textChars":18,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/3qdo3qps","slide":6,"text":"一个客户闭环是产品成立的最小单元","textPreview":"一个客户闭环是产品成立的最小单元","textChars":16,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/2p4nal87","slide":6,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/hov61g7m","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"shape","id":"sh/gnm58bq1","slide":6,"bbox":[182,329,12,0]}
+{"kind":"shape","id":"sh/fmdozqpw","slide":6,"bbox":[326,329,12,0]}
+{"kind":"shape","id":"sh/u14n6l8b","slide":6,"bbox":[470,329,12,0]}
+{"kind":"shape","id":"sh/1kz6dk76","slide":6,"bbox":[614,329,12,0]}
+{"kind":"shape","id":"sh/0j6pkfql","slide":6,"bbox":[758,329,12,0]}
+{"kind":"shape","id":"sh/q14je5oz","slide":6,"bbox":[902,329,12,0]}
+{"kind":"shape","id":"sh/r2d07q54","slide":6,"bbox":[1046,329,12,0]}
+{"kind":"shape","id":"sh/s3m1gv6p","slide":6,"bbox":[50,288,132,82]}
+{"kind":"textbox","id":"sh/d4vi90na","slide":6,"text":"建档","textPreview":"建档","textChars":2,"textLines":1,"bbox":[58,295,116,68]}
+{"kind":"textbox","id":"sh/idkjalon","slide":6,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[50,252,132,22]}
+{"kind":"shape","id":"sh/3ed03qp8","slide":6,"bbox":[194,288,132,82]}
+{"kind":"textbox","id":"sh/4zm1cv6t","slide":6,"text":"需求","textPreview":"需求","textChars":2,"textLines":1,"bbox":[202,295,116,68]}
+{"kind":"textbox","id":"sh/50vi50ne","slide":6,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[194,252,132,22]}
+{"kind":"shape","id":"sh/29oj6por","slide":6,"bbox":[338,288,132,82]}
+{"kind":"textbox","id":"sh/naxkfa5c","slide":6,"text":"品牌事实","textPreview":"品牌事实","textChars":4,"textLines":1,"bbox":[346,295,116,68]}
+{"kind":"textbox","id":"sh/jepg7m54","slide":6,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[338,252,132,22]}
+{"kind":"shape","id":"sh/ydgfyh4j","slide":6,"bbox":[482,288,132,82]}
+{"kind":"textbox","id":"sh/lgry9c3u","slide":6,"text":"真实观测","textPreview":"真实观测","textChars":4,"textLines":1,"bbox":[490,295,116,68]}
+{"kind":"textbox","id":"sh/kfix07m9","slide":6,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[482,252,132,22]}
+{"kind":"shape","id":"sh/7i9gbml0","slide":6,"bbox":[626,288,132,82]}
+{"kind":"textbox","id":"sh/6h0f2h4f","slide":6,"text":"测量 / 诊断","textPreview":"测量 / 诊断","textChars":7,"textLines":1,"bbox":[634,295,116,68]}
+{"kind":"textbox","id":"sh/tkrydw36","slide":6,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[626,252,132,22]}
+{"kind":"shape","id":"sh/8jix4rml","slide":6,"bbox":[770,288,132,82]}
+{"kind":"textbox","id":"sh/v69gf6lw","slide":6,"text":"干预","textPreview":"干预","textChars":2,"textLines":1,"bbox":[778,295,116,68]}
+{"kind":"textbox","id":"sh/u50z614r","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[770,252,132,22]}
+{"kind":"shape","id":"sh/sb2xwb2p","slide":6,"bbox":[914,288,132,82]}
+{"kind":"textbox","id":"sh/dcbe5wja","slide":6,"text":"复测 / 证据","textPreview":"复测 / 证据","textChars":7,"textLines":1,"bbox":[922,295,116,68]}
+{"kind":"textbox","id":"sh/q9kfu1kj","slide":6,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[914,252,132,22]}
+{"kind":"shape","id":"sh/ratw3614","slide":6,"bbox":[1058,288,132,82]}
+{"kind":"textbox","id":"sh/472xsr2t","slide":6,"text":"报告","textPreview":"报告","textChars":2,"textLines":1,"bbox":[1066,295,116,68]}
+{"kind":"textbox","id":"sh/58be1wjy","slide":6,"text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1058,252,132,22]}
+{"kind":"textbox","id":"sh/il0fqhkn","slide":6,"text":"事实链","textPreview":"事实链","textChars":3,"textLines":1,"bbox":[50,216,564,28]}
+{"kind":"textbox","id":"sh/3mtwzm18","slide":6,"text":"决策与价值链","textPreview":"决策与价值链","textChars":6,"textLines":1,"bbox":[626,216,564,28]}
+{"kind":"shape","id":"sh/gjixor2h","slide":6,"bbox":[48,438,1144,110]}
+{"kind":"textbox","id":"sh/hkrexcj2","slide":6,"text":"闭环成立的判据","textPreview":"闭环成立的判据","textChars":7,"textLines":1,"bbox":[72,460,200,24]}
+{"kind":"textbox","id":"sh/lo7upszu","slide":6,"text":"同一客户、同一规则版本下，能够从原始观测追溯到判断、动作、复测与报告。","textPreview":"同一客户、同一规则版本下，能够从原始观测追溯到判断、动作、复测与报告。","textChars":35,"textLines":1,"bbox":[72,496,1050,36]}
+{"kind":"textbox","id":"sh/knytwni9","slide":6,"text":"不是“所有模块都做完”，而是“最危险的主链先跑通”。","textPreview":"不是“所有模块都做完”，而是“最危险的主链先跑通”。","textChars":26,"textLines":1,"bbox":[48,590,1144,34]}
+{"kind":"notes","id":"nt/eg5fo2","slide":6,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_需求方案定稿版_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n\n[Presenter Note]\n这页是后续模块拆分的统一主线：每个模块都必须说明如何进入闭环。 "}
+{"kind":"slide","id":"sl/e2y8qk","slide":7,"title":"DIFFERENTIATION","textShapes":24}
+{"kind":"textbox","id":"sh/gvu5grmx","slide":7,"text":"DIFFERENTIATION","textPreview":"DIFFERENTIATION","textChars":15,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/ful47mlc","slide":7,"text":"长期壁垒来自连续决策证据，而不是问题量或文章量","textPreview":"长期壁垒来自连续决策证据，而不是问题量或文章量","textChars":23,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/utcneh4r","slide":7,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/ts3m5c36","slide":7,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"textbox","id":"sh/8ra5c7m1","slide":7,"text":"可积累的数据资产","textPreview":"可积累的数据资产","textChars":8,"textLines":1,"bbox":[48,184,280,28]}
+{"kind":"textbox","id":"sh/7q143mlg","slide":7,"text":"×","textPreview":"×","textChars":1,"textLines":1,"bbox":[176,274,16,28]}
+{"kind":"shape","id":"sh/6ps3ah4v","slide":7,"bbox":[48,252,127,72]}
+{"kind":"textbox","id":"sh/lojm1c3a","slide":7,"text":"行业","textPreview":"行业","textChars":2,"textLines":1,"bbox":[56,259,111,58]}
+{"kind":"textbox","id":"sh/knal87mp","slide":7,"text":"×","textPreview":"×","textChars":1,"textLines":1,"bbox":[320,274,16,28]}
+{"kind":"shape","id":"sh/a9ofql0z","slide":7,"bbox":[192,252,127,72]}
+{"kind":"textbox","id":"sh/baxwjq1k","slide":7,"text":"需求","textPreview":"需求","textChars":2,"textLines":1,"bbox":[200,259,111,58]}
+{"kind":"textbox","id":"sh/wb6xsvi5","slide":7,"text":"×","textPreview":"×","textChars":1,"textLines":1,"bbox":[464,274,16,28]}
+{"kind":"shape","id":"sh/xczel0ja","slide":7,"bbox":[336,252,127,72]}
+{"kind":"textbox","id":"sh/2lofm10n","slide":7,"text":"AI 端面","textPreview":"AI 端面","textChars":5,"textLines":1,"bbox":[344,259,111,58]}
+{"kind":"textbox","id":"sh/n6xwf618","slide":7,"text":"×","textPreview":"×","textChars":1,"textLines":1,"bbox":[608,274,16,28]}
+{"kind":"shape","id":"sh/o76xobit","slide":7,"bbox":[480,252,127,72]}
+{"kind":"textbox","id":"sh/p8fehgje","slide":7,"text":"信源","textPreview":"信源","textChars":2,"textLines":1,"bbox":[488,259,111,58]}
+{"kind":"textbox","id":"sh/eh4vi10r","slide":7,"text":"×","textPreview":"×","textChars":1,"textLines":1,"bbox":[752,274,16,28]}
+{"kind":"shape","id":"sh/fidwb61c","slide":7,"bbox":[624,252,127,72]}
+{"kind":"textbox","id":"sh/ja9k3yds","slide":7,"text":"品牌事实","textPreview":"品牌事实","textChars":4,"textLines":1,"bbox":[632,259,111,58]}
+{"kind":"textbox","id":"sh/i903utc7","slide":7,"text":"×","textPreview":"×","textChars":1,"textLines":1,"bbox":[896,274,16,28]}
+{"kind":"shape","id":"sh/5cr258vy","slide":7,"bbox":[768,252,127,72]}
+{"kind":"textbox","id":"sh/4bilw3ud","slide":7,"text":"根因假设","textPreview":"根因假设","textChars":4,"textLines":1,"bbox":[776,259,111,58]}
+{"kind":"textbox","id":"sh/re9k7id4","slide":7,"text":"×","textPreview":"×","textChars":1,"textLines":1,"bbox":[1040,274,16,28]}
+{"kind":"shape","id":"sh/6d03ydcj","slide":7,"bbox":[912,252,127,72]}
+{"kind":"textbox","id":"sh/t0b29svu","slide":7,"text":"干预","textPreview":"干预","textChars":2,"textLines":1,"bbox":[920,259,111,58]}
+{"kind":"shape","id":"sh/sf2l0nu9","slide":7,"bbox":[1056,252,127,72]}
+{"kind":"textbox","id":"sh/7ipkvedk","slide":7,"text":"观测效果","textPreview":"观测效果","textChars":4,"textLines":1,"bbox":[1064,259,111,58]}
+{"kind":"shape","id":"sh/mhgjm9cz","slide":7,"bbox":[48,378,1140,84]}
+{"kind":"textbox","id":"sh/cnuhwfax","slide":7,"text":"每次观测与干预，都为下一次策略判断提供可复用的行业证据。","textPreview":"每次观测与干预，都为下一次策略判断提供可复用的行业证据。","textChars":28,"textLines":1,"bbox":[72,400,1090,38]}
+{"kind":"textbox","id":"sh/xo3i5kbi","slide":7,"text":"不构成壁垒","textPreview":"不构成壁垒","textChars":5,"textLines":1,"bbox":[48,512,160,26]}
+{"kind":"textbox","id":"sh/alczupsr","slide":7,"text":"更多问题数  /  更多文章数  /  更花哨的监测看板","textPreview":"更多问题数  /  更多文章数  /  更花哨的监测看板","textChars":28,"textLines":1,"bbox":[210,506,740,34]}
+{"kind":"textbox","id":"sh/bml03atc","slide":7,"text":"可被复制","textPreview":"可被复制","textChars":4,"textLines":1,"bbox":[1010,506,178,34]}
+{"kind":"shape","id":"sh/ojuhsfa1","slide":7,"bbox":[48,561,1140,0]}
+{"kind":"textbox","id":"sh/pk3i1kb6","slide":7,"text":"真正不可替代：有版本、有上下文、有复测结果的决策证据链。","textPreview":"真正不可替代：有版本、有上下文、有复测结果的决策证据链。","textChars":28,"textLines":1,"bbox":[48,584,1140,32]}
+{"kind":"notes","id":"nt/e2y8qk","slide":7,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_业务背景定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n\n[Presenter Note]\n把护城河从功能数量转到连续证据资产，避免团队被‘内容产量’牵引。 "}
+{"kind":"slide","id":"sl/f4r7os","slide":8,"title":"COMMERCIAL MVP","textShapes":18}
+{"kind":"textbox","id":"sh/zmx4jutk","slide":8,"text":"COMMERCIAL MVP","textPreview":"COMMERCIAL MVP","textChars":14,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/kn6lsfa5","slide":8,"text":"Commercial MVP：完整代码闭环 + 单行业最小规则","textPreview":"Commercial MVP：完整代码闭环 + 单行业最小规则","textChars":31,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/lofmlkbq","slide":8,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/mp83upsb","slide":8,"text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"shape","id":"sh/7qh4nutg","slide":8,"bbox":[48,180,552,376]}
+{"kind":"shape","id":"sh/8rqlwza1","slide":8,"bbox":[628,180,576,376]}
+{"kind":"textbox","id":"sh/9szmp4bm","slide":8,"text":"IN — 必须证明","textPreview":"IN — 必须证明","textChars":9,"textLines":1,"bbox":[74,206,450,28]}
+{"kind":"textbox","id":"sh/2t43i5sr","slide":8,"text":"完整代码能力","textPreview":"完整代码能力","textChars":6,"textLines":1,"bbox":[74,250,450,38]}
+{"kind":"textbox","id":"sh/3udkbatc","slide":8,"text":"✓  1–3 个试点客户","textPreview":"✓  1–3 个试点客户","textChars":12,"textLines":1,"bbox":[76,308,488,30]}
+{"kind":"textbox","id":"sh/nulk3254","slide":8,"text":"✓  1–2 个锚点行业 + 1 个影子行业","textPreview":"✓  1–2 个锚点行业 + 1 个影子行业","textChars":22,"textLines":1,"bbox":[76,351,488,30]}
+{"kind":"textbox","id":"sh/2tc3axoj","slide":8,"text":"✓  2–3 个 Web AI 端面","textPreview":"✓  2–3 个 Web AI 端面","textChars":18,"textLines":1,"bbox":[76,394,488,30]}
+{"kind":"textbox","id":"sh/pwnm5cnu","slide":8,"text":"✓  观测 → 最小诊断 → 人工干预记录 → 复测 → 基础报告","textPreview":"✓  观测 → 最小诊断 → 人工干预记录 → 复测 → 基础报告","textChars":33,"textLines":1,"bbox":[76,437,488,30]}
+{"kind":"textbox","id":"sh/ovelc769","slide":8,"text":"✓  一个行业的最小冻结口径","textPreview":"✓  一个行业的最小冻结口径","textChars":14,"textLines":1,"bbox":[76,480,488,30]}
+{"kind":"textbox","id":"sh/f6lkz25s","slide":8,"text":"OUT / DEFERRED — 不阻塞","textPreview":"OUT / DEFERRED — 不阻塞","textChars":20,"textLines":1,"bbox":[654,206,460,28]}
+{"kind":"textbox","id":"sh/e5c36xo7","slide":8,"text":"规则广度与平台扩张","textPreview":"规则广度与平台扩张","textChars":9,"textLines":1,"bbox":[654,250,490,38]}
+{"kind":"textbox","id":"sh/1s321sny","slide":8,"text":"—  覆盖 100 个行业","textPreview":"—  覆盖 100 个行业","textChars":13,"textLines":1,"bbox":[656,308,500,30]}
+{"kind":"textbox","id":"sh/0rul876d","slide":8,"text":"—  移动端生产化","textPreview":"—  移动端生产化","textChars":9,"textLines":1,"bbox":[656,351,500,30]}
+{"kind":"textbox","id":"sh/r21kvi5w","slide":8,"text":"—  Publisher 自动化作为上线门禁","textPreview":"—  Publisher 自动化作为上线门禁","textChars":22,"textLines":1,"bbox":[656,394,500,30]}
+{"kind":"textbox","id":"sh/q1s32dob","slide":8,"text":"—  严格因果归因","textPreview":"—  严格因果归因","textChars":9,"textLines":1,"bbox":[656,437,500,30]}
+{"kind":"textbox","id":"sh/uxs3ed83","slide":8,"text":"—  自助注册 / 白标 / 计费 / 开放 API","textPreview":"—  自助注册 / 白标 / 计费 / 开放 API","textChars":26,"textLines":1,"bbox":[656,480,500,30]}
+{"kind":"shape","id":"sh/vy147i9o","slide":8,"bbox":[48,584,1156,54]}
+{"kind":"textbox","id":"sh/wzalgnq9","slide":8,"text":"原则：代码路径先正确、接口先可扩展；规则覆盖按行业逐步补齐。","textPreview":"原则：代码路径先正确、接口先可扩展；规则覆盖按行业逐步补齐。","textChars":30,"textLines":1,"bbox":[72,598,1110,30]}
+{"kind":"notes","id":"nt/f4r7os","slide":8,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_需求方案定稿版_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n\n[Presenter Note]\n明确用户此前提出的 MVP 定义：功能闭环完整，不等于规则一次覆盖所有行业。 "}
+{"kind":"slide","id":"sl/gebo9m","slide":9,"title":"COMMERCIAL MODEL","textShapes":16}
+{"kind":"textbox","id":"sh/t8vixgfu","slide":9,"text":"COMMERCIAL MODEL","textPreview":"COMMERCIAL MODEL","textChars":16,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/65kzm1w3","slide":9,"text":"当前收入形态是 Managed SaaS，平台化收入分阶段打开","textPreview":"当前收入形态是 Managed SaaS，平台化收入分阶段打开","textChars":31,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/76t0v6xo","slide":9,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/kj2hkbed","slide":9,"text":"09","textPreview":"09","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"shape","id":"sh/l4bitwfy","slide":9,"bbox":[48,450,252,128]}
+{"kind":"textbox","id":"sh/yhkzi1w7","slide":9,"text":"01 / NOW","textPreview":"01 / NOW","textChars":8,"textLines":1,"bbox":[68,470,212,22]}
+{"kind":"textbox","id":"sh/jit0r6xs","slide":9,"text":"GEO Growth","textPreview":"GEO Growth","textChars":10,"textLines":1,"bbox":[68,505,212,42]}
+{"kind":"textbox","id":"sh/4fm1wveh","slide":9,"text":"年度托管服务","textPreview":"年度托管服务","textChars":6,"textLines":1,"bbox":[68,549,212,50]}
+{"kind":"shape","id":"sh/50fi50v2","slide":9,"bbox":[334,370,252,208]}
+{"kind":"textbox","id":"sh/tkjmxg36","slide":9,"text":"02 / MID","textPreview":"02 / MID","textChars":8,"textLines":1,"bbox":[354,390,212,22]}
+{"kind":"textbox","id":"sh/8ja54bml","slide":9,"text":"Enterprise","textPreview":"Enterprise","textChars":10,"textLines":1,"bbox":[354,425,212,42]}
+{"kind":"textbox","id":"sh/7i14v6l0","slide":9,"text":"多品牌、治理、规模交付","textPreview":"多品牌、治理、规模交付","textChars":11,"textLines":1,"bbox":[354,469,212,50]}
+{"kind":"shape","id":"sh/mhsn214f","slide":9,"bbox":[620,288,252,290]}
+{"kind":"textbox","id":"sh/lgjmtw3a","slide":9,"text":"03 / LATER","textPreview":"03 / LATER","textChars":10,"textLines":1,"bbox":[640,308,212,22]}
+{"kind":"textbox","id":"sh/kfa50rmp","slide":9,"text":"Agency / API","textPreview":"Agency / API","textChars":12,"textLines":1,"bbox":[640,343,212,42]}
+{"kind":"textbox","id":"sh/zu14r6l4","slide":9,"text":"渠道与系统集成","textPreview":"渠道与系统集成","textChars":7,"textLines":1,"bbox":[640,387,212,50]}
+{"kind":"shape","id":"sh/yt8ny14j","slide":9,"bbox":[906,206,252,372]}
+{"kind":"textbox","id":"sh/5c36503e","slide":9,"text":"04 / LONG TERM","textPreview":"04 / LONG TERM","textChars":14,"textLines":1,"bbox":[926,226,212,22]}
+{"kind":"textbox","id":"sh/4bu5cv2t","slide":9,"text":"Data Product","textPreview":"Data Product","textChars":12,"textLines":1,"bbox":[926,261,212,42]}
+{"kind":"textbox","id":"sh/ov2p8za5","slide":9,"text":"行业基准与情报产品","textPreview":"行业基准与情报产品","textChars":9,"textLines":1,"bbox":[926,305,212,50]}
+{"kind":"textbox","id":"sh/pwbq14bq","slide":9,"text":"先把单位客户闭环做稳，再把组织、渠道和数据杠杆依次打开。","textPreview":"先把单位客户闭环做稳，再把组织、渠道和数据杠杆依次打开。","textChars":28,"textLines":1,"bbox":[48,610,1110,32]}
+{"kind":"notes","id":"nt/gebo9m","slide":9,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_业务背景定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n\n[Presenter Note]\n这不是收入预测，而是商业形态演进顺序。避免在客户闭环未稳定前建设白标、计费和开放 API。 "}
+{"kind":"slide","id":"sl/plb3bi","slide":10,"title":"SUCCESS MEASURES","textShapes":14}
+{"kind":"textbox","id":"sh/4nyt0jqp","slide":10,"text":"SUCCESS MEASURES","textPreview":"SUCCESS MEASURES","textChars":16,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/jmpcre94","slide":10,"text":"产品成功必须同时证明客户价值、交付效率和数据可信","textPreview":"产品成功必须同时证明客户价值、交付效率和数据可信","textChars":24,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/ilgby98j","slide":10,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/dcruxor6","slide":10,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"textbox","id":"sh/sbyd4jq1","slide":10,"text":"三个维度缺一不可；单看 Query 数量或内容产量，会把团队带向错误优化。","textPreview":"三个维度缺一不可；单看 Query 数量或内容产量，会把团队带向错误优化。","textChars":37,"textLines":1,"bbox":[48,176,1130,36]}
+{"kind":"shape","id":"sh/rapcve9g","slide":10,"bbox":[48,254,352,310]}
+{"kind":"textbox","id":"sh/69gv298v","slide":10,"text":"客户价值","textPreview":"客户价值","textChars":4,"textLines":1,"bbox":[72,278,300,26]}
+{"kind":"textbox","id":"sh/9gnul4r2","slide":10,"text":"VALUE","textPreview":"VALUE","textChars":5,"textLines":1,"bbox":[72,326,300,58]}
+{"kind":"shape","id":"sh/8fetszah","slide":10,"bbox":[72,400,304,0]}
+{"kind":"textbox","id":"sh/yt0z29ob","slide":10,"text":"• 可行动差距\n• 复测结果可解释\n• 试点续约 / 扩单信号","textPreview":"• 可行动差距 | • 复测结果可解释 | • 试点续约 / 扩单信号","textChars":31,"textLines":3,"bbox":[72,424,304,116]}
+{"kind":"shape","id":"sh/ju90bepw","slide":10,"bbox":[440,254,352,310]}
+{"kind":"textbox","id":"sh/kv2h4j6h","slide":10,"text":"交付效率","textPreview":"交付效率","textChars":4,"textLines":1,"bbox":[464,278,300,26]}
+{"kind":"textbox","id":"sh/lwbido72","slide":10,"text":"SCALE","textPreview":"SCALE","textChars":5,"textLines":1,"bbox":[464,326,300,58]}
+{"kind":"shape","id":"sh/6hkj6ton","slide":10,"bbox":[464,400,304,0]}
+{"kind":"textbox","id":"sh/7it0fyps","slide":10,"text":"• 单客户工时\n• 单运营可服务客户数\n• 自动化率与毛利","textPreview":"• 单客户工时 | • 单运营可服务客户数 | • 自动化率与毛利","textChars":29,"textLines":3,"bbox":[464,424,304,116]}
+{"kind":"shape","id":"sh/8j21836d","slide":10,"bbox":[832,254,352,310]}
+{"kind":"textbox","id":"sh/tkbih87y","slide":10,"text":"数据可信","textPreview":"数据可信","textChars":4,"textLines":1,"bbox":[856,278,300,26]}
+{"kind":"textbox","id":"sh/ulkjatoj","slide":10,"text":"TRUST","textPreview":"TRUST","textChars":5,"textLines":1,"bbox":[856,326,300,58]}
+{"kind":"shape","id":"sh/vmt0jyp4","slide":10,"bbox":[856,400,304,0]}
+{"kind":"textbox","id":"sh/rqdgrilc","slide":10,"text":"• 有效观测覆盖\n• 全链路可追溯\n• 快照可复现","textPreview":"• 有效观测覆盖 | • 全链路可追溯 | • 快照可复现","textChars":25,"textLines":3,"bbox":[856,424,304,116]}
+{"kind":"textbox","id":"sh/qp4zyd4r","slide":10,"text":"不是核心 KPI：问题数、文章数、纯 Mention 排名。","textPreview":"不是核心 KPI：问题数、文章数、纯 Mention 排名。","textChars":30,"textLines":1,"bbox":[48,596,1136,32]}
+{"kind":"notes","id":"nt/plb3bi","slide":10,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_需求方案定稿版_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n\n[Presenter Note]\n正式客户 KPI 仍需语义 Gate 和 Coverage 上下文关闭后才能输出。此页是成功度量框架。 "}
+{"kind":"slide","id":"sl/gunctc","slide":11,"title":"CURRENT STATUS","textShapes":25}
+{"kind":"textbox","id":"sh/wzyt4j6x","slide":11,"text":"CURRENT STATUS","textPreview":"CURRENT STATUS","textChars":14,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/vypcbeps","slide":11,"text":"架构已批准启动，但产品范围仍受 Gate 0 正式评审约束","textPreview":"架构已批准启动，但产品范围仍受 Gate 0 正式评审约束","textChars":29,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/axgb2to7","slide":11,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/9w7u9o7m","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"shape","id":"sh/8vyt0j61","slide":11,"bbox":[86,288,1010,0]}
+{"kind":"shape","id":"sh/nupc7epg","slide":11,"bbox":[136,275,26,26]}
+{"kind":"textbox","id":"sh/mtwby9ov","slide":11,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[52,224,194,22]}
+{"kind":"textbox","id":"sh/tsrul87q","slide":11,"text":"方向基线","textPreview":"方向基线","textChars":4,"textLines":1,"bbox":[52,326,194,30]}
+{"kind":"textbox","id":"sh/sridc365","slide":11,"text":"已冻结","textPreview":"已冻结","textChars":3,"textLines":1,"bbox":[52,366,194,42]}
+{"kind":"shape","id":"sh/mpsfi5sr","slide":11,"bbox":[376,275,26,26]}
+{"kind":"textbox","id":"sh/7q1gra9c","slide":11,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[292,224,194,22]}
+{"kind":"textbox","id":"sh/8raxkfax","slide":11,"text":"架构 V1.1","textPreview":"架构 V1.1","textChars":7,"textLines":1,"bbox":[292,326,194,30]}
+{"kind":"textbox","id":"sh/tsjytkr2","slide":11,"text":"批准启动","textPreview":"批准启动","textChars":4,"textLines":1,"bbox":[292,366,194,42]}
+{"kind":"shape","id":"sh/y18fe5sf","slide":11,"bbox":[616,275,26,26]}
+{"kind":"textbox","id":"sh/z21wna90","slide":11,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[532,224,194,22]}
+{"kind":"textbox","id":"sh/k3axgfal","slide":11,"text":"G0-01 材料","textPreview":"G0-01 材料","textChars":8,"textLines":1,"bbox":[532,326,194,30]}
+{"kind":"textbox","id":"sh/lojyp0r6","slide":11,"text":"材料完备","textPreview":"材料完备","textChars":4,"textLines":1,"bbox":[532,366,194,42]}
+{"kind":"shape","id":"sh/ixcfqpsz","slide":11,"bbox":[856,275,26,26]}
+{"kind":"textbox","id":"sh/3ylgzu9k","slide":11,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[772,224,194,22]}
+{"kind":"textbox","id":"sh/f2dcrmpw","slide":11,"text":"正式评审","textPreview":"正式评审","textChars":4,"textLines":1,"bbox":[772,326,194,30]}
+{"kind":"textbox","id":"sh/e14vih8b","slide":11,"text":"PENDING REVIEW","textPreview":"PENDING REVIEW","textChars":14,"textLines":1,"bbox":[772,366,194,42]}
+{"kind":"shape","id":"sh/14futw72","slide":11,"bbox":[1096,275,26,26]}
+{"kind":"textbox","id":"sh/036dkrqh","slide":11,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1012,224,194,22]}
+{"kind":"textbox","id":"sh/n6xcv6ps","slide":11,"text":"Walking Skeleton","textPreview":"Walking Skeleton","textChars":16,"textLines":1,"bbox":[1012,326,194,30]}
+{"kind":"textbox","id":"sh/25ovm187","slide":11,"text":"非争议部分并行","textPreview":"非争议部分并行","textChars":7,"textLines":1,"bbox":[1012,366,194,42]}
+{"kind":"shape","id":"sh/p8fuxw7y","slide":11,"bbox":[48,458,1156,118]}
+{"kind":"textbox","id":"sh/o76dobqd","slide":11,"text":"SCOPE","textPreview":"SCOPE","textChars":5,"textLines":1,"bbox":[76,480,354,24]}
+{"kind":"textbox","id":"sh/buhcz6p4","slide":11,"text":"39 项：32 IN / 2 OUT / 5 DEFERRED","textPreview":"39 项：32 IN / 2 OUT / 5 DEFERRED","textChars":31,"textLines":1,"bbox":[76,510,354,72]}
+{"kind":"textbox","id":"sh/a9ovq18j","slide":11,"text":"GATE BLOCKERS","textPreview":"GATE BLOCKERS","textChars":13,"textLines":1,"bbox":[472,480,300,24]}
+{"kind":"textbox","id":"sh/8zqtgb6h","slide":11,"text":"4 项结构问题 / 6 项 Open Decision","textPreview":"4 项结构问题 / 6 项 Open Decision","textChars":27,"textLines":1,"bbox":[472,510,300,72]}
+{"kind":"textbox","id":"sh/90zupgn2","slide":11,"text":"GOVERNANCE","textPreview":"GOVERNANCE","textChars":10,"textLines":1,"bbox":[806,480,350,24]}
+{"kind":"textbox","id":"sh/mx8belor","slide":11,"text":"一人可兼任；责任链待补齐","textPreview":"一人可兼任；责任链待补齐","textChars":12,"textLines":1,"bbox":[806,510,350,72]}
+{"kind":"textbox","id":"sh/7yhcn65c","slide":11,"text":"当前状态：OPEN / PENDING REVIEW。材料完备不等于 Gate 关闭。","textPreview":"当前状态：OPEN / PENDING REVIEW。材料完备不等于 Gate 关闭。","textChars":43,"textLines":1,"bbox":[48,610,1156,30]}
+{"kind":"notes","id":"nt/gunctc","slide":11,"text":"[Sources]\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n- D:/code/geo-evolution-project/outputs/g0-01/GEO_OS_G0-01_Authority_Change_Control_ADR-001_V1.0.docx\n- C:/Users/ADMINI~1/AppData/Local/Temp/codex-clipboard-57eefbe7-00d5-4ac9-a459-64a26b521ac9.png\n\n[Presenter Note]\n必须明确披露当前未批准冻结的事实，避免领导把评审材料误解为已关闭 Gate。 "}
+{"kind":"slide","id":"sl/4waatv","slide":12,"title":"REVIEW FINDINGS","textShapes":16}
+{"kind":"textbox","id":"sh/xgzuhgb6","slide":12,"text":"REVIEW FINDINGS","textPreview":"REVIEW FINDINGS","textChars":15,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/ad8b61sv","slide":12,"text":"G0-01 可进入正式评审，但关闭前必须解决四项结构性问题","textPreview":"G0-01 可进入正式评审，但关闭前必须解决四项结构性问题","textChars":29,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/behcf6t0","slide":12,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/orqt4rup","slide":12,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"textbox","id":"sh/9szudwba","slide":12,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[54,189,44,24]}
+{"kind":"textbox","id":"sh/2p8b21cj","slide":12,"text":"责任链字段不完整","textPreview":"责任链字段不完整","textChars":8,"textLines":1,"bbox":[116,180,320,34]}
+{"kind":"textbox","id":"sh/nqhcb6t4","slide":12,"text":"拆分 Primary Owner、Backup Owner、Approver、确认凭证与确认时间；同一人可以兼任。","textPreview":"拆分 Primary Owner、Backup Owner、Approver、确认凭证与确认时间；同一人可以兼任。","textChars":57,"textLines":1,"bbox":[446,180,734,62]}
+{"kind":"shape","id":"sh/0n6t0rud","slide":12,"bbox":[116,256,1064,0]}
+{"kind":"textbox","id":"sh/1ofu9wby","slide":12,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[54,289,44,24]}
+{"kind":"textbox","id":"sh/xg3uhoj2","slide":12,"text":"就绪公式可能提前放行","textPreview":"就绪公式可能提前放行","textChars":10,"textLines":1,"bbox":[116,280,320,34]}
+{"kind":"textbox","id":"sh/cfudojih","slide":12,"text":"区分 REVIEW_READY 与 CLOSURE_READY；空值、TBD 或 CANCELLED 不得形成自动关闭。","textPreview":"区分 REVIEW_READY 与 CLOSURE_READY；空值、TBD 或 CANCELLED 不得形成自动关闭。","textChars":60,"textLines":1,"bbox":[446,280,734,62]}
+{"kind":"shape","id":"sh/be1cfe1c","slide":12,"bbox":[116,356,1064,0]}
+{"kind":"textbox","id":"sh/qdsvm90r","slide":12,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[54,389,44,24]}
+{"kind":"textbox","id":"sh/pcjud4j6","slide":12,"text":"Open Decision 状态语义不一致","textPreview":"Open Decision 状态语义不一致","textChars":21,"textLines":1,"bbox":[116,380,320,34]}
+{"kind":"textbox","id":"sh/oradkzil","slide":12,"text":"RESOLVED、CANCELLED、ACCEPTED_LIMITATION 分别绑定证据、审批与影响；OPEN 一律阻塞。","textPreview":"RESOLVED、CANCELLED、ACCEPTED_LIMITATION 分别绑定证据、审批与影响；OPEN 一律阻塞。","textChars":62,"textLines":1,"bbox":[446,380,734,62]}
+{"kind":"shape","id":"sh/3q1cbu10","slide":12,"bbox":[116,456,1064,0]}
+{"kind":"textbox","id":"sh/2psvi90f","slide":12,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[54,489,44,24]}
+{"kind":"textbox","id":"sh/1oju94ju","slide":12,"text":"权威引用存在版本漂移风险","textPreview":"权威引用存在版本漂移风险","textChars":12,"textLines":1,"bbox":[116,480,320,34]}
+{"kind":"textbox","id":"sh/gnadgzip","slide":12,"text":"Architecture、ADR、Scope Matrix 与 A/B 决议包的状态、版本和引用关系必须一致。","textPreview":"Architecture、ADR、Scope Matrix 与 A/B 决议包的状态、版本和引用关系必须一致。","textChars":55,"textLines":1,"bbox":[446,480,734,62]}
+{"kind":"shape","id":"sh/srudwza5","slide":12,"bbox":[116,556,1064,0]}
+{"kind":"shape","id":"sh/ts3ep4rq","slide":12,"bbox":[48,592,1156,62]}
+{"kind":"textbox","id":"sh/65cvupsf","slide":12,"text":"单人项目不要求 39 名不同负责人；但必须记录 SINGLE_OWNER_PROJECT 治理例外，并保留批准与确认依据。","textPreview":"单人项目不要求 39 名不同负责人；但必须记录 SINGLE_OWNER_PROJECT 治理例外，并保留批准与确认依据。","textChars":61,"textLines":1,"bbox":[68,607,1116,34]}
+{"kind":"notes","id":"nt/4waatv","slide":12,"text":"[Sources]\n- D:/code/geo-evolution-project/outputs/g0-01/GEO_OS_G0-01_Authority_Change_Control_ADR-001_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n- C:/Users/ADMINI~1/AppData/Local/Temp/codex-clipboard-57eefbe7-00d5-4ac9-a459-64a26b521ac9.png\n\n[Presenter Note]\n本页来自此前多轮文档审核结论。四项均为 Gate 关闭前的结构性问题，而不是阻止进入人工评审的前置条件。 "}
+{"kind":"slide","id":"sl/m91wnb","slide":13,"title":"DECISIONS REQUIRED","textShapes":19}
+{"kind":"textbox","id":"sh/4rmp4fqh","slide":13,"text":"DECISIONS REQUIRED","textPreview":"DECISIONS REQUIRED","textChars":18,"textLines":1,"bbox":[48,30,260,24]}
+{"kind":"textbox","id":"sh/3qd8ba9c","slide":13,"text":"建议批准四项 DEFERRED 边界，并确认单人项目治理例外","textPreview":"建议批准四项 DEFERRED 边界，并确认单人项目治理例外","textChars":30,"textLines":1,"bbox":[48,64,1184,70]}
+{"kind":"shape","id":"sh/2p47258r","slide":13,"bbox":[48,145,1184,0]}
+{"kind":"textbox","id":"sh/hovq90r6","slide":13,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1178,665,54,20]}
+{"kind":"textbox","id":"sh/gnmp0vql","slide":13,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[54,191,44,24]}
+{"kind":"textbox","id":"sh/v2to7q90","slide":13,"text":"GEO Intelligence","textPreview":"GEO Intelligence","textChars":16,"textLines":1,"bbox":[116,182,286,34]}
+{"kind":"textbox","id":"sh/u1k7yl8f","slide":13,"text":"建议 DEFERRED；不阻塞 Walking Skeleton 的最小诊断能力。","textPreview":"建议 DEFERRED；不阻塞 Walking Skeleton 的最小诊断能力。","textChars":41,"textLines":1,"bbox":[420,182,760,52]}
+{"kind":"shape","id":"sh/1kfqlk7a","slide":13,"bbox":[116,243,1064,0]}
+{"kind":"textbox","id":"sh/0j6pczqp","slide":13,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[54,273,44,24]}
+{"kind":"textbox","id":"sh/edgzep4n","slide":13,"text":"Intervention / Effect","textPreview":"Intervention / Effect","textChars":21,"textLines":1,"bbox":[116,264,286,34]}
+{"kind":"textbox","id":"sh/fepgnu58","slide":13,"text":"正式模块 DEFERRED；保留人工干预记录与复测证据的技术路径。","textPreview":"正式模块 DEFERRED；保留人工干预记录与复测证据的技术路径。","textChars":33,"textLines":1,"bbox":[420,264,760,52]}
+{"kind":"shape","id":"sh/0fyhgzmt","slide":13,"bbox":[116,325,1064,0]}
+{"kind":"textbox","id":"sh/1g7yp4ne","slide":13,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[54,355,44,24]}
+{"kind":"textbox","id":"sh/q9wfap4r","slide":13,"text":"Publisher Worker","textPreview":"Publisher Worker","textChars":16,"textLines":1,"bbox":[116,346,286,34]}
+{"kind":"textbox","id":"sh/ra5gju5c","slide":13,"text":"建议 DEFERRED；自动发布不作为 Commercial MVP 上线门禁。","textPreview":"建议 DEFERRED；自动发布不作为 Commercial MVP 上线门禁。","textChars":40,"textLines":1,"bbox":[420,346,760,52]}
+{"kind":"shape","id":"sh/sbexcfmx","slide":13,"bbox":[116,407,1064,0]}
+{"kind":"textbox","id":"sh/dc7ylkn2","slide":13,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[54,437,44,24]}
+{"kind":"textbox","id":"sh/a50zm94v","slide":13,"text":"正式客户 KPI","textPreview":"正式客户 KPI","textChars":8,"textLines":1,"bbox":[116,428,286,34]}
+{"kind":"textbox","id":"sh/b69gve5g","slide":13,"text":"建议 DEFERRED；待 Pack B/C、Coverage Context 与相关语义 Gate 关闭后开放。","textPreview":"建议 DEFERRED；待 Pack B/C、Coverage Context 与相关语义 Gate 关闭后开放。","textChars":57,"textLines":1,"bbox":[420,428,760,52]}
+{"kind":"shape","id":"sh/7q1wn6ls","slide":13,"bbox":[116,489,1064,0]}
+{"kind":"textbox","id":"sh/6psve1k7","slide":13,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[54,519,44,24]}
+{"kind":"textbox","id":"sh/tcjepg3y","slide":13,"text":"责任与批准机制","textPreview":"责任与批准机制","textChars":7,"textLines":1,"bbox":[116,510,286,34]}
+{"kind":"textbox","id":"sh/8radgb2d","slide":13,"text":"一人可兼任多个角色；仍需主责、备份例外、批准人、确认凭证与时间。","textPreview":"一人可兼任多个角色；仍需主责、备份例外、批准人、确认凭证与时间。","textChars":32,"textLines":1,"bbox":[420,510,760,52]}
+{"kind":"shape","id":"sh/velwrql4","slide":13,"bbox":[116,571,1064,0]}
+{"kind":"shape","id":"sh/udcvilkj","slide":13,"bbox":[48,606,1156,46]}
+{"kind":"textbox","id":"sh/hg3etg3u","slide":13,"text":"建议结论：批准产品方向与上述边界；保持 G0-01 OPEN，继续非争议工程；按证据关闭 Gate。","textPreview":"建议结论：批准产品方向与上述边界；保持 G0-01 OPEN，继续非争议工程；按证据关闭 Gate。","textChars":50,"textLines":1,"bbox":[68,616,1116,28]}
+{"kind":"notes","id":"nt/m91wnb","slide":13,"text":"[Sources]\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_产品方案定稿版_V1.0.docx\n- D:/三合星链/技术组/v2/项目文档/整体设计/GEO_OS_需求方案定稿版_V1.0.docx\n- D:/code/geo-evolution-project/docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx\n- D:/code/geo-evolution-project/outputs/g0-01/GEO_OS_G0-01_Authority_Change_Control_ADR-001_V1.0.docx\n- C:/Users/ADMINI~1/AppData/Local/Temp/codex-clipboard-57eefbe7-00d5-4ac9-a459-64a26b521ac9.png\n\n[Presenter Note]\n逐项记录 APPROVED / REJECTED / MODIFIED、负责人和日期；会后形成可追溯的 Decision Record。 "}

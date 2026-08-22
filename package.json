@@ -1,0 +1,34 @@
+{
+  "name": "geo-os",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter @geo-os/api dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "test:db": "vitest run --config vitest.database.config.mjs",
+    "test:capture": "vitest run --config vitest.capture.config.mjs",
+    "test:watch": "vitest",
+    "typecheck": "pnpm --filter @geo-os/contracts build && pnpm -r typecheck",
+    "db:migrate": "pnpm --filter @geo-os/database migrate",
+    "db:seed:dev": "pnpm --filter @geo-os/database seed:dev"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.39.4",
+    "@types/node": "24.13.3",
+    "eslint": "9.39.4",
+    "prettier": "3.9.6",
+    "tsx": "4.23.12",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.67.0",
+    "vitest": "4.1.11"
+  }
+}
