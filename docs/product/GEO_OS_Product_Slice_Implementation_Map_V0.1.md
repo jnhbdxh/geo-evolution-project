@@ -1,7 +1,10 @@
 # GEO OS Product Slice Implementation Map V0.1
 
-**Status:** ACTIVE WORKING BASELINE  
-**Inputs:** Commercial MVP Product Baseline V1.0 + Product Object Map V0.1 + Technical Architecture Reconciliation V1.1
+- **Status:** SUPERSEDED
+- **Superseded by:** `GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md`
+- **Inputs:** Commercial MVP Product Baseline V1.0 + Product Object Map V0.1 + Technical Architecture Reconciliation V1.1
+
+> 历史说明：本文件保留早期 Slice 设计痕迹。下文已纠正三个会误导实现的错误：Slice 2 子域标题、独立 execution_attempt，以及 FAILED 与 Observation 的关系。当前状态和验收以替代基线及 `docs/product-implementation-status.yaml` 为准。
 
 ## 1. 产品导航骨架
 
@@ -55,23 +58,23 @@ V1 页面以桌面端管理台为主。Slice 1 只实现平台管理员与 Tenan
 
 ## 3. Slice 2 — 真实查询与不可变观测
 
-### 产品结果（归因子域 + 策略子域）
+### 产品结果（Demand、Monitoring、Execution 与 Observation 子域）
 
 用户可以创建问题版本、发起真实 AI 查询，并得到带原始证据的不可变 Observation。
 
-| 类型         | 最小实现                                                                                                                                                                                                                     |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 页面         | 问题库、问题版本详情、Monitoring Plan、批次与 Slot、Execution 详情、原始响应证据、Observation 详情                                                                                                                           |
-| API          | `/questions`、`/question-versions`、`/monitoring-plans`、`/sample-batches`、`/sample-slots`、`/execution-runs`、`/observation-candidates/{id}/finalize`、`/observations/{id}`                                                |
-| 命令/事件    | `ScheduleSampleBatch`、`ExecuteSampleSlot`、`ExecutionStarted`、`CaptureCompleted`、`ObservationCandidateCreated`、`ObservationFinalized`                                                                                    |
-| 逻辑表       | demand_theme、question、question_version、monitoring_plan、monitoring_plan_version、sample_batch、sample_slot、execution_run、execution_attempt、capture_artifact、observation_candidate、raw_observation、correction_record |
-| 独立运行单元 | Core API 发命令；Real AI Query Engine 执行和捕获；Worker 完成受控解析与 Finalization 辅助                                                                                                                                    |
-| 关键测试     | Execution 重试不增加 Sample N、Finalization 幂等、对象上传失败恢复、FINALIZED 拒绝 UPDATE、证据 hash 校验                                                                                                                    |
+| 类型         | 最小实现                                                                                                                                                                                                  |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 页面         | 问题库、问题版本详情、Monitoring Plan、批次与 Slot、Execution 详情、原始响应证据、Observation 详情                                                                                                        |
+| API          | `/questions`、`/question-versions`、`/monitoring-plans`、`/sample-batches`、`/sample-slots`、`/execution-runs`、`/observation-candidates/{id}/finalize`、`/observations/{id}`                             |
+| 命令/事件    | `ScheduleSampleBatch`、`ExecuteSampleSlot`、`ExecutionStarted`、`CaptureCompleted`、`ObservationCandidateCreated`、`ObservationFinalized`                                                                 |
+| 逻辑表       | demand_theme、question、question_version、monitoring_plan、monitoring_plan_version、sample_batch、sample_slot、execution_run、capture_artifact、observation_candidate、raw_observation、correction_record |
+| 独立运行单元 | Core API 发命令；Real AI Query Engine 执行和捕获；Worker 完成受控解析与 Finalization 辅助                                                                                                                 |
+| 关键测试     | Execution 重试不增加 Sample N、Finalization 幂等、对象上传失败恢复、FINALIZED 拒绝 UPDATE、证据 hash 校验                                                                                                 |
 
 ### 页面验收
 
 1. 用户能看到某个 Slot 的计划上下文、实际执行上下文、原始响应和状态。
-2. 执行失败不会产生正式 Observation。
+2. ExecutionRun 最终为 FAILED 不等于不存在 Observation；只要此前已有满足 A1 的用户可见响应事实，仍可在终态后 Finalize RawObservation。
 3. 同一 Candidate 重复 Finalize 只返回同一个 RawObservation。
 4. 纠错显示为新记录，不改变原始事实。
 
@@ -191,7 +194,9 @@ Slice 1 → Slice 2 → Slice 3 → Slice 4 → Slice 5 → Slice 6
 
 首行业规则、问题模板、Coverage Context、诊断分类和策略库可以与 Slice 1–3 代码并行准备，但只有到 Slice 4 才进入正式客户口径。
 
-## 10. 第一轮代码启动条件
+## 10. 历史：第一轮代码启动条件（已完成，不再适用）
+
+以下条件仅记录首轮实施前置，不再代表当前开发恢复条件。当前退出条件见替代产品基线。
 
 开始 Slice 1 前只需确认：
 

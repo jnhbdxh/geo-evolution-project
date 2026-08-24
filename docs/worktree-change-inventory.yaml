@@ -1,0 +1,132 @@
+schema_version: 1
+captured_at: "2026-08-24T10:02:40+08:00"
+purpose: >-
+  Records the pre-alignment dirty-worktree boundary so later documentation edits can be
+  separated from existing implementation and user deliverables. This inventory is
+  descriptive evidence, not a product or engineering authority.
+inventory_scope: PRE_ALIGNMENT_DIRTY_WORKTREE
+captured_before_alignment_changes: true
+
+repository:
+  branch: main
+  head: 677c3fe1f6dba26b2db3a984dbe0afc108254216
+  upstream: origin/main
+  upstream_state: AHEAD_1
+  working_tree: DIRTY
+
+change_groups:
+  - id: core_internal_execution_boundary
+    disposition: PRESERVE_REVIEW_AND_COMMIT_LATER
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    tracked_files:
+      - .env.example
+      - apps/api/src/app.test.ts
+      - apps/api/src/app.ts
+      - apps/api/src/architecture-boundaries.test.ts
+      - apps/api/src/capture-repository.ts
+      - apps/api/src/capture-service.ts
+      - apps/api/src/config.test.ts
+      - apps/api/src/config.ts
+      - apps/api/src/cos-evidence-object-store.ts
+      - apps/api/src/evidence-object-store.ts
+      - apps/api/src/observation-finalization-service.ts
+      - apps/api/src/observation-repository.ts
+      - apps/api/src/repository-container.ts
+      - apps/api/src/server.ts
+      - apps/api/src/slice-1-contract.database.integration.ts
+      - apps/api/src/slice-2-contract.database.integration.ts
+      - packages/contracts/src/index.ts
+    untracked_files:
+      - apps/api/src/internal-execution-auth.ts
+      - apps/api/src/internal-execution-auth.test.ts
+
+  - id: query_engine_core_bound_runner
+    disposition: PRESERVE_REVIEW_AND_COMMIT_LATER
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    tracked_files:
+      - .github/workflows/ci.yml
+      - package.json
+      - pnpm-lock.yaml
+    untracked_paths:
+      - apps/query-engine/
+      - vitest.query-engine.config.mjs
+
+  - id: current_engineering_contracts
+    disposition: PRESERVE_AND_RECONCILE
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    untracked_files:
+      - docs/contracts/core-bound-query-execution-contract-v0.1.md
+      - docs/contracts/query-engine-doubao-web-contract-v0.1.md
+      - docs/contracts/query-engine-doubao-web-golden-query-record-v0.1.md
+
+  - id: product_documentation_and_handoff
+    disposition: PRESERVE_AND_RECONCILE
+    repository_state: MIXED_TRACKED_AND_WORKTREE
+    tracked_files:
+      - README.md
+    untracked_paths:
+      - docs/handoff/
+
+  - id: management_deliverables
+    disposition: PRESERVE_DO_NOT_AUTO_COMMIT_OR_PROMOTE
+    repository_state: REVIEW_ARTIFACTS_IN_WORKTREE
+    untracked_paths:
+      - outputs/v2-prestart-deliverables-v1.0/
+      - outputs/v2-prestart-deliverables-v1.1/
+      - tools/artifact_builders/build_v2_prestart_deliverables.py
+    constraints:
+      - V1.1 remains REVIEW_CANDIDATE.
+      - DOCX visual rendering QA has not passed because a standard renderer is unavailable.
+      - Inclusion in a future Git commit requires an explicit deliverable decision.
+
+protected_targets:
+  immutable_files:
+    - packages/database/migrations/0001_slice_1_foundation.sql
+    - packages/database/migrations/0002_slice_2_observation.sql
+    - docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+  do_not_clean:
+    - apps/query-engine/
+    - docs/handoff/
+    - outputs/
+    - tools/artifact_builders/build_v2_prestart_deliverables.py
+  prohibited_operations:
+    - destructive reset
+    - checkout over user changes
+    - clean untracked files
+    - silent rewrite of frozen records
+
+alignment_change_groups:
+  - id: document_governance_and_status
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    paths:
+      - docs/document-index.yaml
+      - docs/product-implementation-status.yaml
+      - docs/worktree-change-inventory.yaml
+      - README.md
+  - id: four_working_baselines
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    paths:
+      - docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+      - docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+      - docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+      - docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+  - id: decision_registry
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    paths:
+      - docs/decision-registry/
+  - id: legacy_product_supersession
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    paths:
+      - docs/product/GEO_OS_Commercial_MVP_Product_Baseline_V1.0.md
+      - docs/product/GEO_OS_Product_Object_Map_V0.1.md
+      - docs/product/GEO_OS_Product_Slice_Implementation_Map_V0.1.md
+  - id: slice_2_addendum
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    paths:
+      - docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
+  - id: reproducible_validation_and_ci
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    paths:
+      - tools/validate-doc-baseline.mjs
+      - package.json
+      - .github/workflows/ci.yml

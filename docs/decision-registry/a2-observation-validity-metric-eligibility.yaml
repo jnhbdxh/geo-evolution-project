@@ -1,0 +1,19 @@
+schema_version: 1
+decision_id: A2
+title: Observation Validity and Metric Eligibility
+status: WORKING_SOURCE_MAPPING
+source_status: FROZEN
+authority_domain: observation_validity_and_metric_eligibility
+source:
+  path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\GEO_OS_Decision_Pack_A2_Observation_Validity_Metric_Eligibility_最终冻结版.docx'
+  sha256: e45f569851dd533b68edd9e600b42b75af5ad75e5d1f50865ef619080f829a53
+semantic_boundary:
+  - Separates observable existence from validity and metric eligibility.
+  - UNKNOWN, INVALID, and INELIGIBLE are not numeric zero.
+  - Formal contribution requires an explicit resolution and actual rule version.
+engineering_projection:
+  domain_contract: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+  evaluator_state: NOT_STARTED
+runtime_release:
+  mapping: PolicyRelease or MetricRelease plus evaluator version
+  current_release_id: null

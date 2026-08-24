@@ -1,0 +1,245 @@
+schema_version: 1
+status: WORKING_INDEX
+repository_state: IMPLEMENTED_IN_WORKTREE
+effective_date: "2026-08-24"
+purpose: >-
+  Defines document authority by decision domain, records status and supersession, and
+  separates normative sources from implementation evidence and historical context.
+
+status_definitions:
+  FROZEN: Approved immutable decision or database record; changes require a new version.
+  ACTIVE: Current normative source for its declared authority domains.
+  ACTIVE_WORKING_BASELINE: Current committed implementation baseline; changes remain version controlled and reviewable.
+  ACTIVE_WITH_ADDENDUM: Active source whose later implementation state is described by a separate addendum.
+  REVIEW_CANDIDATE: Filled review input that has not been approved as an active source.
+  SUPERSEDED: Historical source replaced by an explicitly named successor.
+  HISTORICAL: Preserved decision history with no current normative authority.
+  CONTEXT_ONLY: Handoff or explanatory material that does not define product behavior.
+  WORKING: Worktree-only contract that is not yet a committed repository baseline.
+  SOURCE_REFERENCE: External finalized source mapped through an active repository baseline.
+
+authority_resolution:
+  principles:
+    - Authority is resolved within a decision domain, never by one global document ranking.
+    - Within one domain, use formal status, applicable scope, effective version, and explicit supersession.
+    - Frozen A1/A2/A3/B/C packs remain the semantic authority for their domains.
+    - Frozen migrations and Freeze Records define implemented DDL identity, not desired future behavior.
+    - Code describes current implementation and tests provide conformance evidence; neither overrides a normative contract.
+    - A conflict between implementation evidence and an authoritative contract is recorded as a nonconformance.
+  domains:
+    product_scope: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+    core_domain_lifecycle_authorization: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+    rules_metrics_evidence_attribution: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+    engineering_interaction_release: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+    implemented_database: docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+    current_implementation: docs/product-implementation-status.yaml
+
+documents:
+  - id: document_index
+    path: docs/document-index.yaml
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains: [document_governance]
+
+  - id: product_implementation_status
+    path: docs/product-implementation-status.yaml
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains: [current_implementation]
+
+  - id: worktree_change_inventory
+    path: docs/worktree-change-inventory.yaml
+    status: CONTEXT_ONLY
+    authority_domains: []
+
+  - id: decision_registry_index
+    path: docs/decision-registry/index.yaml
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains: [rule_engineering_mapping]
+
+  - id: product_scope_implementation_v1
+    path: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains: [product_scope, commercial_mvp, slice_outcomes, implementation_sequence]
+    supersedes:
+      - docs/product/GEO_OS_Commercial_MVP_Product_Baseline_V1.0.md
+      - docs/product/GEO_OS_Product_Slice_Implementation_Map_V0.1.md
+
+  - id: core_domain_lifecycle_authorization_v1
+    path: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains: [object_identity, ownership, lifecycle, authorization, release_semantics]
+    supersedes:
+      - docs/product/GEO_OS_Product_Object_Map_V0.1.md
+
+  - id: rules_metrics_evidence_attribution_v1
+    path: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains: [rule_mapping, metrics, evidence, comparability, attribution]
+    does_not_supersede: [A1, A2, A3, B, C]
+
+  - id: engineering_boundaries_interaction_release_v1
+    path: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains: [module_boundary, api, event, authentication, persistence, release_gate]
+
+  - id: commercial_mvp_product_baseline_v1
+    path: docs/product/GEO_OS_Commercial_MVP_Product_Baseline_V1.0.md
+    status: SUPERSEDED
+    superseded_by: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+    authority_domains: []
+
+  - id: product_object_map_v0_1
+    path: docs/product/GEO_OS_Product_Object_Map_V0.1.md
+    status: SUPERSEDED
+    superseded_by: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+    authority_domains: []
+
+  - id: product_slice_map_v0_1
+    path: docs/product/GEO_OS_Product_Slice_Implementation_Map_V0.1.md
+    status: SUPERSEDED
+    superseded_by: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+    authority_domains: []
+    known_corrections:
+      - A failed ExecutionRun may still produce RawObservation when a valid visible response fact exists.
+      - execution_attempt is not a separate business object or table.
+      - Slice 2 is Demand, Monitoring, Execution, and Observation; not Attribution and Strategy.
+
+  - id: slice_1_domain_contract_v0_1
+    path: docs/contracts/slice-1-domain-contract-v0.1.md
+    status: ACTIVE
+    authority_domains: [slice_1_detailed_domain]
+    parent_baseline: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+
+  - id: slice_2_observation_contract_v0_1
+    path: docs/contracts/slice-2-observation-domain-contract-v0.1.md
+    status: ACTIVE
+    authority_domains: [slice_2_detailed_domain]
+    parent_baseline: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+    pending_addendum: docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
+    ddl:
+      upstream: packages/database/migrations/0001_slice_1_foundation.sql
+      current: packages/database/migrations/0002_slice_2_observation.sql
+      combined_status: FROZEN_0001_0002
+
+  - id: slice_2_observation_contract_v0_1_addendum_1
+    path: docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains: [slice_2_implementation_progress]
+    parent_baseline: docs/contracts/slice-2-observation-domain-contract-v0.1.md
+
+  - id: slice_1_and_2_ddl_freeze_v1
+    path: docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+    status: FROZEN
+    authority_domains: [implemented_database]
+    migration_hashes:
+      0001: e52769e5a4a0521adef73ae96bf3fd723c078aa2077567636513352522678ab5
+      0002: 9ac60051d0fb45868d2c1b0d84bd555eb105badf46e8eff46d19f320b8cce4e0
+
+  - id: slice_1_ddl_freeze_v1
+    path: docs/contracts/slice-1-ddl-freeze-record-v1.0.md
+    status: SUPERSEDED
+    superseded_by: docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+    authority_domains: []
+
+  - id: zero_fk_rebaseline_v0_1
+    path: docs/contracts/zero-foreign-key-rebaseline-v0.1.md
+    status: HISTORICAL
+    authority_domains: []
+    closed_by: docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+
+  - id: core_bound_query_execution_v0_1
+    path: docs/contracts/core-bound-query-execution-contract-v0.1.md
+    status: WORKING
+    authority_domains: [current_core_bound_implementation]
+    repository_state: IMPLEMENTED_IN_WORKTREE
+
+  - id: doubao_web_contract_v0_1
+    path: docs/contracts/query-engine-doubao-web-contract-v0.1.md
+    status: WORKING
+    authority_domains: [doubao_web_adapter]
+    repository_state: IMPLEMENTED_IN_WORKTREE
+
+  - id: doubao_web_golden_query_v0_1
+    path: docs/contracts/query-engine-doubao-web-golden-query-record-v0.1.md
+    status: WORKING
+    authority_domains: [doubao_web_acceptance_evidence]
+    repository_state: IMPLEMENTED_IN_WORKTREE
+
+  - id: conversation_handoff_2026_08_24
+    path: docs/handoff/GEO_OS_Conversation_Handoff_2026-08-24.md
+    status: CONTEXT_ONLY
+    authority_domains: []
+
+  - id: technical_architecture_reconciliation_v1_1
+    path: docs/architecture/GEO_OS_Technical_Architecture_Reconciliation_V1.1.docx
+    status: SUPERSEDED
+    authority_domains: []
+    superseded_by: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+    notes:
+      - Its modular Core, separate Query Engine/Worker, PostgreSQL fact source, and object-storage boundaries were absorbed.
+      - Its multi-owner Gate 0 governance is not a current development blocker.
+
+  - id: v1_0_management_deliverables
+    path: outputs/v2-prestart-deliverables-v1.0/
+    status: HISTORICAL
+    authority_domains: []
+
+  - id: v1_1_management_deliverables
+    path: outputs/v2-prestart-deliverables-v1.1/
+    status: REVIEW_CANDIDATE
+    authority_domains: []
+    constraints:
+      - Content review is conditionally passed.
+      - Standard DOCX rendering and page-level visual QA have not passed.
+      - The files are inputs to the four active baselines, not peer authority sources.
+
+external_frozen_rule_sources:
+  - id: A1
+    manifest: docs/decision-registry/a1-observation-existence.yaml
+    status: FROZEN
+  - id: A2
+    manifest: docs/decision-registry/a2-observation-validity-metric-eligibility.yaml
+    status: FROZEN
+  - id: A3
+    manifest: docs/decision-registry/a3-immutability-review-model.yaml
+    status: FROZEN
+  - id: B
+    manifest: docs/decision-registry/b-final-decision.yaml
+    status: FROZEN
+  - id: C
+    manifest: docs/decision-registry/c-citation-source-intelligence.yaml
+    status: FROZEN
+
+external_design_sources:
+  - id: business_background_v1
+    path: 'D:\三合星链\技术组\v2\项目文档\整体设计\GEO_OS_业务背景定稿版_V1.0.docx'
+    status: SOURCE_REFERENCE
+    sha256: e7a48c4d8975f47e55b22aa8cc714a92906a746083d593cfd3e66ca23e86848c
+    mapped_by: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+  - id: requirements_v1
+    path: 'D:\三合星链\技术组\v2\项目文档\整体设计\GEO_OS_需求方案定稿版_V1.0.docx'
+    status: SOURCE_REFERENCE
+    sha256: 667176a16c9877bc5cde908609c9c178d451bcb77cd90ee62ce554b33a106f5b
+    mapped_by: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+  - id: product_plan_v1
+    path: 'D:\三合星链\技术组\v2\项目文档\整体设计\GEO_OS_产品方案定稿版_V1.0.docx'
+    status: SOURCE_REFERENCE
+    sha256: 74205d9efadaa3da7a646160ee5cfd9ddb1f0df2f03c88cd3a4fdbd7679dba2c
+    mapped_by: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+  - id: technical_plan_v1
+    path: 'D:\三合星链\技术组\v2\项目文档\整体设计\GEO_OS_技术方案定稿版_V1.0.docx'
+    status: SOURCE_REFERENCE
+    sha256: c4cd9206b095bad379718b68785826d571c6191dde6429afbfdbd1ecc7dba54c
+    mapped_by: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+  - id: prestart_alignment_pack
+    path: 'D:\三合星链\技术组\v2\项目文档\整体设计\知因GEO_V2开工前正式会议对齐包.docx'
+    status: SOURCE_REFERENCE
+    sha256: 5b0f986a4fab23701cd18939fbb11a8fe367618bcc955a87bcc4ed0352225d33
+    mapped_by: docs/document-index.yaml

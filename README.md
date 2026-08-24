@@ -51,6 +51,18 @@ For each material decision, record the decision, rationale, affected contracts/t
 
 The scripts under `tools/artifact_builders/` are version-controlled build sources. Their runtime requirements, outputs, non-overwrite rule, and rendering limitations are documented in `tools/artifact_builders/README.md`.
 
+## Active product and engineering baselines
+
+- Document authority and supersession index: `docs/document-index.yaml`
+- Product implementation status: `docs/product-implementation-status.yaml`
+- Product scope and six-Slice baseline: `docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md`
+- Core domain, lifecycle and authorization: `docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md`
+- Rules, metrics, evidence and attribution: `docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md`
+- Engineering boundaries, interaction and release: `docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md`
+- Frozen-decision engineering mappings: `docs/decision-registry/`
+
+Run `pnpm docs:validate` for repository-contained document, path, frozen-migration, registry-declaration and stale-conflict checks. Where the external frozen A1/A2/A3/B/C DOCX sources are mounted, run `pnpm docs:validate:sources` to verify their bytes against the pinned SHA-256 values. Production dependency auditing uses `pnpm audit:prod`, which explicitly selects the official npm Registry.
+
 ## Slice 1 foundation and Slice 2 observation contract
 
 - API modular-monolith skeleton: `apps/api/`
@@ -61,6 +73,8 @@ The scripts under `tools/artifact_builders/` are version-controlled build source
 - Approved Slice 1 + Slice 2 DDL Freeze Record: `docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md`
 - Closed Zero-Foreign-Key Rebaseline Record: `docs/contracts/zero-foreign-key-rebaseline-v0.1.md`
 - Slice 2 Observation Domain Contract: `docs/contracts/slice-2-observation-domain-contract-v0.1.md`
+- Slice 2 implementation addendum: `docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md`
+- Core-bound Query Execution Contract: `docs/contracts/core-bound-query-execution-contract-v0.1.md`
 - Frozen Slice 2 DDL: `packages/database/migrations/0002_slice_2_observation.sql`
 
 Implemented Slice 1 commands cover Tenant provisioning/suspension/deactivation, Membership creation/deactivation, Customer–Brand–Project creation/deactivation, and versioned Policy/Industry default Binding changes. Every actual state change uses explicit authorization, a PostgreSQL transaction, AuditEvent and the durable Outbox envelope; an idempotent no-op emits no event.
@@ -123,4 +137,12 @@ Capture depends only on the provider-neutral `EvidenceObjectStore` port. Local d
 
 The production COS bucket must be created by infrastructure in advance, remain private, include its APPID suffix, and grant the runtime identity only the required object operations. The application never creates a COS bucket or enables public access. See `.env.example` for the mutually exclusive MinIO and COS settings.
 
-Slice 2 is now in active implementation on the frozen `0001/0002` baseline. The planning/execution/capture/Candidate/Finalize/immutable-Observation data chain has passed live PostgreSQL and MinIO contract tests. This database freeze does **not** satisfy Slice 2 product completion: the authenticated Core API/Query Engine async boundary and customer inspection flow remain to be implemented, and one real AI platform adapter must complete a real query before Slice 2 can be accepted.
+Slice 2 is now in active implementation on the frozen `0001/0002` baseline. The planning/execution/capture/Candidate/Finalize/immutable-Observation data chain has passed live PostgreSQL and MinIO contract tests. The execution-scoped Core API and Query Engine client now cover canonical QuestionVersion assignment, Start, evidence upload, Candidate, terminal state and byte-verified Finalize without giving Query Engine database credentials. This does **not** yet satisfy Slice 2 product completion: durable asynchronous dispatch, a production A1 outcome detector, one real Core-bound Doubao run and the Tenant-operator/authorized-project-member inspection flow remain to be completed.
+
+The first real product surface is `doubao_web`. `@geo-os/query-engine` uses Playwright and headed Chromium against `https://www.doubao.com/chat/`; a model API is not an accepted substitute. The versioned Capability uses signals verified against the authenticated live DOM, requires the exact fresh `/chat/` route with zero existing messages, enforces one active execution per adapter identity, captures visible response text/HTML, response and viewport screenshots, and link candidates, and records the model label visible in the UI rather than inventing a hidden model identifier. Link candidates are UI evidence only and are not qualified Citations until Pack C processing. Human verification is an operational boundary, never an AI Response Outcome. Headless mode remains unsupported until it independently passes a live Golden Query.
+
+The adapter's deterministic browser contract tests use a local UI fixture. A real Doubao call additionally requires an authorized account StorageState supplied outside Git and explicit `ALLOW_REAL_AI_TESTS=true`. Install Chromium with `pnpm --filter @geo-os/query-engine exec playwright install chromium`. Set `DOUBAO_STORAGE_STATE_PATH` to an external secure path and run `pnpm auth:doubao`; complete login personally in the opened browser and press Enter in the terminal. Neither password nor cookie content is printed. Then run `pnpm test:query-engine` for the browser contract or `pnpm test:doubao:live` for an authorized live smoke. Live smoke evidence is written under the ignored `.codex-tmp` directory by default.
+
+Question-response binding uses the submitted raw prompt/hash, the new visible user-message node, and the later assistant-message node with explicit IDs and DOM sequence. Sidebar conversation titles are Doubao-generated metadata and never replace the QuestionVersion or participate in binding. On Windows, browser contract tests automatically discover installed Chrome/Edge when an explicit executable path is absent; CI installs pinned Playwright Chromium before running the same test task.
+
+Internal Core commands use a separate `INTERNAL_SERVICE_TOKEN_SECRET` and an execution-scoped token with a maximum 15-minute lifetime. The Query Engine first reads the queued run's canonical QuestionVersion assignment from Core, confirms exact prompt/hash and planned surface, then starts the run before the adapter submits the question. See `docs/contracts/core-bound-query-execution-contract-v0.1.md`.

@@ -1,8 +1,11 @@
 # GEO OS Product Object Map V0.1
 
-**Status:** ACTIVE WORKING BASELINE  
-**Aligned baseline:** GEO_OS_Commercial_MVP_Product_Baseline_V1.0  
-**Purpose:** 在逐模块实现前，统一端到端产品对象、归属、不变性、版本和下游关系。
+- **Status:** SUPERSEDED
+- **Superseded by:** `../contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md`
+- **Aligned baseline:** GEO_OS_Commercial_MVP_Product_Baseline_V1.0
+- **Purpose:** 在逐模块实现前，统一端到端产品对象、归属、不变性、版本和下游关系。
+
+> 历史说明：本文件保留对象设计演进记录。当前对象身份、生命周期、权限和 Release 语义以替代合同为准。
 
 ## 1. 对象分层
 
@@ -164,7 +167,7 @@ Access Scope 只回答访问归属和 `tenant_id` 放置；Record Semantics 只�
 2. 所有 `TENANT_OWNED` 对象直接携带不可变 `tenant_id`；项目上下文对象还携带 `project_id`，Customer 通过 `Project → Brand → Customer` 推导。
 3. 全局身份对象不直接携带 Tenant 业务结论；结论位于 Tenant-scoped Binding、Evidence、Assessment 或 Projection。
 4. Report 只消费指定 Snapshot、Diagnosis 和 Intervention Release，不在展示层重算。
-5. Worker 重试产生新的 Attempt 或复用幂等结果，不产生重复事实。
+5. 队列重投复用幂等结果；只有真实业务重试才创建新的 ExecutionRun，且不产生新的 SampleSlot 或独立 execution_attempt 对象。
 6. 所有替代关系显式记录 `supersedes/replaces`，不得以最大时间戳解释业务真相。
 
 ## 5. Slice 依赖

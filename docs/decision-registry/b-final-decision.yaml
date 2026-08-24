@@ -1,0 +1,23 @@
+schema_version: 1
+decision_id: B
+title: Final Decision
+status: WORKING_SOURCE_MAPPING
+source_status: FROZEN
+authority_domain: formal_decision_and_metric_semantics
+source:
+  path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\Decision20B｜Final20Decision_英文名词中文注释版.docx'
+  sha256: f8233f20fa67dee7b234b0e485893fe06d332f8af5e1b9e385dac986f2afa339
+semantic_boundary:
+  - Formal results derive from explicit decisions rather than UI inference.
+  - Metric contribution preserves decision provenance and eligibility semantics.
+  - Mention, Consideration, and Recommendation are distinct decisions.
+  - Question echo does not automatically establish Mention.
+  - VALUE_1, VALUE_0, NO_CONTRIBUTION, and UNKNOWN remain distinct.
+  - Target set, applicability, and Coverage Context are frozen with the decision context.
+  - Recommendation cannot be inferred automatically from Mention.
+engineering_projection:
+  domain_contract: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+  evaluator_state: NOT_STARTED
+runtime_release:
+  mapping: PolicyRelease, IndustryPolicyRelease, and MetricRelease as applicable
+  current_release_id: null

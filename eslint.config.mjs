@@ -28,6 +28,21 @@ export default tseslint.config(
     },
   },
   {
+    files: ["tools/*.mjs"],
+    languageOptions: {
+      globals: {
+        console: "readonly",
+        process: "readonly",
+      },
+      parserOptions: {
+        projectService: false,
+      },
+    },
+    rules: {
+      ...tseslint.configs.disableTypeChecked.rules,
+    },
+  },
+  {
     files: ["**/*.test.ts", "**/*.spec.ts"],
     rules: {
       "@typescript-eslint/no-unsafe-assignment": "off",

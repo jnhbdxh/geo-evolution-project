@@ -18,8 +18,59 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @geo-os/query-engine exec playwright install --with-deps chromium
       - run: pnpm format:check
+      - run: pnpm docs:validate
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - run: pnpm test:query-engine
       - run: pnpm build
+
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Start isolated PostgreSQL and MinIO
+        run: docker compose --profile database-test --profile capture-test up -d --wait --wait-timeout 120 postgres-test minio-test
+      - name: PostgreSQL contract tests
+        run: pnpm test:db
+        env:
+          TEST_DATABASE_URL: postgresql://geo_os_app:geo_os_app@127.0.0.1:5433/geo_os_test
+          TEST_DATABASE_MIGRATION_URL: postgresql://geo_os_migrator:geo_os_migrator@127.0.0.1:5433/geo_os_test
+          ALLOW_DATABASE_INTEGRATION_TESTS: "true"
+      - name: Capture and object-storage contract tests
+        run: pnpm test:capture
+        env:
+          TEST_DATABASE_URL: postgresql://geo_os_app:geo_os_app@127.0.0.1:5433/geo_os_test
+          TEST_DATABASE_MIGRATION_URL: postgresql://geo_os_migrator:geo_os_migrator@127.0.0.1:5433/geo_os_test
+          TEST_OBJECT_STORAGE_ENDPOINT: http://127.0.0.1:9100
+          TEST_OBJECT_STORAGE_ACCESS_KEY: geo_os_minio_test
+          TEST_OBJECT_STORAGE_SECRET_KEY: geo_os_minio_test_secret
+          ALLOW_DATABASE_INTEGRATION_TESTS: "true"
+          ALLOW_OBJECT_STORAGE_INTEGRATION_TESTS: "true"
+      - name: Stop isolated services
+        if: always()
+        run: docker compose --profile database-test --profile capture-test down --volumes
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit:prod

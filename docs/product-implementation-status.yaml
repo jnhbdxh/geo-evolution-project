@@ -1,0 +1,305 @@
+schema_version: 1
+status: WORKING_STATUS
+repository_state: IMPLEMENTED_IN_WORKTREE
+as_of: "2026-08-24"
+repository:
+  branch: main
+  committed_head: 3a980cd13336675819c8df04744b8992d7dae90a
+  upstream_state: AHEAD_3
+  working_tree: DIRTY
+  inventory: docs/worktree-change-inventory.yaml
+
+verification_summary:
+  verified_at: "2026-08-24T10:41:13+08:00"
+  default_tests: 76_of_76_passed
+  query_engine_tests: 12_of_12_passed
+  postgresql_tests: 54_of_54_passed
+  capture_minio_tests: 7_of_7_passed
+  typecheck: passed
+  eslint: passed
+  prettier: passed
+  build: passed
+  production_dependency_audit: no_known_vulnerabilities_official_npm_registry
+  document_validation: passed_with_5_external_source_byte_hashes
+  compose_configuration: passed
+  frozen_migration_hashes: unchanged
+
+dimension_values: [NOT_STARTED, PARTIAL, COMPLETE, NOT_APPLICABLE]
+repository_state_values: [NOT_PRESENT, IMPLEMENTED_IN_WORKTREE, COMMITTED, RELEASED]
+rules:
+  - Dimensions are independent and do not form a linear state machine.
+  - COMPLETE means complete only for the named capability and evidence scope.
+  - INTEGRATION_VERIFIED records its environment; it does not imply production verification.
+  - PRODUCT_ACCEPTED requires an explicit product acceptance decision and cannot be inferred from tests.
+  - A class, table, API, or page existing alone never establishes product completion.
+
+capabilities:
+  - id: slice_1.workspace_and_project_domain
+    label: Workspace and project data/command baseline
+    repository_state: COMMITTED
+    baseline_ref: 677c3fe1f6dba26b2db3a984dbe0afc108254216
+    last_verified_at: "2026-08-24T10:41:13+08:00"
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: COMPLETE
+      command_implemented: COMPLETE
+      api_available: COMPLETE
+      ui_available: NOT_STARTED
+      integration_verified: COMPLETE
+      product_accepted: NOT_STARTED
+    contract_acceptance:
+      status: FROZEN_BASELINE_ACCEPTED
+      scope: Slice 1 data, relationship commands, and DDL only
+      accepted_by: Product Owner / Independent Developer
+      decision_ref: docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+    evidence:
+      - docs/contracts/slice-1-domain-contract-v0.1.md
+      - docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+      - packages/database/migrations/0001_slice_1_foundation.sql
+      - apps/api/src/slice-1-contract.database.integration.ts
+    verification_environment: PostgreSQL 17 isolated geo_os_test
+    known_gaps:
+      - No GEO OS operator UI exists.
+      - No complete Slice 1 product acceptance decision exists.
+
+  - id: slice_2.planning_observation_domain
+    label: Demand, Question, Monitoring, Execution, Capture, and Observation baseline
+    repository_state: COMMITTED
+    baseline_ref: 677c3fe1f6dba26b2db3a984dbe0afc108254216
+    last_verified_at: "2026-08-24T10:41:13+08:00"
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: COMPLETE
+      command_implemented: COMPLETE
+      api_available: PARTIAL
+      ui_available: NOT_STARTED
+      integration_verified: COMPLETE
+      product_accepted: NOT_STARTED
+    contract_acceptance:
+      status: FROZEN_BASELINE_ACCEPTED
+      scope: Slice 2 DDL and relationship commands only
+      accepted_by: Product Owner / Independent Developer
+      decision_ref: docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+    evidence:
+      - docs/contracts/slice-2-observation-domain-contract-v0.1.md
+      - docs/contracts/slice-1-and-2-ddl-freeze-record-v1.0.md
+      - packages/database/migrations/0002_slice_2_observation.sql
+      - apps/api/src/slice-2-contract.database.integration.ts
+    verification_environment: PostgreSQL 17 and MinIO isolated integration environments
+    known_gaps:
+      - Tenant-facing Question, Plan, Execution, and Observation query APIs are incomplete.
+      - No operator inspection UI exists.
+      - Slice 2 is not product accepted as a complete vertical slice.
+
+  - id: slice_2.core_bound_transport
+    label: Authenticated Query Engine to Core command boundary
+    repository_state: COMMITTED
+    baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
+    last_verified_at: "2026-08-24T10:41:13+08:00"
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_APPLICABLE
+      command_implemented: COMPLETE
+      api_available: COMPLETE
+      ui_available: NOT_APPLICABLE
+      integration_verified: COMPLETE
+      product_accepted: NOT_STARTED
+    technical_acceptance:
+      status: AUTOMATED_CONTRACT_TESTS_PASSED
+      scope: Execution-scoped authentication and Core command transport
+      decision_ref: docs/contracts/core-bound-query-execution-contract-v0.1.md
+    evidence:
+      - docs/contracts/core-bound-query-execution-contract-v0.1.md
+      - apps/api/src/internal-execution-auth.ts
+      - apps/api/src/app.test.ts
+      - apps/query-engine/src/core-execution-client.ts
+      - apps/query-engine/src/core-bound-web-execution.test.ts
+    verification_environment: Automated API and Query Engine contract tests
+    known_gaps:
+      - No durable dispatcher or production token-delivery workflow exists.
+
+  - id: slice_2.doubao_web_adapter
+    label: Authorized headed-Chromium Doubao Web surface
+    repository_state: COMMITTED
+    baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
+    last_verified_at: "2026-08-24T10:41:13+08:00"
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_APPLICABLE
+      command_implemented: COMPLETE
+      api_available: NOT_APPLICABLE
+      ui_available: NOT_APPLICABLE
+      integration_verified: COMPLETE
+      product_accepted: NOT_STARTED
+    technical_acceptance:
+      status: GOLDEN_QUERY_AND_BROWSER_CONTRACT_PASSED
+      scope: Authorized headed-Chromium Doubao Web adapter
+      decision_ref: docs/contracts/query-engine-doubao-web-golden-query-record-v0.1.md
+    evidence:
+      - docs/contracts/query-engine-doubao-web-contract-v0.1.md
+      - docs/contracts/query-engine-doubao-web-golden-query-record-v0.1.md
+      - apps/query-engine/src/doubao-web-adapter.ts
+      - apps/query-engine/src/doubao-web-adapter.browser.integration.ts
+    verification_environment: Authorized live headed Chromium plus deterministic local browser fixture
+    known_gaps:
+      - One real Core-bound run through PostgreSQL and object storage is still required.
+      - Headless mode is unsupported.
+      - Browser-process-loss ambiguity recovery is unresolved.
+
+  - id: slice_2.durable_dispatch_and_recovery
+    label: Persistent dispatch, consumer idempotency, and ambiguous-side-effect recovery
+    repository_state: NOT_PRESENT
+    baseline_ref: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+    last_verified_at: null
+    dimensions:
+      object_defined: PARTIAL
+      ddl_frozen: NOT_STARTED
+      command_implemented: NOT_STARTED
+      api_available: NOT_APPLICABLE
+      ui_available: NOT_APPLICABLE
+      integration_verified: NOT_STARTED
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+    verification_environment: NOT_VERIFIED
+    known_gaps:
+      - Persistent Outbox dispatcher is absent.
+      - BullMQ delivery and consumer deduplication are absent.
+      - A physical inbox table is not yet mandated.
+
+  - id: slice_2.a1_detector_contract
+    label: A1 decision-provider and Candidate contract boundary
+    repository_state: COMMITTED
+    baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
+    last_verified_at: "2026-08-24T10:41:13+08:00"
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_APPLICABLE
+      command_implemented: COMPLETE
+      api_available: NOT_APPLICABLE
+      ui_available: NOT_APPLICABLE
+      integration_verified: COMPLETE
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/decision-registry/a1-observation-existence.yaml
+      - apps/query-engine/src/core-bound-web-execution.ts
+    verification_environment: Injected decision-provider and Candidate contract tests
+    known_gaps:
+      - The injected provider is not the production versioned A1 evaluator.
+
+  - id: slice_2.production_a1_detector
+    label: Versioned production Observation-existence detector
+    repository_state: NOT_PRESENT
+    baseline_ref: docs/decision-registry/a1-observation-existence.yaml
+    last_verified_at: null
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_APPLICABLE
+      command_implemented: NOT_STARTED
+      api_available: NOT_APPLICABLE
+      ui_available: NOT_APPLICABLE
+      integration_verified: NOT_STARTED
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/decision-registry/a1-observation-existence.yaml
+    verification_environment: NOT_VERIFIED
+    known_gaps:
+      - No production versioned A1 evaluator implementation exists.
+
+  - id: slice_2.operator_inspection
+    label: Tenant operator and authorized project-member inspection flow
+    repository_state: NOT_PRESENT
+    baseline_ref: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+    last_verified_at: null
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_APPLICABLE
+      command_implemented: NOT_APPLICABLE
+      api_available: PARTIAL
+      ui_available: NOT_STARTED
+      integration_verified: NOT_STARTED
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
+    verification_environment: NOT_VERIFIED
+    known_gaps:
+      - No GEO OS frontend application exists.
+      - Read/query APIs and evidence-downloading authorization are incomplete.
+
+  - id: slice_3.resolution_measurement_report
+    label: Assessment, Resolution, MetricContribution, Snapshot, and basic Report
+    repository_state: NOT_PRESENT
+    baseline_ref: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+    last_verified_at: null
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_STARTED
+      command_implemented: NOT_STARTED
+      api_available: NOT_STARTED
+      ui_available: NOT_STARTED
+      integration_verified: NOT_STARTED
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+    verification_environment: NOT_VERIFIED
+    known_gaps:
+      - Only the cross-module semantic contract is defined.
+      - Detailed fields, schema, APIs, UI, and tests remain Slice 3 work.
+
+  - id: slice_4.formal_industry_kpi
+    label: Anchor-industry Citation, Source, and formal KPI
+    repository_state: NOT_PRESENT
+    baseline_ref: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+    last_verified_at: null
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_STARTED
+      command_implemented: NOT_STARTED
+      api_available: NOT_STARTED
+      ui_available: NOT_STARTED
+      integration_verified: NOT_STARTED
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/decision-registry/b-final-decision.yaml
+      - docs/decision-registry/c-citation-source-intelligence.yaml
+    verification_environment: NOT_VERIFIED
+    known_gaps:
+      - Anchor industry and minimum formal KPI pack are not yet selected.
+
+  - id: slice_5.geo_intelligence
+    label: Gap, Hypothesis, and StrategyAction
+    repository_state: NOT_PRESENT
+    baseline_ref: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+    last_verified_at: null
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_STARTED
+      command_implemented: NOT_STARTED
+      api_available: NOT_STARTED
+      ui_available: NOT_STARTED
+      integration_verified: NOT_STARTED
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+    verification_environment: NOT_VERIFIED
+    known_gaps:
+      - Only industry-independent object boundaries are defined.
+
+  - id: slice_6.intervention_effect_validation
+    label: Intervention, Retest, EffectEvidence, and updated Report
+    repository_state: NOT_PRESENT
+    baseline_ref: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+    last_verified_at: null
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_STARTED
+      command_implemented: NOT_STARTED
+      api_available: NOT_STARTED
+      ui_available: NOT_STARTED
+      integration_verified: NOT_STARTED
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+    verification_environment: NOT_VERIFIED
+    known_gaps:
+      - Comparability and causal-language constraints are defined, but no product capability exists.

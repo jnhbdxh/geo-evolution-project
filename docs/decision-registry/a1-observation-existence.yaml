@@ -1,0 +1,21 @@
+schema_version: 1
+decision_id: A1
+title: Observation Existence
+status: WORKING_SOURCE_MAPPING
+source_status: FROZEN
+authority_domain: observation_existence
+source:
+  path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\GEO_OS_Decision_Pack_A1_Observation_Existence_最终冻结版.docx'
+  sha256: 7268b8110cc6a58406cea3968552156bfa88c7060e0f8c1f4afba9ec961cd323
+semantic_boundary:
+  - Determines whether a user-visible response fact exists.
+  - Does not determine A2 validity, metric eligibility, or KPI contribution.
+  - ExecutionRun failure does not by itself mean that no Observation exists.
+engineering_projection:
+  domain_contract: docs/contracts/slice-2-observation-domain-contract-v0.1.md
+  provider_contract_state: COMPLETE
+  candidate_predicate_state: COMPLETE
+  production_evaluator_state: NOT_STARTED
+runtime_release:
+  mapping: PolicyRelease plus evaluator version
+  current_release_id: null

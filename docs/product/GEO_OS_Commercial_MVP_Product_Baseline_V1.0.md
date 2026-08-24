@@ -1,9 +1,12 @@
 # GEO OS Commercial MVP Product Baseline V1.0
 
-**Status:** ACTIVE WORKING BASELINE  
-**Date:** 2026-08-21  
-**Owner context:** 独立开发者兼产品负责人  
-**Purpose:** 将项目主线从组织治理切回产品闭环、Commercial MVP 范围与可实施顺序。
+- **Status:** SUPERSEDED
+- **Superseded by:** `GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md`
+- **Date:** 2026-08-21
+- **Owner context:** 独立开发者兼产品负责人
+- **Purpose:** 将项目主线从组织治理切回产品闭环、Commercial MVP 范围与可实施顺序。
+
+> 历史说明：本文件保留为 2026-08-21 的产品收敛证据。当前产品范围、Slice 状态和下一步以替代基线及 `docs/product-implementation-status.yaml` 为准。
 
 ## 1. 决策结论
 
@@ -212,9 +215,9 @@ Commercial MVP 至少通过以下真实场景：
 
 现有 G0-01 治理材料保留为历史评审资料，但其中依赖多人组织结构的 Owner/Approver 关闭条件不作为当前开发阻塞。真正的开发前置条件以本文件第 5 节的核心产品契约为准。
 
-## 10. 下一步
+## 10. 历史下一步（已被当前实施基线替代）
 
-产品对象地图与六个 Slice 的实现地图已经形成。当前执行项为：
+以下条目记录本文件生效时的实施顺序，不再代表当前执行项：
 
 1. 冻结 Slice 1 Domain Contract V0.1：Tenant/UserIdentity、Customer–Brand–Project、固定角色、Policy/Industry Binding、停用与隔离语义。
 2. 搭建 Monorepo、CI、迁移、Authentication Skeleton、Tenant Context、Audit 与 Outbox 基础设施。

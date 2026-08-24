@@ -1,0 +1,24 @@
+schema_version: 1
+decision_id: C
+title: Citation and Source Intelligence
+status: WORKING_SOURCE_MAPPING
+source_status: FROZEN
+authority_domain: citation_and_source_intelligence
+source:
+  path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\GEO_OS_Decision_Pack_C_Citation_Source_Intelligence_最终冻结版_V1.0_英文名词中文注释版.docx'
+  sha256: 758ec17cdbbffbd7669075699b42f0d28f198a80ca5f010eb7b1426bc8244414
+semantic_boundary:
+  - A visible link is a Citation Candidate, not a formal Citation.
+  - Occurrence, qualification, logical identity, source identity, and Tenant binding remain distinct.
+  - Global canonical identity does not expose cross-Tenant evidence or relationships.
+engineering_projection:
+  domain_contract: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
+  evidence_capture_state: PARTIAL
+  evaluator_state: NOT_STARTED
+  resolution_state: NOT_STARTED
+  metric_state: NOT_STARTED
+  runtime_release_state: NOT_STARTED
+  implemented_scope: Doubao Web captures visible link candidates as UI evidence
+runtime_release:
+  mapping: IndustryPolicyRelease, CoverageContextRelease, and evaluator version
+  current_release_id: null

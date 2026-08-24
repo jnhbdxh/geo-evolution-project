@@ -1,0 +1,26 @@
+schema_version: 1
+status: WORKING_REGISTRY
+repository_state: IMPLEMENTED_IN_WORKTREE
+purpose: >-
+  Maps frozen Word decision packs to version-controlled manifests, implementation
+  contracts, evaluator maturity, and runtime release identities. These manifests are
+  projections of frozen decisions and never replace their source packs.
+
+rules:
+  - A manifest cannot change source semantics.
+  - Source file SHA-256 identifies the reviewed frozen input.
+  - Runtime results must retain the actual release and evaluator version used.
+  - Updating a rule creates a new manifest/release and never overwrites historical results.
+  - No dynamic expression engine, low-code editor, or hot-update rule platform is implied.
+
+entries:
+  - id: A1
+    manifest: docs/decision-registry/a1-observation-existence.yaml
+  - id: A2
+    manifest: docs/decision-registry/a2-observation-validity-metric-eligibility.yaml
+  - id: A3
+    manifest: docs/decision-registry/a3-immutability-review-model.yaml
+  - id: B
+    manifest: docs/decision-registry/b-final-decision.yaml
+  - id: C
+    manifest: docs/decision-registry/c-citation-source-intelligence.yaml

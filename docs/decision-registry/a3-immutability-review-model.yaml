@@ -1,0 +1,25 @@
+schema_version: 1
+decision_id: A3
+title: Immutability and Review Model
+status: WORKING_SOURCE_MAPPING
+source_status: FROZEN
+authority_domain: immutability_review_and_resolution
+source:
+  path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\GEO_OS_Decision_Pack_A3_Immutability_Review_Model_最终冻结版.docx'
+  sha256: 293fc110f5590e28ade243feacf7aa7d99cbb7c463d1a293014e85cf26c41ad9
+semantic_boundary:
+  - Immutable facts and releases are corrected or replaced, never edited in place.
+  - Assessment, Review, and Resolution are distinct records.
+  - Historical results retain actual versions and actors.
+engineering_projection:
+  domain_contract: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
+  immutable_fact_state: PARTIAL
+  correction_state: PARTIAL
+  review_evaluator_state: NOT_STARTED
+  resolution_state: NOT_STARTED
+  snapshot_report_state: NOT_STARTED
+  runtime_release_state: PARTIAL
+  implemented_scope: RawObservation, CaptureArtifact, CorrectionRecord, immutable published Policy/Industry releases, and binding history
+runtime_release:
+  mapping: PolicyRelease plus domain evaluator version
+  current_release_id: null
