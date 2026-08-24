@@ -1,0 +1,20 @@
+{
+  "name": "@geo-os/query-engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "auth:doubao": "tsx src/doubao-auth-setup.ts",
+    "build": "tsc -p tsconfig.json",
+    "smoke:doubao": "tsx src/doubao-live-smoke.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@geo-os/contracts": "workspace:*",
+    "playwright": "1.62.1",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "tsx": "4.23.12"
+  }
+}
