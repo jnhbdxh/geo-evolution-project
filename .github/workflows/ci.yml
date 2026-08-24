@@ -41,7 +41,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Start isolated PostgreSQL and MinIO
         run: docker compose --profile database-test --profile capture-test up -d --wait --wait-timeout 120 postgres-test minio-test
-      - name: Apply frozen database migrations
+      - name: Apply database migrations
         run: pnpm db:migrate
         env:
           DATABASE_MIGRATION_URL: postgresql://geo_os_migrator:geo_os_migrator@127.0.0.1:5433/geo_os_test
@@ -49,6 +49,7 @@ jobs:
         run: pnpm test:db
         env:
           TEST_DATABASE_URL: postgresql://geo_os_app:geo_os_app@127.0.0.1:5433/geo_os_test
+          TEST_OUTBOX_DATABASE_URL: postgresql://geo_os_outbox_dispatcher:geo_os_outbox_dispatcher@127.0.0.1:5433/geo_os_test
           TEST_DATABASE_MIGRATION_URL: postgresql://geo_os_migrator:geo_os_migrator@127.0.0.1:5433/geo_os_test
           ALLOW_DATABASE_INTEGRATION_TESTS: "true"
       - name: Capture and object-storage contract tests

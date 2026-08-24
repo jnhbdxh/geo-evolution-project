@@ -2,12 +2,14 @@
 
 - **状态：** ACTIVE WORKING BASELINE
 - **版本库状态：** COMMITTED
-- **内容基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
-- **激活提交：** `e7c0f510a8c642b57528e511167a5fb4171fad4c`
+- **内容基线提交：** `02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2`
+- **激活提交：** `THIS_DOCUMENT_COMMIT`
 - **生效日期：** 2026-08-24
 - **权威范围：** 模块边界、API、内部认证、持久化、事件、幂等、错误分类、证据传输、测试与发布门禁
 - **已实施数据库基线：** FROZEN `0001 + 0002`
+- **当前增量迁移：** COMMITTED / NOT FROZEN `0003 + 0004`
 - **当前内部路由：** `/v1/internal/execution-runs/:executionRunId/...`
+- **活动运行时增补：** `slice-2-async-runtime-lease-and-recovery-contract-v0.1.md`（ACTIVE / COMMITTED）
 
 ## 1. 架构边界
 
@@ -105,6 +107,10 @@ Core assignment
 
 ## 7. 事件、调度、幂等与恢复
 
+Slice 2 的 Outbox 到 BullMQ 投递、统一 Worker 生命周期、执行与平台身份租约、消费者去重、浏览器不确定副作用恢复、可观测性和部署验收，按活动增补合同 `slice-2-async-runtime-lease-and-recovery-contract-v0.1.md` 细化。该合同定义目标与门禁，不把尚未实现的能力解释为已完成。
+
+该活动增补不改变产品权威顺序：里程碑 A 先完成 BullMQ、最小持久幂等、单实例 Worker 和真实 Core-bound 运行；多实例租约/Fencing、完整恢复、告警、备份和容量属于里程碑 B 生产启用门禁，不阻断 A。A1 Candidate Detector 继续遵守 Core-bound 同步 Provider 时序，AI/Data Worker 从 A2 及后续异步评估开始承担责任。
+
 ### 7.1 事实与投递
 
 - 业务事实、Audit 和 Outbox 在一个 PostgreSQL 事务中提交；
@@ -168,16 +174,23 @@ pnpm audit:prod
 
 生产发布还需要按实际部署范围完成密钥管理、私有对象存储、日志/指标/告警、备份恢复、安全扫描、SBOM、容量与灰度策略。浏览器端面需具备会话隔离、速率控制、能力版本、漂移 Canary 和停止开关。
 
+其中基础设施 `Outbox Publisher/Dispatcher` 属于当前持久调度必做能力；产品范围中延期的 `Publisher Worker 自动代发` 指向外部渠道自动发布内容的业务能力，二者不得混用。Kubernetes、Service Mesh、数据库分片和多地域双活只在增补合同所列触发条件出现后评审，不作为 Slice 2 前置条件。
+
 ## 10. 当前完成边界
 
-Core-bound API、Execution-scoped Token、豆包 Web Adapter、Capture/Candidate/Terminal/Finalize 传输已通过相关测试，并由提交 `f8b2c38` 和 `3a980cd` 形成实现基线。
+Core-bound API、Execution-scoped Token、豆包 Web Adapter、Capture/Candidate/Terminal/Finalize 传输已通过相关测试，并由提交 `f8b2c38` 和 `3a980cd` 形成实现基线。Persistent Outbox dispatch core 已由提交 `ceed736` 实现专用 RLS 上下文、`FOR UPDATE SKIP LOCKED`、稳定事件去重键、持久 attempts 和有界退避；`0003` 尚未冻结。
+
+提交 `824d0e0` 通过前向 `0004`、独立 `geo_os_outbox_dispatcher`、`OUTBOX_DATABASE_URL`、最大连接数为 2 的独立连接池和角色限定 Policy 关闭共享身份缺口；`geo_os_app` 即使主动设置旧 Dispatcher GUC，也无法跨 Tenant，且不再拥有 Outbox 交付状态列更新权。Publisher 默认五秒超时，PostgreSQL 空闲事务另有更长的服务器侧上限；超时会释放行锁和连接。成功时间与失败后的下一重试期限均由数据库 `clock_timestamp()` 生成，退避从失败落库时开始，失败诊断使用有界脱敏字段。该实现已提交并通过合同测试，`0003 + 0004` 迁移集合仍未冻结。
 
 以下仍未完成：
 
-- Persistent Outbox Dispatcher 和正式队列交付；
+- BullMQ Publisher、常驻轮询进程和正式队列交付；
 - 消费端持久去重方案；
+- 统一 Worker 运行入口、心跳、超时、取消和优雅退出；
+- Query Engine 执行租约、AI 平台身份租约和过期 Worker Fencing；
 - 版本化生产 A1 Detector；
 - 一次真实 PostgreSQL + MinIO/COS-compatible Core-bound 豆包运行；
 - ambiguous browser side effect 恢复；
 - Tenant 操作人员与获授权项目成员的检查 UI；
-- 生产可观测性、部署、备份恢复和容量验收。
+- 跨 API/Outbox/BullMQ/Worker 的 Trace、指标和告警；
+- 进程级 Liveness/Readiness、容器化部署、密钥轮换、备份恢复和容量验收。

@@ -12,6 +12,7 @@ const writeBoundaryFiles = new Set([
   "apps/api/src/workspace-repository.ts",
   "apps/api/src/observation-repository.ts",
   "apps/api/src/capture-repository.ts",
+  "apps/api/src/outbox-repository.ts",
   "apps/api/src/repository-container.ts",
 ]);
 let productionFiles: SourceFile[] = [];
@@ -52,6 +53,25 @@ describe("production database write architecture", () => {
       .map((file) => file.relativePath);
 
     expect(violations).toEqual([]);
+  });
+
+  it("confines the dedicated Outbox database boundary to its config, adapter and Repository", () => {
+    const allowedFiles = new Set([
+      "apps/api/src/config.ts",
+      "apps/api/src/outbox-database.ts",
+      "apps/api/src/outbox-repository.ts",
+    ]);
+    const violations = productionFiles
+      .filter((file) => !allowedFiles.has(file.relativePath))
+      .filter((file) =>
+        /(?:OUTBOX_DATABASE_URL|OutboxDatabase|app\.outbox_dispatcher_context)/u.test(file.content),
+      )
+      .map((file) => file.relativePath);
+
+    expect(violations).toEqual([]);
+    expect(
+      productionFiles.find((file) => file.relativePath === "apps/api/src/database.ts")?.content,
+    ).not.toContain("outbox_dispatcher_context");
   });
 
   it("prevents Query Engine and Worker modules from importing PostgreSQL or credentials", () => {

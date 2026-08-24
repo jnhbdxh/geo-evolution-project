@@ -1,8 +1,8 @@
 schema_version: 1
 status: ACTIVE_WORKING_INDEX
 repository_state: COMMITTED
-content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
-activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
+content_baseline_commit: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+activation_commit: THIS_DOCUMENT_COMMIT
 effective_date: "2026-08-24"
 purpose: >-
   Defines document authority by decision domain, records status and supersession, and
@@ -20,6 +20,10 @@ status_definitions:
   EVIDENCE_PASSED: Committed acceptance evidence whose declared verification scope passed.
   WORKING: Worktree-only contract that is not yet a committed repository baseline.
   SOURCE_REFERENCE: External finalized source mapped through an active repository baseline.
+
+revision_state_definitions:
+  IMPLEMENTED_IN_WORKTREE: The last committed ACTIVE/COMMITTED document remains authoritative while an uncommitted revision is under review.
+  activation_rule: A working revision does not replace or downgrade its active committed baseline until review, commit, and index activation are complete.
 
 authority_resolution:
   principles:
@@ -42,14 +46,14 @@ documents:
     path: docs/document-index.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
     authority_domains: [document_governance]
 
   - id: product_implementation_status
     path: docs/product-implementation-status.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
     authority_domains: [current_implementation]
 
   - id: worktree_change_inventory
@@ -97,8 +101,22 @@ documents:
     path: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
     authority_domains: [module_boundary, api, event, authentication, persistence, release_gate]
+    active_addendum: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+
+  - id: slice_2_async_runtime_lease_recovery_v0_1
+    path: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+    status: ACTIVE
+    repository_state: COMMITTED
+    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+    authority_domains:
+      - slice_2_async_runtime
+      - worker_lifecycle
+      - execution_and_identity_lease
+      - runtime_recovery
+      - observability_and_deployment_readiness
+    parent_baseline: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
 
   - id: commercial_mvp_product_baseline_v1
     path: docs/product/GEO_OS_Commercial_MVP_Product_Baseline_V1.0.md
@@ -131,6 +149,8 @@ documents:
   - id: slice_2_observation_contract_v0_1
     path: docs/contracts/slice-2-observation-domain-contract-v0.1.md
     status: ACTIVE_WITH_ADDENDUM
+    repository_state: COMMITTED
+    baseline_ref: 677c3fe1f6dba26b2db3a984dbe0afc108254216
     authority_domains: [slice_2_detailed_domain]
     parent_baseline: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
     addendum: docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md

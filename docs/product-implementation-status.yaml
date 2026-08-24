@@ -3,18 +3,25 @@ status: ACTIVE_WORKING_STATUS
 repository_state: COMMITTED
 as_of: "2026-08-24"
 repository:
-  branch: main
-  content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
-  activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
-  publication_state: VERSION_CONTROLLED
+  local_committed_baseline:
+    branch: codex/slice2-durable-dispatch
+    head: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+    state: LOCAL_COMMITTED
+  shared_baseline:
+    branch: main
+    head: cb070a522cd9b82756bb6ee317a49368d3e810ab
+    state: PUBLISHED
+  content_baseline_commit: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+  activation_commit: THIS_DOCUMENT_COMMIT
+  publication_state: LOCAL_VERSION_CONTROLLED
   protected_untracked_artifacts: PRESENT
   inventory: docs/worktree-change-inventory.yaml
 
 verification_summary:
-  verified_at: "2026-08-24T10:48:23+08:00"
-  default_tests: 76_of_76_passed
+  verified_at: "2026-08-24T15:08:03+08:00"
+  default_tests: 89_of_89_passed
   query_engine_tests: 12_of_12_passed
-  postgresql_tests: 54_of_54_passed
+  postgresql_tests: 62_of_62_passed
   capture_minio_tests: 7_of_7_passed
   typecheck: passed
   eslint: passed
@@ -27,12 +34,15 @@ verification_summary:
 
 dimension_values: [NOT_STARTED, PARTIAL, COMPLETE, NOT_APPLICABLE]
 repository_state_values: [NOT_PRESENT, IMPLEMENTED_IN_WORKTREE, COMMITTED, RELEASED]
+milestone_values: [NOT_STARTED, PARTIAL, READY]
+security_conformance_values: [CONFORMING, NONCONFORMING_FOR_PRODUCTION]
 rules:
   - Dimensions are independent and do not form a linear state machine.
   - COMPLETE means complete only for the named capability and evidence scope.
   - INTEGRATION_VERIFIED records its environment; it does not imply production verification.
   - PRODUCT_ACCEPTED requires an explicit product acceptance decision and cannot be inferred from tests.
   - A class, table, API, or page existing alone never establishes product completion.
+  - Top-level ACTIVE/COMMITTED identifies the last version-controlled authority; working_revision records uncommitted documentation changes without interrupting that authority.
 
 capabilities:
   - id: slice_1.workspace_and_project_domain
@@ -117,7 +127,7 @@ capabilities:
       - apps/query-engine/src/core-bound-web-execution.test.ts
     verification_environment: Automated API and Query Engine contract tests
     known_gaps:
-      - No durable dispatcher or production token-delivery workflow exists.
+      - The committed dispatch core is not yet wired to BullMQ or production token delivery.
 
   - id: slice_2.doubao_web_adapter
     label: Authorized headed-Chromium Doubao Web surface
@@ -148,25 +158,114 @@ capabilities:
       - Browser-process-loss ambiguity recovery is unresolved.
 
   - id: slice_2.durable_dispatch_and_recovery
-    label: Persistent dispatch, consumer idempotency, and ambiguous-side-effect recovery
+    label: Async delivery runtime, consumer idempotency, and ambiguous-side-effect recovery
+    repository_state: COMMITTED
+    baseline_ref: 824d0e021cfff58eb9bc855e80c6a6e1f744d654
+    last_verified_at: "2026-08-24T15:08:03+08:00"
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_STARTED
+      command_implemented: PARTIAL
+      api_available: NOT_APPLICABLE
+      ui_available: NOT_APPLICABLE
+      integration_verified: PARTIAL
+      product_accepted: NOT_STARTED
+    technical_acceptance:
+      status: POSTGRES_DISPATCH_P1_TESTS_PASSED
+      scope: Dedicated role and pool, role-bound RLS, application-role delivery-update denial, bounded publish timeout and lock release, database success/retry time, and sanitized failure diagnostics
+      decision_ref: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+    active_runtime_contract: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+    milestones:
+      vertical_chain_ready: PARTIAL
+      production_enablement_ready: NOT_STARTED
+    security_conformance:
+      status: CONFORMING
+      baseline_scope: Committed 824d0e0 implementation with dedicated Dispatcher database identity, role-bound RLS, minimum grants, shared-role read/update denial, isolated connection pool, bounded publish transaction, and database-based retry deadline
+    evidence:
+      - docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+      - packages/database/migrations/0003_outbox_dispatcher_access.sql
+      - packages/database/migrations/0004_outbox_dispatcher_hardening.sql
+      - packages/database/docker/init-app-role.sql
+      - apps/api/src/outbox-database.ts
+      - apps/api/src/outbox-dispatcher.ts
+      - apps/api/src/outbox-repository.ts
+      - apps/api/src/outbox-dispatcher.test.ts
+      - apps/api/src/outbox-dispatcher.database.integration.ts
+    verification_environment: PostgreSQL 17 isolated geo_os_test plus deterministic publisher port
+    known_gaps:
+      - Migrations 0003 and 0004 are committed; the access migration set is not frozen.
+      - BullMQ publisher wiring and the long-running polling process are absent.
+      - Consumer persistent deduplication and failed-event recovery are absent.
+      - Ambiguous browser-side-effect recovery is absent.
+      - The generic Publisher port is bounded, but the real BullMQ adapter, Redis command timeout, connection-budget evidence, and migration-set freeze decision remain unresolved.
+
+  - id: runtime.query_identity_lease
+    label: Query execution and AI-platform identity lease with fencing
     repository_state: NOT_PRESENT
-    baseline_ref: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+    baseline_ref: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
     last_verified_at: null
     dimensions:
-      object_defined: PARTIAL
+      object_defined: COMPLETE
       ddl_frozen: NOT_STARTED
+      command_implemented: NOT_STARTED
+      api_available: NOT_STARTED
+      ui_available: NOT_APPLICABLE
+      integration_verified: NOT_STARTED
+      product_accepted: NOT_STARTED
+    evidence:
+      - docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+      - apps/query-engine/src/doubao-web-adapter.ts
+    verification_environment: NOT_VERIFIED
+    known_gaps:
+      - No durable execution or platform-identity lease store exists.
+      - No heartbeat, expiry recovery, or fencing-token enforcement exists.
+      - Browser storage state is not centrally scheduled across Query Engine nodes.
+
+  - id: runtime.worker_runtime
+    label: Unified Query Engine and AI/Data Worker runtime lifecycle
+    repository_state: NOT_PRESENT
+    baseline_ref: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+    last_verified_at: null
+    dimensions:
+      object_defined: COMPLETE
+      ddl_frozen: NOT_APPLICABLE
       command_implemented: NOT_STARTED
       api_available: NOT_APPLICABLE
       ui_available: NOT_APPLICABLE
       integration_verified: NOT_STARTED
       product_accepted: NOT_STARTED
     evidence:
-      - docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
+      - docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
     verification_environment: NOT_VERIFIED
     known_gaps:
-      - Persistent Outbox dispatcher is absent.
-      - BullMQ delivery and consumer deduplication are absent.
-      - A physical inbox table is not yet mandated.
+      - No long-running BullMQ consumer entry point exists.
+      - Heartbeat, configurable concurrency, cancellation, timeout, and graceful drain are absent.
+      - No independent AI/Data Worker package or process exists.
+
+  - id: runtime.observability_and_deployment_readiness
+    label: Cross-process observability, health, packaging, and recovery readiness
+    repository_state: COMMITTED
+    last_verified_at: "2026-08-24T11:34:14+08:00"
+    dimensions:
+      object_defined: PARTIAL
+      ddl_frozen: NOT_APPLICABLE
+      command_implemented: PARTIAL
+      api_available: PARTIAL
+      ui_available: NOT_APPLICABLE
+      integration_verified: PARTIAL
+      product_accepted: NOT_STARTED
+    active_runtime_contract: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+    evidence:
+      - apps/api/src/app.ts
+      - apps/api/src/server.ts
+      - compose.yaml
+      - .github/workflows/ci.yml
+    verification_environment: API contract tests and local/CI infrastructure services only
+    known_gaps:
+      - Trace context is not propagated end-to-end through Outbox, BullMQ, Worker, and evidence processing.
+      - Liveness, Readiness, dependency health, and Worker heartbeat are not separated.
+      - API, Dispatcher, Query Engine, and Worker production images and deployment manifests are absent.
+      - Database connection budgets, secret rotation, backup RPO/RTO, restore drills, alerts, and capacity thresholds are not accepted.
 
   - id: slice_2.a1_detector_contract
     label: A1 decision-provider and Candidate contract boundary
