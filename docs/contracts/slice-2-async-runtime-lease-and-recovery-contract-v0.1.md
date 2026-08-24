@@ -1,12 +1,14 @@
 # GEO OS Slice 2 异步运行、租约与恢复合同 V0.1
 
-- **状态：** WORKING
-- **版本库状态：** IMPLEMENTED_IN_WORKTREE
+- **状态：** ACTIVE
+- **版本库状态：** COMMITTED
+- **内容基线提交：** `02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2`
+- **激活记录：** `THIS_DOCUMENT_COMMIT`
 - **适用阶段：** Slice 2 真实查询与不可变观测闭环
 - **父合同：** `GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md`
 - **权威范围：** Outbox 到队列投递、Worker 运行时、执行与身份租约、消费者幂等、异常恢复、可观测性和部署验收
 - **不改变：** FROZEN `0001/0002`、A1/A2/A3/B/C 冻结语义、ExecutionRun 既有业务状态含义
-- **生效条件：** 评审通过、在文档索引中激活并形成提交；在此之前仅作为实现候选合同
+- **生效日期：** 2026-08-24
 
 ## 1. 目的与边界
 

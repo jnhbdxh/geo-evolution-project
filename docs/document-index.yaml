@@ -1,17 +1,9 @@
 schema_version: 1
 status: ACTIVE_WORKING_INDEX
 repository_state: COMMITTED
-content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
-activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
+content_baseline_commit: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+activation_commit: THIS_DOCUMENT_COMMIT
 effective_date: "2026-08-24"
-working_revision:
-  state: IMPLEMENTED_IN_WORKTREE
-  branch: codex/slice2-durable-dispatch
-  base_commit: 824d0e021cfff58eb9bc855e80c6a6e1f744d654
-  document_verified_at: "2026-08-24T14:52:56+08:00"
-  verification_scope: docs_validate_strict_sources_and_diff_check
-  scope:
-    - Pending Slice 2 runtime addendum and monitoring-evidence clarifications
 purpose: >-
   Defines document authority by decision domain, records status and supersession, and
   separates normative sources from implementation evidence and historical context.
@@ -54,16 +46,14 @@ documents:
     path: docs/document-index.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
-    working_revision_state: IMPLEMENTED_IN_WORKTREE
+    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
     authority_domains: [document_governance]
 
   - id: product_implementation_status
     path: docs/product-implementation-status.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 35f7e58a76af07d1aee1b828886cef12b258e004
-    working_revision_state: IMPLEMENTED_IN_WORKTREE
+    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
     authority_domains: [current_implementation]
 
   - id: worktree_change_inventory
@@ -111,15 +101,15 @@ documents:
     path: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 35f7e58a76af07d1aee1b828886cef12b258e004
-    working_revision_state: IMPLEMENTED_IN_WORKTREE
+    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
     authority_domains: [module_boundary, api, event, authentication, persistence, release_gate]
-    pending_addendum: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+    active_addendum: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
 
   - id: slice_2_async_runtime_lease_recovery_v0_1
     path: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE
+    repository_state: COMMITTED
+    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
     authority_domains:
       - slice_2_async_runtime
       - worker_lifecycle

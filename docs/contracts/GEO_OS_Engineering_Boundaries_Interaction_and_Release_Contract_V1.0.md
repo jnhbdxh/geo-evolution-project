@@ -2,16 +2,14 @@
 
 - **状态：** ACTIVE WORKING BASELINE
 - **版本库状态：** COMMITTED
-- **工作修订状态：** IMPLEMENTED_IN_WORKTREE
-- **工作修订基点：** `35f7e58a76af07d1aee1b828886cef12b258e004`
-- **内容基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
-- **激活提交：** `e7c0f510a8c642b57528e511167a5fb4171fad4c`
+- **内容基线提交：** `02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2`
+- **激活提交：** `THIS_DOCUMENT_COMMIT`
 - **生效日期：** 2026-08-24
 - **权威范围：** 模块边界、API、内部认证、持久化、事件、幂等、错误分类、证据传输、测试与发布门禁
 - **已实施数据库基线：** FROZEN `0001 + 0002`
 - **当前增量迁移：** COMMITTED / NOT FROZEN `0003 + 0004`
 - **当前内部路由：** `/v1/internal/execution-runs/:executionRunId/...`
-- **待激活运行时增补：** `slice-2-async-runtime-lease-and-recovery-contract-v0.1.md`（WORKING，不中断本合同现行权威）
+- **活动运行时增补：** `slice-2-async-runtime-lease-and-recovery-contract-v0.1.md`（ACTIVE / COMMITTED）
 
 ## 1. 架构边界
 
@@ -109,9 +107,9 @@ Core assignment
 
 ## 7. 事件、调度、幂等与恢复
 
-Slice 2 的 Outbox 到 BullMQ 投递、统一 Worker 生命周期、执行与平台身份租约、消费者去重、浏览器不确定副作用恢复、可观测性和部署验收，按 `slice-2-async-runtime-lease-and-recovery-contract-v0.1.md` 细化。该增补合同在提交激活前属于实现候选，不把未实现能力解释为已完成。
+Slice 2 的 Outbox 到 BullMQ 投递、统一 Worker 生命周期、执行与平台身份租约、消费者去重、浏览器不确定副作用恢复、可观测性和部署验收，按活动增补合同 `slice-2-async-runtime-lease-and-recovery-contract-v0.1.md` 细化。该合同定义目标与门禁，不把尚未实现的能力解释为已完成。
 
-该候选增补不改变产品权威顺序：里程碑 A 先完成 BullMQ、最小持久幂等、单实例 Worker 和真实 Core-bound 运行；多实例租约/Fencing、完整恢复、告警、备份和容量属于里程碑 B 生产启用门禁，不阻断 A。A1 Candidate Detector 继续遵守 Core-bound 同步 Provider 时序，AI/Data Worker 从 A2 及后续异步评估开始承担责任。
+该活动增补不改变产品权威顺序：里程碑 A 先完成 BullMQ、最小持久幂等、单实例 Worker 和真实 Core-bound 运行；多实例租约/Fencing、完整恢复、告警、备份和容量属于里程碑 B 生产启用门禁，不阻断 A。A1 Candidate Detector 继续遵守 Core-bound 同步 Provider 时序，AI/Data Worker 从 A2 及后续异步评估开始承担责任。
 
 ### 7.1 事实与投递
 
