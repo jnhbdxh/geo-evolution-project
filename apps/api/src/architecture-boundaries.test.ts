@@ -12,6 +12,7 @@ const writeBoundaryFiles = new Set([
   "apps/api/src/workspace-repository.ts",
   "apps/api/src/observation-repository.ts",
   "apps/api/src/capture-repository.ts",
+  "apps/api/src/outbox-repository.ts",
   "apps/api/src/repository-container.ts",
 ]);
 let productionFiles: SourceFile[] = [];
@@ -49,6 +50,21 @@ describe("production database write architecture", () => {
       .filter((file) => file.relativePath !== "apps/api/src/database.ts")
       .filter((file) => !writeBoundaryFiles.has(file.relativePath))
       .filter((file) => /\.with(?:Tenant|Platform)Transaction\s*\(/u.test(file.content))
+      .map((file) => file.relativePath);
+
+    expect(violations).toEqual([]);
+  });
+
+  it("confines cross-Tenant Outbox dispatcher context to its Repository", () => {
+    const violations = productionFiles
+      .filter(
+        (file) =>
+          file.relativePath !== "apps/api/src/database.ts" &&
+          file.relativePath !== "apps/api/src/outbox-repository.ts",
+      )
+      .filter((file) =>
+        /(?:withOutboxDispatcherTransaction|app\.outbox_dispatcher_context)/u.test(file.content),
+      )
       .map((file) => file.relativePath);
 
     expect(violations).toEqual([]);

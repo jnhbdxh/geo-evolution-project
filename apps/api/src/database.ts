@@ -56,6 +56,15 @@ export class Database {
     return this.withPlatformTransaction(operation);
   }
 
+  public async withOutboxDispatcherTransaction<T>(
+    operation: (client: PoolClient) => Promise<T>,
+  ): Promise<T> {
+    return this.withTransaction(async (client) => {
+      await client.query("SELECT set_config('app.outbox_dispatcher_context', 'true', true)");
+      return operation(client);
+    });
+  }
+
   public async close(): Promise<void> {
     await this.pool.end();
   }
