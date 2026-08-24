@@ -1,8 +1,9 @@
 schema_version: 1
 decision_id: A3
 title: Immutability and Review Model
-status: WORKING_SOURCE_MAPPING
+status: ACTIVE_SOURCE_MAPPING
 source_status: FROZEN
+baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
 authority_domain: immutability_review_and_resolution
 source:
   path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\GEO_OS_Decision_Pack_A3_Immutability_Review_Model_最终冻结版.docx'

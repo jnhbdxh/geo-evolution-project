@@ -1,16 +1,17 @@
 schema_version: 1
-status: WORKING_STATUS
-repository_state: IMPLEMENTED_IN_WORKTREE
+status: ACTIVE_WORKING_STATUS
+repository_state: COMMITTED
 as_of: "2026-08-24"
 repository:
   branch: main
-  committed_head: 3a980cd13336675819c8df04744b8992d7dae90a
-  upstream_state: AHEAD_3
-  working_tree: DIRTY
+  baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+  activation_record: THIS_DOCUMENT_COMMIT
+  upstream_state_after_activation: AHEAD_5
+  working_tree_after_activation: DIRTY_PROTECTED_ARTIFACTS
   inventory: docs/worktree-change-inventory.yaml
 
 verification_summary:
-  verified_at: "2026-08-24T10:41:13+08:00"
+  verified_at: "2026-08-24T10:48:23+08:00"
   default_tests: 76_of_76_passed
   query_engine_tests: 12_of_12_passed
   postgresql_tests: 54_of_54_passed

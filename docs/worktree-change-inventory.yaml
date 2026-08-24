@@ -6,6 +6,8 @@ purpose: >-
   descriptive evidence, not a product or engineering authority.
 inventory_scope: PRE_ALIGNMENT_DIRTY_WORKTREE
 captured_before_alignment_changes: true
+alignment_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+alignment_activation_state: COMMITTED
 
 repository:
   branch: main
@@ -97,35 +99,41 @@ protected_targets:
 
 alignment_change_groups:
   - id: document_governance_and_status
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     paths:
       - docs/document-index.yaml
       - docs/product-implementation-status.yaml
       - docs/worktree-change-inventory.yaml
       - README.md
   - id: four_working_baselines
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     paths:
       - docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
       - docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
       - docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
       - docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
   - id: decision_registry
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     paths:
       - docs/decision-registry/
   - id: legacy_product_supersession
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     paths:
       - docs/product/GEO_OS_Commercial_MVP_Product_Baseline_V1.0.md
       - docs/product/GEO_OS_Product_Object_Map_V0.1.md
       - docs/product/GEO_OS_Product_Slice_Implementation_Map_V0.1.md
   - id: slice_2_addendum
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     paths:
       - docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
   - id: reproducible_validation_and_ci
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     paths:
       - tools/validate-doc-baseline.mjs
       - package.json

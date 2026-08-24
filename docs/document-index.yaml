@@ -1,6 +1,7 @@
 schema_version: 1
-status: WORKING_INDEX
-repository_state: IMPLEMENTED_IN_WORKTREE
+status: ACTIVE_WORKING_INDEX
+repository_state: COMMITTED
+baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
 effective_date: "2026-08-24"
 purpose: >-
   Defines document authority by decision domain, records status and supersession, and
@@ -15,6 +16,7 @@ status_definitions:
   SUPERSEDED: Historical source replaced by an explicitly named successor.
   HISTORICAL: Preserved decision history with no current normative authority.
   CONTEXT_ONLY: Handoff or explanatory material that does not define product behavior.
+  EVIDENCE_PASSED: Committed acceptance evidence whose declared verification scope passed.
   WORKING: Worktree-only contract that is not yet a committed repository baseline.
   SOURCE_REFERENCE: External finalized source mapped through an active repository baseline.
 
@@ -37,31 +39,37 @@ authority_resolution:
 documents:
   - id: document_index
     path: docs/document-index.yaml
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE_WORKING_BASELINE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: [document_governance]
 
   - id: product_implementation_status
     path: docs/product-implementation-status.yaml
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE_WORKING_BASELINE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: [current_implementation]
 
   - id: worktree_change_inventory
     path: docs/worktree-change-inventory.yaml
     status: CONTEXT_ONLY
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: []
 
   - id: decision_registry_index
     path: docs/decision-registry/index.yaml
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE_WORKING_BASELINE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: [rule_engineering_mapping]
 
   - id: product_scope_implementation_v1
     path: docs/product/GEO_OS_V2_Product_Scope_and_Implementation_Baseline_V1.0.md
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE_WORKING_BASELINE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: [product_scope, commercial_mvp, slice_outcomes, implementation_sequence]
     supersedes:
       - docs/product/GEO_OS_Commercial_MVP_Product_Baseline_V1.0.md
@@ -69,23 +77,26 @@ documents:
 
   - id: core_domain_lifecycle_authorization_v1
     path: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE_WORKING_BASELINE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: [object_identity, ownership, lifecycle, authorization, release_semantics]
     supersedes:
       - docs/product/GEO_OS_Product_Object_Map_V0.1.md
 
   - id: rules_metrics_evidence_attribution_v1
     path: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE_WORKING_BASELINE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: [rule_mapping, metrics, evidence, comparability, attribution]
     does_not_supersede: [A1, A2, A3, B, C]
 
   - id: engineering_boundaries_interaction_release_v1
     path: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE_WORKING_BASELINE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: [module_boundary, api, event, authentication, persistence, release_gate]
 
   - id: commercial_mvp_product_baseline_v1
@@ -118,10 +129,10 @@ documents:
 
   - id: slice_2_observation_contract_v0_1
     path: docs/contracts/slice-2-observation-domain-contract-v0.1.md
-    status: ACTIVE
+    status: ACTIVE_WITH_ADDENDUM
     authority_domains: [slice_2_detailed_domain]
     parent_baseline: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
-    pending_addendum: docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
+    addendum: docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
     ddl:
       upstream: packages/database/migrations/0001_slice_1_foundation.sql
       current: packages/database/migrations/0002_slice_2_observation.sql
@@ -129,8 +140,9 @@ documents:
 
   - id: slice_2_observation_contract_v0_1_addendum_1
     path: docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
-    status: WORKING
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    status: ACTIVE
+    repository_state: COMMITTED
+    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
     authority_domains: [slice_2_implementation_progress]
     parent_baseline: docs/contracts/slice-2-observation-domain-contract-v0.1.md
 
@@ -156,21 +168,24 @@ documents:
 
   - id: core_bound_query_execution_v0_1
     path: docs/contracts/core-bound-query-execution-contract-v0.1.md
-    status: WORKING
+    status: ACTIVE
     authority_domains: [current_core_bound_implementation]
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
 
   - id: doubao_web_contract_v0_1
     path: docs/contracts/query-engine-doubao-web-contract-v0.1.md
-    status: WORKING
+    status: ACTIVE
     authority_domains: [doubao_web_adapter]
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
 
   - id: doubao_web_golden_query_v0_1
     path: docs/contracts/query-engine-doubao-web-golden-query-record-v0.1.md
-    status: WORKING
+    status: EVIDENCE_PASSED
     authority_domains: [doubao_web_acceptance_evidence]
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
 
   - id: conversation_handoff_2026_08_24
     path: docs/handoff/GEO_OS_Conversation_Handoff_2026-08-24.md

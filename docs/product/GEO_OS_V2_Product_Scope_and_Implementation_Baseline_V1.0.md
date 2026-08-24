@@ -1,7 +1,8 @@
 # GEO OS V2 产品范围与实施基线 V1.0
 
-- **状态：** WORKING BASELINE
-- **版本库状态：** IMPLEMENTED_IN_WORKTREE
+- **状态：** ACTIVE WORKING BASELINE
+- **版本库状态：** COMMITTED
+- **基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
 - **生效日期：** 2026-08-24
 - **负责人上下文：** 独立开发者兼产品负责人
 - **权威范围：** 产品形态、Commercial MVP IN/OUT、六个 Slice、产品结果、当前推进顺序与产品验收

@@ -1,7 +1,8 @@
 # GEO OS Slice 2 Observation Domain Contract V0.1 Addendum 1
 
-- **Status:** WORKING ADDENDUM
-- **Repository state:** IMPLEMENTED_IN_WORKTREE
+- **Status:** ACTIVE ADDENDUM
+- **Repository state:** COMMITTED
+- **Baseline commit:** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
 - **Effective date:** 2026-08-24
 - **Parent:** `slice-2-observation-domain-contract-v0.1.md`
 - **Purpose:** Record later implementation progress without rewriting the parent contract's historical state.
@@ -29,7 +30,7 @@ The parent contract's statement that Start and terminal commands were reserved f
 /v1/internal/execution-runs/:executionRunId/finalize
 ```
 
-The detailed current boundary is defined by `core-bound-query-execution-contract-v0.1.md`. Its repository state remains `IMPLEMENTED_IN_WORKTREE`, not a committed or released baseline.
+The detailed current boundary is defined by `core-bound-query-execution-contract-v0.1.md`. Its implementation baseline is committed at `3a980cd13336675819c8df04744b8992d7dae90a`; this does not make it a released production capability.
 
 ## 3. Remaining Slice 2 product work
 

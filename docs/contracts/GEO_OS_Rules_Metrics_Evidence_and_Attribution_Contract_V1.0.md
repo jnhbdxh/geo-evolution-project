@@ -1,7 +1,8 @@
 # GEO OS 规则、指标、证据与归因合同 V1.0
 
-- **状态：** WORKING BASELINE
-- **版本库状态：** IMPLEMENTED_IN_WORKTREE
+- **状态：** ACTIVE WORKING BASELINE
+- **版本库状态：** COMMITTED
+- **基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
 - **生效日期：** 2026-08-24
 - **权威范围：** 冻结规则工程映射、指标贡献、证据分层、Snapshot、可比性、归因与报告表述
 - **上游权威：** A1/A2/A3/B/C 冻结决议包

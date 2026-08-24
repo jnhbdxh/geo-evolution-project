@@ -1,6 +1,8 @@
 # GEO OS Query Engine — Doubao Web Golden Query Record V0.1
 
 - **Status:** PASSED
+- **Repository state:** COMMITTED
+- **Repository baseline:** `3a980cd13336675819c8df04744b8992d7dae90a`
 - **Executed at:** 2026-08-22 16:57 CST
 - **Surface:** `doubao_web`
 - **Capability:** `doubao-web/2026-08-22-live.1`

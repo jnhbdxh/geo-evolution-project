@@ -1,8 +1,8 @@
 # GEO OS Core-bound Query Execution Contract V0.1
 
-- **Status:** WORKING IMPLEMENTATION CONTRACT
-- **Implementation state:** IMPLEMENTED_IN_WORKTREE
-- **Repository baseline:** NOT_YET_COMMITTED
+- **Status:** ACTIVE IMPLEMENTATION CONTRACT
+- **Implementation state:** COMMITTED
+- **Repository baseline:** `3a980cd13336675819c8df04744b8992d7dae90a`
 - **Database baseline:** frozen `0001` / `0002`; no DDL change
 - **First product surface:** `doubao_web`
 

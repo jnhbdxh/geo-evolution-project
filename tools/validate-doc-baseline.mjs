@@ -220,7 +220,7 @@ function validateStatusSemantics() {
   }
 
   const activeEntryPattern =
-    /- id:\s+([^\n]+)\n\s+path:\s+([^\n]+)\n\s+status:\s+(ACTIVE|ACTIVE_WORKING_BASELINE)\b/g;
+    /- id:\s+([^\n]+)\n\s+path:\s+([^\n]+)\n\s+status:\s+(ACTIVE|ACTIVE_WITH_ADDENDUM|ACTIVE_WORKING_BASELINE|EVIDENCE_PASSED)\b/g;
   for (const match of index.matchAll(activeEntryPattern)) {
     const indexedPath = unquoteYamlScalar(match[2]);
     if (indexedPath.startsWith("docs/") && !trackedFiles.has(indexedPath)) {

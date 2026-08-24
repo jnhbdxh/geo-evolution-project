@@ -1,8 +1,8 @@
 # GEO OS Query Engine — Doubao Web Contract V0.1
 
-- **Status:** WORKING IMPLEMENTATION CONTRACT — LIVE GOLDEN QUERY PASSED
-- **Implementation state:** IMPLEMENTED_IN_WORKTREE
-- **Repository baseline:** NOT_YET_COMMITTED
+- **Status:** ACTIVE IMPLEMENTATION CONTRACT — LIVE GOLDEN QUERY PASSED
+- **Implementation state:** COMMITTED
+- **Repository baseline:** `3a980cd13336675819c8df04744b8992d7dae90a`
 - **Platform:** `doubao`
 - **Surface:** `doubao_web`
 - **Execution provider:** Playwright + Chromium

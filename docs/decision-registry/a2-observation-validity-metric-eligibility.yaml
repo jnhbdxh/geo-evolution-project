@@ -1,8 +1,9 @@
 schema_version: 1
 decision_id: A2
 title: Observation Validity and Metric Eligibility
-status: WORKING_SOURCE_MAPPING
+status: ACTIVE_SOURCE_MAPPING
 source_status: FROZEN
+baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
 authority_domain: observation_validity_and_metric_eligibility
 source:
   path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\GEO_OS_Decision_Pack_A2_Observation_Validity_Metric_Eligibility_最终冻结版.docx'

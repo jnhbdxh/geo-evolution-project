@@ -1,8 +1,9 @@
 schema_version: 1
 decision_id: C
 title: Citation and Source Intelligence
-status: WORKING_SOURCE_MAPPING
+status: ACTIVE_SOURCE_MAPPING
 source_status: FROZEN
+baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
 authority_domain: citation_and_source_intelligence
 source:
   path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\GEO_OS_Decision_Pack_C_Citation_Source_Intelligence_最终冻结版_V1.0_英文名词中文注释版.docx'

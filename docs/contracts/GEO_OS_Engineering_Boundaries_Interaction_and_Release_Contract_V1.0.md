@@ -1,7 +1,8 @@
 # GEO OS 工程边界、交互与发布合同 V1.0
 
-- **状态：** WORKING BASELINE
-- **版本库状态：** IMPLEMENTED_IN_WORKTREE
+- **状态：** ACTIVE WORKING BASELINE
+- **版本库状态：** COMMITTED
+- **基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
 - **生效日期：** 2026-08-24
 - **权威范围：** 模块边界、API、内部认证、持久化、事件、幂等、错误分类、证据传输、测试与发布门禁
 - **已实施数据库基线：** FROZEN `0001 + 0002`

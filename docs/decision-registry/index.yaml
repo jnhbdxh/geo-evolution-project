@@ -1,6 +1,7 @@
 schema_version: 1
-status: WORKING_REGISTRY
-repository_state: IMPLEMENTED_IN_WORKTREE
+status: ACTIVE_WORKING_REGISTRY
+repository_state: COMMITTED
+baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
 purpose: >-
   Maps frozen Word decision packs to version-controlled manifests, implementation
   contracts, evaluator maturity, and runtime release identities. These manifests are
