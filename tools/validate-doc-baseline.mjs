@@ -54,6 +54,12 @@ const requiredRepositoryDocuments = [
   "docs/decision-registry/index.yaml",
 ];
 
+const optionalProtectedLocalPaths = new Set([
+  "docs/handoff/GEO_OS_Conversation_Handoff_2026-08-24.md",
+  "outputs/v2-prestart-deliverables-v1.0/",
+  "outputs/v2-prestart-deliverables-v1.1/",
+]);
+
 const stalePhrases = [
   "执行失败不会产生正式 Observation",
   "产品结果（归因子域 + 策略子域）",
@@ -117,6 +123,9 @@ function validateIndexedPaths() {
     const candidate = isAbsolute(declaredPath) ? declaredPath : repositoryPath(declaredPath);
 
     if (!existsSync(candidate)) {
+      if (optionalProtectedLocalPaths.has(declaredPath)) {
+        continue;
+      }
       const isExternalWindowsPath = /^[A-Za-z]:\\/.test(declaredPath);
       if (isExternalWindowsPath && !requireExternalSources) {
         continue;
