@@ -1,7 +1,8 @@
 schema_version: 1
 status: ACTIVE_WORKING_INDEX
 repository_state: COMMITTED
-baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
 effective_date: "2026-08-24"
 purpose: >-
   Defines document authority by decision domain, records status and supersession, and

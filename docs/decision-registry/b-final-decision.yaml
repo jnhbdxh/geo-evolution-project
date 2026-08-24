@@ -3,7 +3,8 @@ decision_id: B
 title: Final Decision
 status: ACTIVE_SOURCE_MAPPING
 source_status: FROZEN
-baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
 authority_domain: formal_decision_and_metric_semantics
 source:
   path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\Decision20B｜Final20Decision_英文名词中文注释版.docx'

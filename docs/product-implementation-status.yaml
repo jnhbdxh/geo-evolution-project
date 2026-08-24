@@ -4,10 +4,10 @@ repository_state: COMMITTED
 as_of: "2026-08-24"
 repository:
   branch: main
-  baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
-  activation_record: THIS_DOCUMENT_COMMIT
-  upstream_state_after_activation: AHEAD_5
-  working_tree_after_activation: DIRTY_PROTECTED_ARTIFACTS
+  content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+  activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
+  publication_state: VERSION_CONTROLLED
+  protected_untracked_artifacts: PRESENT
   inventory: docs/worktree-change-inventory.yaml
 
 verification_summary:

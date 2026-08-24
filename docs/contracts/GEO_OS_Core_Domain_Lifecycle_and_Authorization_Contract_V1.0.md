@@ -2,7 +2,8 @@
 
 - **状态：** ACTIVE WORKING BASELINE
 - **版本库状态：** COMMITTED
-- **基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
+- **内容基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
+- **激活提交：** `e7c0f510a8c642b57528e511167a5fb4171fad4c`
 - **生效日期：** 2026-08-24
 - **权威范围：** 对象身份、所有权、关系、生命周期、不可变性、Release、权限分层和模块数据所有权
 - **下级合同：** Slice 1 Domain Contract V0.1、Slice 2 Observation Domain Contract V0.1 及其 Addendum

@@ -3,7 +3,8 @@ decision_id: A1
 title: Observation Existence
 status: ACTIVE_SOURCE_MAPPING
 source_status: FROZEN
-baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
 authority_domain: observation_existence
 source:
   path: 'D:\三合星链\技术组\v2\项目文档\业务规则\最终版\GEO_OS_Decision_Pack_A1_Observation_Existence_最终冻结版.docx'

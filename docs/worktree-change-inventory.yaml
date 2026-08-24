@@ -6,7 +6,8 @@ purpose: >-
   descriptive evidence, not a product or engineering authority.
 inventory_scope: PRE_ALIGNMENT_DIRTY_WORKTREE
 captured_before_alignment_changes: true
-alignment_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+alignment_content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+alignment_activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
 alignment_activation_state: COMMITTED
 
 repository:

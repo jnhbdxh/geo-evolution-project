@@ -2,7 +2,8 @@
 
 - **Status:** ACTIVE ADDENDUM
 - **Repository state:** COMMITTED
-- **Baseline commit:** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
+- **Content baseline commit:** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
+- **Activation commit:** `e7c0f510a8c642b57528e511167a5fb4171fad4c`
 - **Effective date:** 2026-08-24
 - **Parent:** `slice-2-observation-domain-contract-v0.1.md`
 - **Purpose:** Record later implementation progress without rewriting the parent contract's historical state.
