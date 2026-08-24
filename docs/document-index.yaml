@@ -4,6 +4,14 @@ repository_state: COMMITTED
 content_baseline_commit: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
 activation_commit: e7c0f510a8c642b57528e511167a5fb4171fad4c
 effective_date: "2026-08-24"
+working_revision:
+  state: IMPLEMENTED_IN_WORKTREE
+  branch: codex/slice2-durable-dispatch
+  base_commit: 824d0e021cfff58eb9bc855e80c6a6e1f744d654
+  document_verified_at: "2026-08-24T14:52:56+08:00"
+  verification_scope: docs_validate_strict_sources_and_diff_check
+  scope:
+    - Pending Slice 2 runtime addendum and monitoring-evidence clarifications
 purpose: >-
   Defines document authority by decision domain, records status and supersession, and
   separates normative sources from implementation evidence and historical context.
@@ -20,6 +28,10 @@ status_definitions:
   EVIDENCE_PASSED: Committed acceptance evidence whose declared verification scope passed.
   WORKING: Worktree-only contract that is not yet a committed repository baseline.
   SOURCE_REFERENCE: External finalized source mapped through an active repository baseline.
+
+revision_state_definitions:
+  IMPLEMENTED_IN_WORKTREE: The last committed ACTIVE/COMMITTED document remains authoritative while an uncommitted revision is under review.
+  activation_rule: A working revision does not replace or downgrade its active committed baseline until review, commit, and index activation are complete.
 
 authority_resolution:
   principles:
@@ -43,13 +55,15 @@ documents:
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
     baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+    working_revision_state: IMPLEMENTED_IN_WORKTREE
     authority_domains: [document_governance]
 
   - id: product_implementation_status
     path: docs/product-implementation-status.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+    baseline_ref: 35f7e58a76af07d1aee1b828886cef12b258e004
+    working_revision_state: IMPLEMENTED_IN_WORKTREE
     authority_domains: [current_implementation]
 
   - id: worktree_change_inventory
@@ -97,8 +111,22 @@ documents:
     path: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+    baseline_ref: 35f7e58a76af07d1aee1b828886cef12b258e004
+    working_revision_state: IMPLEMENTED_IN_WORKTREE
     authority_domains: [module_boundary, api, event, authentication, persistence, release_gate]
+    pending_addendum: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+
+  - id: slice_2_async_runtime_lease_recovery_v0_1
+    path: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
+    status: WORKING
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    authority_domains:
+      - slice_2_async_runtime
+      - worker_lifecycle
+      - execution_and_identity_lease
+      - runtime_recovery
+      - observability_and_deployment_readiness
+    parent_baseline: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
 
   - id: commercial_mvp_product_baseline_v1
     path: docs/product/GEO_OS_Commercial_MVP_Product_Baseline_V1.0.md
@@ -131,6 +159,8 @@ documents:
   - id: slice_2_observation_contract_v0_1
     path: docs/contracts/slice-2-observation-domain-contract-v0.1.md
     status: ACTIVE_WITH_ADDENDUM
+    repository_state: COMMITTED
+    baseline_ref: 677c3fe1f6dba26b2db3a984dbe0afc108254216
     authority_domains: [slice_2_detailed_domain]
     parent_baseline: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
     addendum: docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
