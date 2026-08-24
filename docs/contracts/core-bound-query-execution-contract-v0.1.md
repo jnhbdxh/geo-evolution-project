@@ -2,8 +2,8 @@
 
 - **Status:** ACTIVE IMPLEMENTATION CONTRACT
 - **Implementation state:** COMMITTED
-- **Working revision state:** IMPLEMENTED_IN_WORKTREE
-- **Working revision base:** `9b4b607103fc00749eefcc9196a7d03eb7ae8481`
+- **Content baseline:** `c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7`
+- **Activation record:** `THIS_DOCUMENT_COMMIT`
 - **Repository baseline:** `3a980cd13336675819c8df04744b8992d7dae90a`
 - **Database baseline:** frozen `0001` / `0002`; no DDL change
 - **First product surface:** `doubao_web`

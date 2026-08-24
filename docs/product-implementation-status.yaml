@@ -5,32 +5,20 @@ as_of: "2026-08-24"
 repository:
   local_committed_baseline:
     branch: codex/business-contract-clarifications
-    head: 9b4b607103fc00749eefcc9196a7d03eb7ae8481
+    head: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
     state: LOCAL_COMMITTED
   shared_baseline:
     branch: main
     head: 9b4b607103fc00749eefcc9196a7d03eb7ae8481
     state: PUBLISHED
-  content_baseline_commit: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+  content_baseline_commit: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
   activation_commit: THIS_DOCUMENT_COMMIT
-  publication_state: PUBLISHED
+  publication_state: LOCAL_VERSION_CONTROLLED
   protected_untracked_artifacts: PRESENT
   inventory: docs/worktree-change-inventory.yaml
 
-working_revision:
-  state: IMPLEMENTED_IN_WORKTREE
-  branch: codex/business-contract-clarifications
-  base_commit: 9b4b607103fc00749eefcc9196a7d03eb7ae8481
-  working_tree: DIRTY
-  document_verified_at: "2026-08-24T18:18:34+08:00"
-  verification_scope: docs_validate_strict_sources_and_diff_check
-  scope:
-    - Rules/Metrics business-monitoring presentation and recomputability boundaries
-    - Core-bound visible-link occurrence capture
-    - Observation evidence retention and cold-storage requirements
-
 verification_summary:
-  verified_at: "2026-08-24T15:08:03+08:00"
+  verified_at: "2026-08-24T18:24:44+08:00"
   default_tests: 89_of_89_passed
   query_engine_tests: 12_of_12_passed
   postgresql_tests: 62_of_62_passed

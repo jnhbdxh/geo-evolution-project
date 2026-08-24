@@ -4,9 +4,9 @@
 
 **Documentation state:** COMMITTED
 
-**Working revision state:** IMPLEMENTED_IN_WORKTREE
+**Content baseline:** `c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7`
 
-**Working revision base:** `9b4b607103fc00749eefcc9196a7d03eb7ae8481`
+**Activation record:** `THIS_DOCUMENT_COMMIT`
 
 **Scope:** Question release、Monitoring plan、Sample slot、Execution、Capture evidence、Observation existence、RawObservation finalization、Correction
 

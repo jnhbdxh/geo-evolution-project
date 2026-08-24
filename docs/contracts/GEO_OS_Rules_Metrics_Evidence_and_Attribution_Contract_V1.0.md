@@ -2,10 +2,8 @@
 
 - **状态：** ACTIVE WORKING BASELINE
 - **版本库状态：** COMMITTED
-- **工作修订状态：** IMPLEMENTED_IN_WORKTREE
-- **工作修订基点：** `9b4b607103fc00749eefcc9196a7d03eb7ae8481`
-- **内容基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
-- **激活提交：** `e7c0f510a8c642b57528e511167a5fb4171fad4c`
+- **内容基线提交：** `c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7`
+- **激活提交：** `THIS_DOCUMENT_COMMIT`
 - **生效日期：** 2026-08-24
 - **权威范围：** 冻结规则工程映射、指标贡献、证据分层、Snapshot、可比性、归因与报告表述
 - **上游权威：** A1/A2/A3/B/C 冻结决议包
