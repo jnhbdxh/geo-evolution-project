@@ -25,6 +25,35 @@ afterEach(async () => {
 });
 
 describe("Slice 2 live PostgreSQL contract candidate", () => {
+  it("resolves the canonical QuestionVersion assignment only for its queued Tenant run", async () => {
+    const owner = await createPlanningFixture("core-assignment-owner");
+    const outsider = await createPlanningFixture("core-assignment-outsider");
+    const executionRunId = await createExecutionRun(owner);
+    const repository = new PostgresObservationRepository(owner.database);
+    const assignment = await repository.resolveExecutionAssignment(
+      fixtureContext(owner),
+      executionRunId,
+    );
+    const hidden = await settle(
+      new PostgresObservationRepository(outsider.database).resolveExecutionAssignment(
+        fixtureContext(outsider),
+        executionRunId,
+      ),
+    );
+
+    expect(assignment).toMatchObject({
+      execution_run_id: executionRunId,
+      question_version_id: owner.questionVersionId,
+      prompt_text: owner.promptText,
+      submitted_prompt_sha256: sha256(owner.promptText),
+      locale: "zh-CN",
+      planned_platform: "test-platform",
+      planned_model: "test-model",
+      planned_surface: "chat",
+    });
+    expect(hidden).toMatchObject({ status: "rejected", reason: { code: "NOT_FOUND" } });
+  });
+
   it("S2-CT-001 rejects a cross-Tenant Plan to QuestionVersion relationship", async () => {
     const owner = await createPlanningFixture("question-owner");
     const outsider = await createPlanningFixture("plan-owner");
@@ -1734,6 +1763,7 @@ interface PlanningFixture {
   readonly userIdentityId: string;
   readonly projectId: string;
   readonly questionVersionId: string;
+  readonly promptText: string;
   readonly monitoringPlanVersionId: string;
   readonly sampleBatchId: string;
   readonly sampleSlotId: string;
@@ -2001,6 +2031,7 @@ async function createPlanningFixture(label: string): Promise<PlanningFixture> {
       userIdentityId,
       projectId,
       questionVersionId,
+      promptText: prompt,
       monitoringPlanVersionId,
       sampleBatchId,
       sampleSlotId,

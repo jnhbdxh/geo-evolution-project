@@ -10,6 +10,7 @@ const configSchema = z
       .default("info"),
     DATABASE_URL: z.url(),
     JWT_SECRET: z.string().min(32),
+    INTERNAL_SERVICE_TOKEN_SECRET: z.string().min(32),
     AUTH_MODE: z.enum(["development", "oidc"]).default("development"),
   })
   .superRefine((config, context) => {

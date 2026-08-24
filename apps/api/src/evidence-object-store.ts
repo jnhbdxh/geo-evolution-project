@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 
 import { Client as MinioClient } from "minio";
 
-import type { TenantContext } from "@geo-os/contracts";
+import type { DomainCommandContext } from "@geo-os/contracts";
 
 import { conflict, notFound } from "./errors.js";
 
@@ -37,10 +37,13 @@ export interface PutEvidenceObjectInput extends EvidenceObjectScope {
 export interface EvidenceObjectStore {
   putVerifiedObject(input: PutEvidenceObjectInput): Promise<EvidenceObjectReference>;
   verifyObject(
-    context: TenantContext,
+    context: DomainCommandContext,
     reference: EvidenceObjectReference,
   ): Promise<EvidenceObjectReference>;
-  removeVerifiedObject(context: TenantContext, reference: EvidenceObjectReference): Promise<void>;
+  removeVerifiedObject(
+    context: DomainCommandContext,
+    reference: EvidenceObjectReference,
+  ): Promise<void>;
 }
 
 export class MinioEvidenceObjectStore implements EvidenceObjectStore {
@@ -84,7 +87,7 @@ export class MinioEvidenceObjectStore implements EvidenceObjectStore {
   }
 
   public async verifyObject(
-    context: TenantContext,
+    context: DomainCommandContext,
     reference: EvidenceObjectReference,
   ): Promise<EvidenceObjectReference> {
     assertTenantObjectReference(
@@ -97,7 +100,7 @@ export class MinioEvidenceObjectStore implements EvidenceObjectStore {
   }
 
   public async removeVerifiedObject(
-    context: TenantContext,
+    context: DomainCommandContext,
     reference: EvidenceObjectReference,
   ): Promise<void> {
     assertTenantObjectReference(

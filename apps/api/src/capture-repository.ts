@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import {
   domainEventEnvelopeSchema,
   type CaptureArtifactKind,
-  type TenantContext,
+  type DomainCommandContext,
 } from "@geo-os/contracts";
 import type { PoolClient } from "pg";
 
@@ -46,9 +46,12 @@ export interface CaptureArtifactRow {
 }
 
 export interface CaptureRepository {
-  resolveCaptureTarget(context: TenantContext, executionRunId: string): Promise<CaptureTarget>;
+  resolveCaptureTarget(
+    context: DomainCommandContext,
+    executionRunId: string,
+  ): Promise<CaptureTarget>;
   registerCaptureArtifact(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: RegisterCaptureArtifactInput,
     traceId: string,
   ): Promise<CaptureArtifactRow>;
@@ -66,7 +69,7 @@ export class PostgresCaptureRepository implements CaptureRepository {
   public constructor(private readonly database: Database) {}
 
   public resolveCaptureTarget(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
   ): Promise<CaptureTarget> {
     return this.database.withTenantRead(context.tenantId, async (client) => {
@@ -76,7 +79,7 @@ export class PostgresCaptureRepository implements CaptureRepository {
   }
 
   public registerCaptureArtifact(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: RegisterCaptureArtifactInput,
     traceId: string,
   ): Promise<CaptureArtifactRow> {
@@ -227,7 +230,7 @@ function requireTenantStorageKey(
 
 async function writeCaptureAuditAndOutbox(
   client: PoolClient,
-  context: TenantContext,
+  context: DomainCommandContext,
   traceId: string,
   artifact: CaptureArtifactRow,
 ): Promise<void> {
@@ -260,7 +263,15 @@ async function writeCaptureAuditAndOutbox(
     `INSERT INTO audit_events(
        tenant_id, actor_user_identity_id, action, target_type, target_id, trace_id, details
      ) VALUES ($1, $2, 'CAPTURE_ARTIFACT_REGISTERED', 'CaptureArtifact', $3, $4, $5::jsonb)`,
-    [context.tenantId, context.userIdentityId, artifact.id, traceId, JSON.stringify(payload)],
+    [
+      context.tenantId,
+      context.userIdentityId,
+      artifact.id,
+      traceId,
+      JSON.stringify(
+        context.actorService ? { ...payload, actor_service: context.actorService } : payload,
+      ),
+    ],
   );
   await client.query(
     `INSERT INTO outbox_events(

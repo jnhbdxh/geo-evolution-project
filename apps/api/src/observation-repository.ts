@@ -9,11 +9,11 @@ import {
   type CompleteExecutionRunInput,
   type CreateExecutionRunInput,
   type CreateObservationCandidateInput,
+  type DomainCommandContext,
   type ExecutionResponseOutcomeKind,
   type FinalizeObservationInput,
   type FailExecutionRunInput,
   type StartExecutionRunInput,
-  type TenantContext,
   type ObservationCorrelationStatus,
   type ObservationRepresentation,
 } from "@geo-os/contracts";
@@ -60,6 +60,19 @@ export interface ExecutionRunRow {
   readonly completed_at: Date | null;
   readonly operational_error: Readonly<Record<string, unknown>> | null;
   readonly created_at: Date;
+}
+
+export interface ExecutionAssignmentRow {
+  readonly execution_run_id: string;
+  readonly question_version_id: string;
+  readonly prompt_text: string;
+  readonly submitted_prompt_sha256: string;
+  readonly locale: string;
+  readonly planned_platform: string;
+  readonly planned_model: string;
+  readonly planned_surface: string;
+  readonly region: string | null;
+  readonly planned_context: Readonly<Record<string, unknown>>;
 }
 
 interface ExecutionParentRow {
@@ -154,52 +167,56 @@ interface FinalizationTargetRow extends ObservationCandidateRow {
 }
 
 export interface ObservationRepository {
+  resolveExecutionAssignment(
+    context: DomainCommandContext,
+    executionRunId: string,
+  ): Promise<ExecutionAssignmentRow>;
   addQuestionVersionToDraftPlan(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: AddQuestionVersionToPlanInput,
     traceId: string,
   ): Promise<PlanQuestionMembershipRow>;
   createExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     projectId: string,
     input: CreateExecutionRunInput,
     traceId: string,
   ): Promise<ExecutionRunRow>;
   startExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     input: StartExecutionRunInput,
     traceId: string,
   ): Promise<ExecutionRunRow>;
   completeExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     input: CompleteExecutionRunInput,
     traceId: string,
   ): Promise<ExecutionRunRow>;
   failExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     input: FailExecutionRunInput,
     traceId: string,
   ): Promise<ExecutionRunRow>;
   cancelExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     input: CancelExecutionRunInput,
     traceId: string,
   ): Promise<ExecutionRunRow>;
   createObservationCandidate(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: CreateObservationCandidateInput,
     traceId: string,
   ): Promise<ObservationCandidateRow>;
   resolveObservationFinalizationEvidence(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: FinalizeObservationInput,
   ): Promise<ObservationFinalizationEvidence>;
   finalizeObservation(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: FinalizeObservationInput,
     traceId: string,
   ): Promise<RawObservationRow>;
@@ -208,8 +225,55 @@ export interface ObservationRepository {
 export class PostgresObservationRepository implements ObservationRepository {
   public constructor(private readonly database: Database) {}
 
+  public resolveExecutionAssignment(
+    context: DomainCommandContext,
+    executionRunId: string,
+  ): Promise<ExecutionAssignmentRow> {
+    return this.database.withTenantRead(context.tenantId, async (client) => {
+      const result = await client.query<ExecutionAssignmentRow>(
+        `SELECT er.id AS execution_run_id,
+                qv.id AS question_version_id,
+                qv.prompt_text,
+                encode(digest(convert_to(qv.prompt_text, 'UTF8'), 'sha256'), 'hex')
+                  AS submitted_prompt_sha256,
+                qv.locale,
+                mpv.planned_platform,
+                mpv.planned_model,
+                mpv.planned_surface,
+                mpv.region,
+                ss.planned_context
+           FROM execution_runs er
+           JOIN question_versions qv
+             ON qv.tenant_id = er.tenant_id
+            AND qv.project_id = er.project_id
+            AND qv.id = er.question_version_id
+           JOIN sample_slots ss
+             ON ss.tenant_id = er.tenant_id
+            AND ss.project_id = er.project_id
+            AND ss.id = er.sample_slot_id
+           JOIN sample_batches sb
+             ON sb.tenant_id = ss.tenant_id
+            AND sb.project_id = ss.project_id
+            AND sb.id = ss.sample_batch_id
+           JOIN monitoring_plan_versions mpv
+             ON mpv.tenant_id = sb.tenant_id
+            AND mpv.project_id = sb.project_id
+            AND mpv.id = sb.monitoring_plan_version_id
+          WHERE er.tenant_id = $1
+            AND er.id = $2
+            AND er.operational_status = 'QUEUED'
+            AND qv.status = 'PUBLISHED'
+            AND mpv.status = 'PUBLISHED'`,
+        [context.tenantId, executionRunId],
+      );
+      const assignment = result.rows[0];
+      if (!assignment) throw notFound("Queued ExecutionRun assignment not found");
+      return assignment;
+    });
+  }
+
   public addQuestionVersionToDraftPlan(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: AddQuestionVersionToPlanInput,
     traceId: string,
   ): Promise<PlanQuestionMembershipRow> {
@@ -272,7 +336,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   public createExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     projectId: string,
     input: CreateExecutionRunInput,
     traceId: string,
@@ -374,7 +438,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   public startExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     input: StartExecutionRunInput,
     traceId: string,
@@ -420,7 +484,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   public completeExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     input: CompleteExecutionRunInput,
     traceId: string,
@@ -436,7 +500,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   public failExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     input: FailExecutionRunInput,
     traceId: string,
@@ -452,7 +516,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   public cancelExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     input: CancelExecutionRunInput,
     traceId: string,
@@ -468,7 +532,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   public createObservationCandidate(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: CreateObservationCandidateInput,
     traceId: string,
   ): Promise<ObservationCandidateRow> {
@@ -538,7 +602,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   public resolveObservationFinalizationEvidence(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: FinalizeObservationInput,
   ): Promise<ObservationFinalizationEvidence> {
     const command = normalizeFinalizeCommand(finalizeObservationSchema.parse(input));
@@ -572,7 +636,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   public finalizeObservation(
-    context: TenantContext,
+    context: DomainCommandContext,
     input: FinalizeObservationInput,
     traceId: string,
   ): Promise<RawObservationRow> {
@@ -656,7 +720,7 @@ export class PostgresObservationRepository implements ObservationRepository {
   }
 
   private finishExecutionRun(
-    context: TenantContext,
+    context: DomainCommandContext,
     executionRunId: string,
     targetStatus: "COMPLETED" | "FAILED" | "CANCELLED",
     responseOutcomeKind: ExecutionResponseOutcomeKind | null,
@@ -717,7 +781,7 @@ export class PostgresObservationRepository implements ObservationRepository {
 }
 
 interface DomainEventInput {
-  readonly context: TenantContext;
+  readonly context: DomainCommandContext;
   readonly traceId: string;
   readonly action: string;
   readonly aggregateType: string;
@@ -751,7 +815,7 @@ async function writeAuditAndOutbox(client: PoolClient, input: DomainEventInput):
       input.aggregateType,
       input.aggregateId,
       input.traceId,
-      JSON.stringify(input.payload),
+      JSON.stringify(auditDetails(input.context, input.payload)),
     ],
   );
   await client.query(
@@ -769,6 +833,13 @@ async function writeAuditAndOutbox(client: PoolClient, input: DomainEventInput):
       occurredAt,
     ],
   );
+}
+
+function auditDetails(
+  context: DomainCommandContext,
+  payload: Readonly<Record<string, unknown>>,
+): Readonly<Record<string, unknown>> {
+  return context.actorService ? { ...payload, actor_service: context.actorService } : payload;
 }
 
 async function acquireTransactionLock(client: PoolClient, lockKey: string): Promise<void> {
@@ -1353,7 +1424,7 @@ function executionEventPayload(row: ExecutionRunRow): Readonly<Record<string, un
 
 async function writeExecutionTransition(
   client: PoolClient,
-  context: TenantContext,
+  context: DomainCommandContext,
   traceId: string,
   row: ExecutionRunRow,
   action: string,

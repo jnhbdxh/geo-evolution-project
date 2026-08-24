@@ -2,12 +2,13 @@ import { randomUUID } from "node:crypto";
 
 import type { TenantContext } from "@geo-os/contracts";
 import pg from "pg";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { z } from "zod";
 
 import { PostgresAccessControl } from "./access.js";
 import { buildApp } from "./app.js";
 import { Database } from "./database.js";
+import { InternalExecutionAuth } from "./internal-execution-auth.js";
 import { PostgresObservationRepository } from "./observation-repository.js";
 import { PostgresWorkspaceRepository } from "./workspace-repository.js";
 
@@ -488,11 +489,17 @@ async function createDatabaseApp(
       LOG_LEVEL: "silent",
       DATABASE_URL: databaseUrl,
       JWT_SECRET: "test-secret-at-least-thirty-two-characters",
+      INTERNAL_SERVICE_TOKEN_SECRET: "distinct-internal-test-secret-at-least-32-characters",
       AUTH_MODE: "development",
     },
     accessControl: new PostgresAccessControl(database),
     workspaceRepository: new PostgresWorkspaceRepository(database),
     observationRepository: new PostgresObservationRepository(database),
+    captureService: { captureBytes: vi.fn() },
+    observationFinalizationService: { finalize: vi.fn() },
+    internalExecutionAuth: new InternalExecutionAuth(
+      "distinct-internal-test-secret-at-least-32-characters",
+    ),
   });
   apps.push(app);
   return app;

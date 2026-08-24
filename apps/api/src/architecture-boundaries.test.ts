@@ -72,7 +72,8 @@ describe("production database write architecture", () => {
       .filter(
         (file) =>
           file.relativePath !== "apps/api/src/capture-service.ts" &&
-          file.relativePath !== "apps/api/src/capture-repository.ts",
+          file.relativePath !== "apps/api/src/capture-repository.ts" &&
+          file.relativePath !== "apps/api/src/repository-container.ts",
       )
       .filter((file) => /from\s+["'][^"']*capture-repository(?:\.js)?["']/u.test(file.content))
       .map((file) => file.relativePath);

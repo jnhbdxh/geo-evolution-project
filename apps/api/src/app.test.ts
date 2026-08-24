@@ -13,6 +13,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { AccessControl } from "./access.js";
 import { buildApp, type AppDependencies } from "./app.js";
+import { InternalExecutionAuth } from "./internal-execution-auth.js";
 import type { ObservationRepository } from "./observation-repository.js";
 import type { WorkspaceRepository } from "./workspace-repository.js";
 
@@ -248,6 +249,185 @@ describe("authentication and Tenant Context", () => {
   });
 });
 
+describe("execution-scoped internal API", () => {
+  it("rejects missing internal credentials without invoking a command", async () => {
+    const observation = createObservationRepository();
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/execution-runs/${randomId(4)}/start`,
+      payload: runtimeContext(),
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(observation.startExecutionRun).not.toHaveBeenCalled();
+  });
+
+  it("binds a token to exactly one Tenant and ExecutionRun", async () => {
+    const observation = createObservationRepository();
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+    const token = issueInternalToken(randomId(4));
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/execution-runs/${randomId(6)}/start`,
+      headers: { authorization: `Bearer ${token}` },
+      payload: runtimeContext(),
+    });
+
+    expect(response.statusCode).toBe(403);
+    expect(observation.startExecutionRun).not.toHaveBeenCalled();
+  });
+
+  it("starts the authorized run as the Query Engine service actor", async () => {
+    const observation = createObservationRepository();
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+    const executionRunId = randomId(4);
+    const token = issueInternalToken(executionRunId);
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/execution-runs/${executionRunId}/start`,
+      headers: { authorization: `Bearer ${token}` },
+      payload: runtimeContext(),
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(observation.startExecutionRun).toHaveBeenCalledWith(
+      { tenantId, userIdentityId: null, actorService: "QUERY_ENGINE" },
+      executionRunId,
+      runtimeContext(),
+      expect.any(String),
+    );
+  });
+
+  it("returns the canonical Core assignment instead of trusting a Worker prompt", async () => {
+    const observation = createObservationRepository();
+    const executionRunId = randomId(4);
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+    const token = issueInternalToken(executionRunId);
+
+    const response = await app.inject({
+      method: "GET",
+      url: `/v1/internal/execution-runs/${executionRunId}/assignment`,
+      headers: { authorization: `Bearer ${token}` },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(observation.resolveExecutionAssignment).toHaveBeenCalledWith(
+      { tenantId, userIdentityId: null, actorService: "QUERY_ENGINE" },
+      executionRunId,
+    );
+  });
+
+  it("decodes Capture bytes only after execution-scope authorization", async () => {
+    const executionRunId = randomId(4);
+    const captureBytes = vi.fn(async () => ({ id: randomId(7) }) as never);
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      createObservationRepository(),
+      { captureService: { captureBytes } },
+    );
+    const bytes = Buffer.from("visible answer", "utf8");
+    const token = issueInternalToken(executionRunId);
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/execution-runs/${executionRunId}/capture-artifacts`,
+      headers: { authorization: `Bearer ${token}` },
+      payload: {
+        idempotencyKey: "raw-answer",
+        artifactKind: "RAW_RESPONSE",
+        mediaType: "text/plain",
+        capturedAt: new Date().toISOString(),
+        declaredSha256: "a".repeat(64),
+        bytesBase64: bytes.toString("base64"),
+      },
+    });
+
+    expect(response.statusCode).toBe(201);
+    expect(captureBytes).toHaveBeenCalledWith(
+      { tenantId, userIdentityId: null, actorService: "QUERY_ENGINE" },
+      expect.objectContaining({ executionRunId, bytes: new Uint8Array(bytes) }),
+      expect.any(String),
+    );
+  });
+
+  it("rejects a Candidate body that attempts to target another run", async () => {
+    const observation = createObservationRepository();
+    const executionRunId = randomId(4);
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+    const token = issueInternalToken(executionRunId);
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/execution-runs/${executionRunId}/observation-candidates`,
+      headers: { authorization: `Bearer ${token}` },
+      payload: candidatePayload(randomId(6)),
+    });
+
+    expect(response.statusCode).toBe(403);
+    expect(observation.createObservationCandidate).not.toHaveBeenCalled();
+  });
+
+  it("passes the token ExecutionRun scope into byte-verifying Finalize", async () => {
+    const executionRunId = randomId(4);
+    const finalize = vi.fn(async () => ({ id: randomId(8) }) as never);
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      createObservationRepository(),
+      { observationFinalizationService: { finalize } },
+    );
+    const token = issueInternalToken(executionRunId);
+    const command = {
+      observationCandidateId: randomId(6),
+      representation: "TEXT",
+      rawAnswerText: "answer",
+      captureArtifactIds: [],
+      responseLastSeenAt: new Date().toISOString(),
+      rawObservationVersion: 1,
+    };
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/execution-runs/${executionRunId}/finalize`,
+      headers: { authorization: `Bearer ${token}` },
+      payload: command,
+    });
+
+    expect(response.statusCode).toBe(201);
+    expect(finalize).toHaveBeenCalledWith(
+      { tenantId, userIdentityId: null, actorService: "QUERY_ENGINE" },
+      command,
+      expect.any(String),
+      executionRunId,
+    );
+  });
+});
+
 function createAccessControl(context: TenantContext | null, platformAdmin = false): AccessControl {
   return {
     async resolveTenantContext(requestUserIdentityId, requestTenantId) {
@@ -306,6 +486,18 @@ function createObservationRepository(): ObservationRepository & {
   createExecutionRun: ReturnType<typeof vi.fn>;
 } {
   return {
+    resolveExecutionAssignment: vi.fn(async () => ({
+      execution_run_id: randomId(4),
+      question_version_id: randomId(5),
+      prompt_text: "test question",
+      submitted_prompt_sha256: "a".repeat(64),
+      locale: "zh-CN",
+      planned_platform: "doubao",
+      planned_model: "豆包 快速",
+      planned_surface: "doubao_web",
+      region: "CN",
+      planned_context: {},
+    })),
     addQuestionVersionToDraftPlan: vi.fn(async () => ({
       id: randomId(1),
       tenant_id: tenantId,
@@ -354,6 +546,9 @@ async function createTestApp(
   accessControl: AccessControl,
   workspaceRepository: WorkspaceRepository,
   observationRepository: ObservationRepository = createObservationRepository(),
+  overrides: Partial<
+    Pick<AppDependencies, "captureService" | "observationFinalizationService">
+  > = {},
 ): Promise<Awaited<ReturnType<typeof buildApp>>> {
   const dependencies: AppDependencies = {
     config: {
@@ -363,15 +558,60 @@ async function createTestApp(
       LOG_LEVEL: "silent",
       DATABASE_URL: "postgresql://unused",
       JWT_SECRET: "test-secret-at-least-thirty-two-characters",
+      INTERNAL_SERVICE_TOKEN_SECRET: "distinct-internal-test-secret-at-least-32-characters",
       AUTH_MODE: "development",
     },
     accessControl,
     workspaceRepository,
     observationRepository,
+    captureService: overrides.captureService ?? { captureBytes: vi.fn() },
+    observationFinalizationService: overrides.observationFinalizationService ?? {
+      finalize: vi.fn(),
+    },
+    internalExecutionAuth: new InternalExecutionAuth(
+      "distinct-internal-test-secret-at-least-32-characters",
+    ),
   };
   const app = await buildApp(dependencies);
   apps.push(app);
   return app;
+}
+
+function issueInternalToken(executionRunId: string): string {
+  return new InternalExecutionAuth("distinct-internal-test-secret-at-least-32-characters").issue({
+    tenantId,
+    executionRunId,
+  });
+}
+
+function runtimeContext() {
+  return {
+    actualPlatform: "doubao",
+    actualModel: "豆包 快速",
+    actualSurface: "doubao_web",
+    executionContextSnapshot: { capability_version: "test" },
+  };
+}
+
+function candidatePayload(executionRunId: string) {
+  const now = new Date().toISOString();
+  return {
+    executionRunId,
+    responseOutcomeKind: "ANSWER",
+    representation: "TEXT",
+    correlationStatus: "CONFIRMED",
+    targetSurfaceReached: true,
+    targetQuestionSubmitted: true,
+    visibleResponseOutcomeObserved: true,
+    lifecycleAssociated: true,
+    existenceBasis: {
+      kind: "VISIBLE_TEXT_RESPONSE",
+      questionSubmittedAt: now,
+      detectorVersion: "test/v1",
+    },
+    responseStartedAt: now,
+    responseLastSeenAt: now,
+  };
 }
 
 async function issueToken(app: Awaited<ReturnType<typeof buildApp>>): Promise<string> {

@@ -1,6 +1,6 @@
 import COS from "cos-nodejs-sdk-v5";
 
-import type { TenantContext } from "@geo-os/contracts";
+import type { DomainCommandContext } from "@geo-os/contracts";
 
 import {
   assertTenantObjectReference,
@@ -66,7 +66,7 @@ export class CosEvidenceObjectStore implements EvidenceObjectStore {
   }
 
   public async verifyObject(
-    context: TenantContext,
+    context: DomainCommandContext,
     reference: EvidenceObjectReference,
   ): Promise<EvidenceObjectReference> {
     this.assertTenantReference(context, reference);
@@ -74,7 +74,7 @@ export class CosEvidenceObjectStore implements EvidenceObjectStore {
   }
 
   public async removeVerifiedObject(
-    context: TenantContext,
+    context: DomainCommandContext,
     reference: EvidenceObjectReference,
   ): Promise<void> {
     this.assertTenantReference(context, reference);
@@ -113,7 +113,10 @@ export class CosEvidenceObjectStore implements EvidenceObjectStore {
     };
   }
 
-  private assertTenantReference(context: TenantContext, reference: EvidenceObjectReference): void {
+  private assertTenantReference(
+    context: DomainCommandContext,
+    reference: EvidenceObjectReference,
+  ): void {
     assertTenantObjectReference(
       context.tenantId,
       reference.storageBucket,

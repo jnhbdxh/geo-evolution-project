@@ -214,8 +214,17 @@ export interface AuthenticatedIdentity {
   readonly userIdentityId: string;
 }
 
-export interface TenantContext {
+export type InternalActorService = "QUERY_ENGINE";
+
+export interface DomainCommandContext {
   readonly tenantId: string;
+  readonly userIdentityId: string | null;
+  readonly actorService?: InternalActorService;
+  readonly membershipId?: string;
+  readonly roles?: readonly TenantRole[];
+}
+
+export interface TenantContext extends DomainCommandContext {
   readonly membershipId: string;
   readonly userIdentityId: string;
   readonly roles: readonly TenantRole[];

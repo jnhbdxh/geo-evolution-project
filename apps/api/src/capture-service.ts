@@ -1,7 +1,7 @@
 import {
   captureArtifactMetadataSchema,
   type CaptureArtifactMetadataInput,
-  type TenantContext,
+  type DomainCommandContext,
 } from "@geo-os/contracts";
 
 import type { CaptureArtifactRow, CaptureRepository } from "./capture-repository.js";
@@ -20,7 +20,7 @@ export class CaptureService {
   ) {}
 
   public async captureBytes(
-    context: TenantContext,
+    context: DomainCommandContext,
     command: CaptureBytesCommand,
     traceId: string,
   ): Promise<CaptureArtifactRow> {

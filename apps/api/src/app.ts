@@ -3,16 +3,24 @@ import { randomUUID } from "node:crypto";
 import fastifyJwt from "@fastify/jwt";
 import {
   createBrandSchema,
+  captureArtifactMetadataSchema,
+  cancelExecutionRunSchema,
+  completeExecutionRunSchema,
   createCustomerSchema,
   createExecutionRunSchema,
   createMembershipSchema,
+  createObservationCandidateSchema,
   createProjectSchema,
   createTenantSchema,
   deactivateEntitySchema,
+  failExecutionRunSchema,
+  finalizeObservationSchema,
   replaceIndustryBindingSchema,
   replacePolicyBindingSchema,
+  startExecutionRunSchema,
   tenantRoles,
   type AuthenticatedIdentity,
+  type DomainCommandContext,
   type TenantContext,
   type TenantRole,
 } from "@geo-os/contracts";
@@ -20,8 +28,14 @@ import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest }
 import { z, ZodError } from "zod";
 
 import type { AccessControl } from "./access.js";
+import type { CaptureService } from "./capture-service.js";
 import type { ApiConfig } from "./config.js";
 import { DomainError, forbidden } from "./errors.js";
+import type {
+  InternalExecutionAuth,
+  InternalExecutionPrincipal,
+} from "./internal-execution-auth.js";
+import type { ObservationFinalizationService } from "./observation-finalization-service.js";
 import type { ObservationRepository } from "./observation-repository.js";
 import type { WorkspaceRepository } from "./workspace-repository.js";
 
@@ -36,6 +50,7 @@ declare module "fastify" {
   interface FastifyRequest {
     identity: AuthenticatedIdentity | null;
     tenantContext: TenantContext | null;
+    internalExecutionPrincipal: InternalExecutionPrincipal | null;
   }
 }
 
@@ -44,6 +59,9 @@ export interface AppDependencies {
   readonly accessControl: AccessControl;
   readonly workspaceRepository: WorkspaceRepository;
   readonly observationRepository: ObservationRepository;
+  readonly captureService: Pick<CaptureService, "captureBytes">;
+  readonly observationFinalizationService: Pick<ObservationFinalizationService, "finalize">;
+  readonly internalExecutionAuth: InternalExecutionAuth;
 }
 
 export async function buildApp(dependencies: AppDependencies): Promise<FastifyInstance> {
@@ -55,6 +73,7 @@ export async function buildApp(dependencies: AppDependencies): Promise<FastifyIn
   await app.register(fastifyJwt, { secret: dependencies.config.JWT_SECRET });
   app.decorateRequest("identity", null);
   app.decorateRequest("tenantContext", null);
+  app.decorateRequest("internalExecutionPrincipal", null);
 
   app.setErrorHandler((error, request, reply) => {
     if (error instanceof ZodError) {
@@ -306,12 +325,168 @@ export async function buildApp(dependencies: AppDependencies): Promise<FastifyIn
     },
   );
 
+  const internalPreHandler = internalExecutionPreHandler(dependencies.internalExecutionAuth);
+
+  app.get(
+    "/v1/internal/execution-runs/:executionRunId/assignment",
+    { preHandler: internalPreHandler },
+    async (request) => {
+      const principal = requireInternalExecutionPrincipal(request);
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      requireAuthorizedExecution(principal, executionRunId);
+      const assignment = await dependencies.observationRepository.resolveExecutionAssignment(
+        internalCommandContext(principal),
+        executionRunId,
+      );
+      return { data: assignment };
+    },
+  );
+
+  app.post(
+    "/v1/internal/execution-runs/:executionRunId/start",
+    { preHandler: internalPreHandler },
+    async (request) => {
+      const principal = requireInternalExecutionPrincipal(request);
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      requireAuthorizedExecution(principal, executionRunId);
+      const run = await dependencies.observationRepository.startExecutionRun(
+        internalCommandContext(principal),
+        executionRunId,
+        startExecutionRunSchema.parse(request.body),
+        request.id,
+      );
+      return { data: run };
+    },
+  );
+
+  app.post(
+    "/v1/internal/execution-runs/:executionRunId/capture-artifacts",
+    { preHandler: internalPreHandler, bodyLimit: 14 * 1_024 * 1_024 },
+    async (request, reply) => {
+      const principal = requireInternalExecutionPrincipal(request);
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      requireAuthorizedExecution(principal, executionRunId);
+      const input = internalCaptureUploadSchema.parse(request.body);
+      const artifact = await dependencies.captureService.captureBytes(
+        internalCommandContext(principal),
+        {
+          executionRunId,
+          idempotencyKey: input.idempotencyKey,
+          artifactKind: input.artifactKind,
+          mediaType: input.mediaType,
+          capturedAt: input.capturedAt,
+          declaredSha256: input.declaredSha256,
+          bytes: decodeCaptureBytes(input.bytesBase64),
+        },
+        request.id,
+      );
+      return reply.status(201).send({ data: artifact });
+    },
+  );
+
+  app.post(
+    "/v1/internal/execution-runs/:executionRunId/observation-candidates",
+    { preHandler: internalPreHandler },
+    async (request, reply) => {
+      const principal = requireInternalExecutionPrincipal(request);
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      requireAuthorizedExecution(principal, executionRunId);
+      const command = createObservationCandidateSchema.parse(request.body);
+      requireAuthorizedExecution(principal, command.executionRunId);
+      const candidate = await dependencies.observationRepository.createObservationCandidate(
+        internalCommandContext(principal),
+        command,
+        request.id,
+      );
+      return reply.status(201).send({ data: candidate });
+    },
+  );
+
+  app.post(
+    "/v1/internal/execution-runs/:executionRunId/complete",
+    { preHandler: internalPreHandler },
+    async (request) => {
+      const principal = requireInternalExecutionPrincipal(request);
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      requireAuthorizedExecution(principal, executionRunId);
+      const run = await dependencies.observationRepository.completeExecutionRun(
+        internalCommandContext(principal),
+        executionRunId,
+        completeExecutionRunSchema.parse(request.body),
+        request.id,
+      );
+      return { data: run };
+    },
+  );
+
+  app.post(
+    "/v1/internal/execution-runs/:executionRunId/fail",
+    { preHandler: internalPreHandler },
+    async (request) => {
+      const principal = requireInternalExecutionPrincipal(request);
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      requireAuthorizedExecution(principal, executionRunId);
+      const run = await dependencies.observationRepository.failExecutionRun(
+        internalCommandContext(principal),
+        executionRunId,
+        failExecutionRunSchema.parse(request.body),
+        request.id,
+      );
+      return { data: run };
+    },
+  );
+
+  app.post(
+    "/v1/internal/execution-runs/:executionRunId/cancel",
+    { preHandler: internalPreHandler },
+    async (request) => {
+      const principal = requireInternalExecutionPrincipal(request);
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      requireAuthorizedExecution(principal, executionRunId);
+      const run = await dependencies.observationRepository.cancelExecutionRun(
+        internalCommandContext(principal),
+        executionRunId,
+        cancelExecutionRunSchema.parse(request.body),
+        request.id,
+      );
+      return { data: run };
+    },
+  );
+
+  app.post(
+    "/v1/internal/execution-runs/:executionRunId/finalize",
+    { preHandler: internalPreHandler },
+    async (request, reply) => {
+      const principal = requireInternalExecutionPrincipal(request);
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      requireAuthorizedExecution(principal, executionRunId);
+      const observation = await dependencies.observationFinalizationService.finalize(
+        internalCommandContext(principal),
+        finalizeObservationSchema.parse(request.body),
+        request.id,
+        executionRunId,
+      );
+      return reply.status(201).send({ data: observation });
+    },
+  );
+
   return app;
 }
 
 const resourceIdParamsSchema = z.strictObject({ id: z.uuid() });
 const projectIdParamsSchema = z.strictObject({ projectId: z.uuid() });
 const tenantIdParamsSchema = z.strictObject({ tenantId: z.uuid() });
+const internalExecutionParamsSchema = z.strictObject({ executionRunId: z.uuid() });
+const internalCaptureUploadSchema = captureArtifactMetadataSchema
+  .omit({ executionRunId: true })
+  .extend({
+    bytesBase64: z
+      .string()
+      .min(1)
+      .max(14 * 1_024 * 1_024)
+      .regex(/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/u),
+  });
+const maximumCaptureBytes = 10 * 1_024 * 1_024;
 
 function authenticatedPreHandler(): (
   request: FastifyRequest,
@@ -375,6 +550,61 @@ function platformAdminPreHandler(
     const identity = requireIdentity(request);
     if (!(await accessControl.isPlatformAdmin(identity.userIdentityId))) throw forbidden();
   };
+}
+
+function internalExecutionPreHandler(
+  auth: InternalExecutionAuth,
+): (request: FastifyRequest, reply: FastifyReply) => Promise<void> {
+  return async (request, reply) => {
+    const authorization = request.headers.authorization;
+    if (!authorization?.startsWith("Bearer ")) {
+      await reply.status(401).send({
+        error: {
+          code: "INTERNAL_UNAUTHENTICATED",
+          message: "A valid execution-scoped internal token is required",
+          traceId: request.id,
+        },
+      });
+      return;
+    }
+    request.internalExecutionPrincipal = auth.verify(authorization.slice("Bearer ".length));
+  };
+}
+
+function requireInternalExecutionPrincipal(request: FastifyRequest): InternalExecutionPrincipal {
+  if (!request.internalExecutionPrincipal) {
+    throw new DomainError("INTERNAL_UNAUTHENTICATED", "Internal authentication required", 401);
+  }
+  return request.internalExecutionPrincipal;
+}
+
+function requireAuthorizedExecution(
+  principal: InternalExecutionPrincipal,
+  executionRunId: string,
+): void {
+  if (principal.executionRunId !== executionRunId) {
+    throw forbidden("Internal token is not authorized for this ExecutionRun");
+  }
+}
+
+function internalCommandContext(principal: InternalExecutionPrincipal): DomainCommandContext {
+  return {
+    tenantId: principal.tenantId,
+    userIdentityId: null,
+    actorService: principal.service,
+  };
+}
+
+function decodeCaptureBytes(value: string): Uint8Array {
+  const bytes = Buffer.from(value, "base64");
+  if (bytes.byteLength > maximumCaptureBytes) {
+    throw new DomainError(
+      "CAPTURE_TOO_LARGE",
+      `CaptureArtifact exceeds the ${maximumCaptureBytes} byte internal upload limit`,
+      413,
+    );
+  }
+  return new Uint8Array(bytes);
 }
 
 function hasMinimumTenantRole(roles: readonly TenantRole[], minimumRole: TenantRole): boolean {
