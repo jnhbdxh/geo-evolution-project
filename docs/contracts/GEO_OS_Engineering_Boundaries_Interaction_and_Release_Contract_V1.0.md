@@ -7,6 +7,7 @@
 - **生效日期：** 2026-08-24
 - **权威范围：** 模块边界、API、内部认证、持久化、事件、幂等、错误分类、证据传输、测试与发布门禁
 - **已实施数据库基线：** FROZEN `0001 + 0002`
+- **当前增量迁移：** COMMITTED / NOT FROZEN `0003`
 - **当前内部路由：** `/v1/internal/execution-runs/:executionRunId/...`
 
 ## 1. 架构边界
@@ -170,11 +171,11 @@ pnpm audit:prod
 
 ## 10. 当前完成边界
 
-Core-bound API、Execution-scoped Token、豆包 Web Adapter、Capture/Candidate/Terminal/Finalize 传输已通过相关测试，并由提交 `f8b2c38` 和 `3a980cd` 形成实现基线。
+Core-bound API、Execution-scoped Token、豆包 Web Adapter、Capture/Candidate/Terminal/Finalize 传输已通过相关测试，并由提交 `f8b2c38` 和 `3a980cd` 形成实现基线。Persistent Outbox dispatch core 已由提交 `ceed736` 实现专用 RLS 上下文、`FOR UPDATE SKIP LOCKED`、稳定事件去重键、持久 attempts 和有界退避；`0003` 尚未冻结。
 
 以下仍未完成：
 
-- Persistent Outbox Dispatcher 和正式队列交付；
+- BullMQ Publisher、常驻轮询进程和正式队列交付；
 - 消费端持久去重方案；
 - 版本化生产 A1 Detector；
 - 一次真实 PostgreSQL + MinIO/COS-compatible Core-bound 豆包运行；

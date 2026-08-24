@@ -11,10 +11,10 @@ repository:
   inventory: docs/worktree-change-inventory.yaml
 
 verification_summary:
-  verified_at: "2026-08-24T10:48:23+08:00"
-  default_tests: 76_of_76_passed
+  verified_at: "2026-08-24T11:34:14+08:00"
+  default_tests: 83_of_83_passed
   query_engine_tests: 12_of_12_passed
-  postgresql_tests: 54_of_54_passed
+  postgresql_tests: 58_of_58_passed
   capture_minio_tests: 7_of_7_passed
   typecheck: passed
   eslint: passed
@@ -117,7 +117,7 @@ capabilities:
       - apps/query-engine/src/core-bound-web-execution.test.ts
     verification_environment: Automated API and Query Engine contract tests
     known_gaps:
-      - No durable dispatcher or production token-delivery workflow exists.
+      - The committed dispatch core is not yet wired to BullMQ or production token delivery.
 
   - id: slice_2.doubao_web_adapter
     label: Authorized headed-Chromium Doubao Web surface
@@ -149,24 +149,34 @@ capabilities:
 
   - id: slice_2.durable_dispatch_and_recovery
     label: Persistent dispatch, consumer idempotency, and ambiguous-side-effect recovery
-    repository_state: NOT_PRESENT
-    baseline_ref: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
-    last_verified_at: null
+    repository_state: COMMITTED
+    baseline_ref: ceed7362e70f825b6abe497c055164cc7f9dec65
+    last_verified_at: "2026-08-24T11:34:14+08:00"
     dimensions:
-      object_defined: PARTIAL
+      object_defined: COMPLETE
       ddl_frozen: NOT_STARTED
-      command_implemented: NOT_STARTED
+      command_implemented: PARTIAL
       api_available: NOT_APPLICABLE
       ui_available: NOT_APPLICABLE
-      integration_verified: NOT_STARTED
+      integration_verified: PARTIAL
       product_accepted: NOT_STARTED
+    technical_acceptance:
+      status: POSTGRES_DISPATCH_CORE_TESTS_PASSED
+      scope: Cross-Tenant Outbox claim, at-least-once state transition, concurrency, and retry only
+      decision_ref: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
     evidence:
       - docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
-    verification_environment: NOT_VERIFIED
+      - packages/database/migrations/0003_outbox_dispatcher_access.sql
+      - apps/api/src/outbox-dispatcher.ts
+      - apps/api/src/outbox-repository.ts
+      - apps/api/src/outbox-dispatcher.test.ts
+      - apps/api/src/outbox-dispatcher.database.integration.ts
+    verification_environment: PostgreSQL 17 isolated geo_os_test plus deterministic publisher port
     known_gaps:
-      - Persistent Outbox dispatcher is absent.
-      - BullMQ delivery and consumer deduplication are absent.
-      - A physical inbox table is not yet mandated.
+      - Migration 0003 is committed but not frozen.
+      - BullMQ publisher wiring and the long-running polling process are absent.
+      - Consumer persistent deduplication and failed-event recovery are absent.
+      - Ambiguous browser-side-effect recovery is absent.
 
   - id: slice_2.a1_detector_contract
     label: A1 decision-provider and Candidate contract boundary
