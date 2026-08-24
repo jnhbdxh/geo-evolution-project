@@ -29,10 +29,20 @@ export interface OutboxPublisher {
   publish(delivery: OutboxDelivery): Promise<void>;
 }
 
+export interface OutboxFailureDiagnostic {
+  readonly category: "VALIDATION" | "PUBLISH_TIMEOUT" | "PUBLISHER";
+  readonly code: "OUTBOX_EVENT_INVALID" | "OUTBOX_PUBLISH_TIMEOUT" | "OUTBOX_PUBLISH_FAILED";
+  readonly message: string;
+}
+
 export type OutboxDeliveryDisposition =
   | { readonly kind: "published" }
-  | { readonly kind: "retry"; readonly availableAt: Date }
-  | { readonly kind: "failed" };
+  | {
+      readonly kind: "retry";
+      readonly retryDelayMs: number;
+      readonly diagnostic: OutboxFailureDiagnostic;
+    }
+  | { readonly kind: "failed"; readonly diagnostic: OutboxFailureDiagnostic };
 
 export type OutboxDispatchResult =
   | { readonly kind: "idle" }
@@ -45,7 +55,6 @@ export type OutboxDispatchResult =
 
 export interface OutboxStore {
   processNextAvailable(
-    now: Date,
     deliver: (event: PendingOutboxEvent) => Promise<OutboxDeliveryDisposition>,
   ): Promise<OutboxDispatchResult>;
 }
@@ -54,14 +63,14 @@ export interface OutboxDispatcherOptions {
   readonly maxAttempts?: number;
   readonly baseRetryDelayMs?: number;
   readonly maxRetryDelayMs?: number;
-  readonly clock?: () => Date;
+  readonly publishTimeoutMs?: number;
 }
 
 export class OutboxDispatcher {
   private readonly maxAttempts: number;
   private readonly baseRetryDelayMs: number;
   private readonly maxRetryDelayMs: number;
-  private readonly clock: () => Date;
+  private readonly publishTimeoutMs: number;
 
   public constructor(
     private readonly store: OutboxStore,
@@ -71,42 +80,87 @@ export class OutboxDispatcher {
     this.maxAttempts = positiveInteger(options.maxAttempts ?? 8, "maxAttempts");
     this.baseRetryDelayMs = positiveInteger(options.baseRetryDelayMs ?? 1_000, "baseRetryDelayMs");
     this.maxRetryDelayMs = positiveInteger(options.maxRetryDelayMs ?? 300_000, "maxRetryDelayMs");
+    this.publishTimeoutMs = positiveInteger(options.publishTimeoutMs ?? 5_000, "publishTimeoutMs");
     if (this.maxRetryDelayMs < this.baseRetryDelayMs) {
       throw new Error("maxRetryDelayMs must be greater than or equal to baseRetryDelayMs");
     }
-    this.clock = options.clock ?? (() => new Date());
   }
 
   public async dispatchNext(): Promise<OutboxDispatchResult> {
-    const now = this.clock();
-    return this.store.processNextAvailable(now, async (event) => {
-      const nextAttempt = event.attempts + 1;
+    return this.store.processNextAvailable(async (event) => {
+      let delivery: OutboxDelivery;
       try {
         const envelope = domainEventEnvelopeSchema.parse(event.payload);
         assertEnvelopeMatchesOutbox(event, envelope);
         const headers = outboxHeadersSchema.parse(event.headers);
-        await this.publisher.publish({
+        delivery = {
           deduplicationKey: event.id,
           eventType: event.eventType,
           envelope,
           headers,
-        });
-        return { kind: "published" };
-      } catch {
-        if (nextAttempt >= this.maxAttempts) {
-          return { kind: "failed" };
-        }
-        return {
-          kind: "retry",
-          availableAt: new Date(now.getTime() + this.retryDelayMs(event.attempts)),
         };
+      } catch {
+        return this.failureDisposition(event, {
+          category: "VALIDATION",
+          code: "OUTBOX_EVENT_INVALID",
+          message: "Outbox event failed immutable-envelope validation",
+        });
+      }
+
+      try {
+        await withTimeout(this.publisher.publish(delivery), this.publishTimeoutMs);
+        return { kind: "published" };
+      } catch (error) {
+        const timedOut = error instanceof OutboxPublishTimeoutError;
+        return this.failureDisposition(event, {
+          category: timedOut ? "PUBLISH_TIMEOUT" : "PUBLISHER",
+          code: timedOut ? "OUTBOX_PUBLISH_TIMEOUT" : "OUTBOX_PUBLISH_FAILED",
+          message: timedOut
+            ? "Outbox publisher exceeded its configured timeout"
+            : "Outbox publisher rejected delivery",
+        });
       }
     });
+  }
+
+  private failureDisposition(
+    event: PendingOutboxEvent,
+    diagnostic: OutboxFailureDiagnostic,
+  ): OutboxDeliveryDisposition {
+    if (event.attempts + 1 >= this.maxAttempts) {
+      return { kind: "failed", diagnostic };
+    }
+    return {
+      kind: "retry",
+      retryDelayMs: this.retryDelayMs(event.attempts),
+      diagnostic,
+    };
   }
 
   private retryDelayMs(previousAttempts: number): number {
     const exponent = Math.min(previousAttempts, 30);
     return Math.min(this.maxRetryDelayMs, this.baseRetryDelayMs * 2 ** exponent);
+  }
+}
+
+class OutboxPublishTimeoutError extends Error {
+  public constructor(timeoutMs: number) {
+    super(`Outbox publish exceeded ${timeoutMs}ms`);
+    this.name = "OutboxPublishTimeoutError";
+  }
+}
+
+async function withTimeout(operation: Promise<void>, timeoutMs: number): Promise<void> {
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+  try {
+    await Promise.race([
+      operation,
+      new Promise<never>((_resolve, reject) => {
+        timeout = setTimeout(() => reject(new OutboxPublishTimeoutError(timeoutMs)), timeoutMs);
+      }),
+    ]);
+  } finally {
+    if (timeout !== undefined) clearTimeout(timeout);
   }
 }
 

@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 
 import type { DomainEventEnvelope } from "@geo-os/contracts";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   OutboxDispatcher,
@@ -14,12 +14,16 @@ import {
 
 const now = new Date("2026-08-24T03:30:00.000Z");
 
+afterEach(() => {
+  vi.useRealTimers();
+});
+
 describe("OutboxDispatcher", () => {
   it("publishes the immutable envelope with the event ID as the queue deduplication key", async () => {
     const event = pendingEvent();
     const store = new RecordingOutboxStore(event);
     const publish = vi.fn<OutboxPublisher["publish"]>().mockResolvedValue(undefined);
-    const dispatcher = new OutboxDispatcher(store, { publish }, { clock: () => now });
+    const dispatcher = new OutboxDispatcher(store, { publish });
 
     await expect(dispatcher.dispatchNext()).resolves.toEqual({
       kind: "published",
@@ -41,7 +45,7 @@ describe("OutboxDispatcher", () => {
     const dispatcher = new OutboxDispatcher(
       store,
       { publish: vi.fn().mockRejectedValue(new Error("queue unavailable")) },
-      { clock: () => now, baseRetryDelayMs: 1_000, maxRetryDelayMs: 3_000 },
+      { baseRetryDelayMs: 1_000, maxRetryDelayMs: 3_000 },
     );
 
     await expect(dispatcher.dispatchNext()).resolves.toEqual({
@@ -52,7 +56,12 @@ describe("OutboxDispatcher", () => {
     });
     expect(store.disposition).toEqual({
       kind: "retry",
-      availableAt: new Date("2026-08-24T03:30:03.000Z"),
+      retryDelayMs: 3_000,
+      diagnostic: {
+        category: "PUBLISHER",
+        code: "OUTBOX_PUBLISH_FAILED",
+        message: "Outbox publisher rejected delivery",
+      },
     });
   });
 
@@ -62,7 +71,7 @@ describe("OutboxDispatcher", () => {
     const dispatcher = new OutboxDispatcher(
       store,
       { publish: vi.fn().mockRejectedValue(new Error("queue unavailable")) },
-      { clock: () => now, maxAttempts: 3 },
+      { maxAttempts: 3 },
     );
 
     await expect(dispatcher.dispatchNext()).resolves.toEqual({
@@ -70,7 +79,14 @@ describe("OutboxDispatcher", () => {
       eventId: event.id,
       attempts: 3,
     });
-    expect(store.disposition).toEqual({ kind: "failed" });
+    expect(store.disposition).toEqual({
+      kind: "failed",
+      diagnostic: {
+        category: "PUBLISHER",
+        code: "OUTBOX_PUBLISH_FAILED",
+        message: "Outbox publisher rejected delivery",
+      },
+    });
   });
 
   it("does not publish an envelope that conflicts with immutable Outbox columns", async () => {
@@ -80,7 +96,7 @@ describe("OutboxDispatcher", () => {
       payload: { ...(event.payload as DomainEventEnvelope), event_type: "ConflictingEvent" },
     });
     const publish = vi.fn<OutboxPublisher["publish"]>();
-    const dispatcher = new OutboxDispatcher(store, { publish }, { clock: () => now });
+    const dispatcher = new OutboxDispatcher(store, { publish });
 
     await expect(dispatcher.dispatchNext()).resolves.toMatchObject({
       kind: "retry_scheduled",
@@ -88,6 +104,41 @@ describe("OutboxDispatcher", () => {
       attempts: 1,
     });
     expect(publish).not.toHaveBeenCalled();
+    expect(store.disposition).toMatchObject({
+      diagnostic: {
+        category: "VALIDATION",
+        code: "OUTBOX_EVENT_INVALID",
+      },
+    });
+  });
+
+  it("bounds a publisher that never settles and releases the Store callback", async () => {
+    vi.useFakeTimers();
+    const event = pendingEvent();
+    const store = new RecordingOutboxStore(event);
+    const publisherNeverSettles = vi.fn(() => new Promise<void>(() => undefined));
+    const dispatcher = new OutboxDispatcher(
+      store,
+      { publish: publisherNeverSettles },
+      { publishTimeoutMs: 50 },
+    );
+
+    const dispatch = dispatcher.dispatchNext();
+    await vi.advanceTimersByTimeAsync(50);
+
+    await expect(dispatch).resolves.toMatchObject({
+      kind: "retry_scheduled",
+      eventId: event.id,
+      attempts: 1,
+    });
+    expect(store.disposition).toMatchObject({
+      kind: "retry",
+      retryDelayMs: 1_000,
+      diagnostic: {
+        category: "PUBLISH_TIMEOUT",
+        code: "OUTBOX_PUBLISH_TIMEOUT",
+      },
+    });
   });
 
   it("returns idle without invoking the publisher when no event is available", async () => {
@@ -105,7 +156,6 @@ class RecordingOutboxStore implements OutboxStore {
   public constructor(private readonly event?: PendingOutboxEvent) {}
 
   public async processNextAvailable(
-    _now: Date,
     deliver: (event: PendingOutboxEvent) => Promise<OutboxDeliveryDisposition>,
   ): Promise<OutboxDispatchResult> {
     if (!this.event) return { kind: "idle" };
@@ -116,7 +166,7 @@ class RecordingOutboxStore implements OutboxStore {
         kind: "retry_scheduled",
         eventId: this.event.id,
         attempts,
-        availableAt: this.disposition.availableAt,
+        availableAt: new Date(now.getTime() + this.disposition.retryDelayMs),
       };
     }
     return { kind: this.disposition.kind, eventId: this.event.id, attempts };

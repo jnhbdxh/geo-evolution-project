@@ -1,6 +1,6 @@
 import type { QueryResultRow } from "pg";
 
-import type { Database } from "./database.js";
+import type { OutboxDatabase } from "./outbox-database.js";
 import type {
   OutboxDeliveryDisposition,
   OutboxDispatchResult,
@@ -24,29 +24,27 @@ interface OutboxEventRow extends QueryResultRow {
 }
 
 export class PostgresOutboxStore implements OutboxStore {
-  public constructor(private readonly database: Database) {}
+  public constructor(private readonly database: OutboxDatabase) {}
 
   public async processNextAvailable(
-    now: Date,
     deliver: (event: PendingOutboxEvent) => Promise<OutboxDeliveryDisposition>,
   ): Promise<OutboxDispatchResult> {
-    return this.database.withOutboxDispatcherTransaction(async (client) => {
+    return this.database.withTransaction(async (client) => {
       const selected = await client.query<OutboxEventRow>(
         `SELECT id, tenant_id, aggregate_type, aggregate_id, event_type, schema_version,
                 payload, headers, trace_id, attempts, available_at, occurred_at
            FROM outbox_events
-          WHERE status = 'PENDING' AND available_at <= $1
+          WHERE status = 'PENDING' AND available_at <= clock_timestamp()
           ORDER BY available_at, occurred_at, id
           FOR UPDATE SKIP LOCKED
           LIMIT 1`,
-        [now],
       );
       const row = selected.rows[0];
       if (!row) return { kind: "idle" };
 
       const event = mapPendingEvent(row);
-      // Keep the row lock through publish. A commit failure after the external side effect may
-      // redeliver, so every publisher receives the immutable event ID as its deduplication key.
+      // The bounded Publisher port keeps this transaction finite. A commit failure after the
+      // external side effect may redeliver, so event ID remains the immutable deduplication key.
       const disposition = await deliver(event);
       const attempts = row.attempts + 1;
 
@@ -54,9 +52,9 @@ export class PostgresOutboxStore implements OutboxStore {
         await requireSingleUpdate(
           client.query(
             `UPDATE outbox_events
-                SET status = 'PUBLISHED', attempts = $2, published_at = $3
+                SET status = 'PUBLISHED', attempts = $2, published_at = clock_timestamp()
               WHERE id = $1 AND status = 'PENDING'`,
-            [row.id, attempts, now],
+            [row.id, attempts],
           ),
           row.id,
         );
@@ -64,35 +62,72 @@ export class PostgresOutboxStore implements OutboxStore {
       }
 
       if (disposition.kind === "retry") {
-        await requireSingleUpdate(
-          client.query(
-            `UPDATE outbox_events
-                SET attempts = $2, available_at = $3
-              WHERE id = $1 AND status = 'PENDING'`,
-            [row.id, attempts, disposition.availableAt],
-          ),
-          row.id,
+        const updated = await client.query<{ available_at: Date }>(
+          `WITH failure_clock AS (
+             SELECT clock_timestamp() AS failed_at
+           )
+           UPDATE outbox_events
+              SET attempts = $2,
+                  available_at = failure_clock.failed_at + ($3::bigint * interval '1 millisecond'),
+                  last_error_category = $4,
+                  last_error_code = $5,
+                  last_error_message = $6,
+                  last_failed_at = failure_clock.failed_at
+             FROM failure_clock
+            WHERE id = $1 AND status = 'PENDING'
+          RETURNING available_at`,
+          [
+            row.id,
+            attempts,
+            disposition.retryDelayMs,
+            disposition.diagnostic.category,
+            disposition.diagnostic.code,
+            disposition.diagnostic.message,
+          ],
         );
+        const availableAt = requireUpdatedAvailability(updated.rows[0], row.id);
         return {
           kind: "retry_scheduled",
           eventId: row.id,
           attempts,
-          availableAt: disposition.availableAt,
+          availableAt,
         };
       }
 
       await requireSingleUpdate(
         client.query(
           `UPDATE outbox_events
-              SET status = 'FAILED', attempts = $2, available_at = $3
+              SET status = 'FAILED',
+                  attempts = $2,
+                  available_at = clock_timestamp(),
+                  last_error_category = $3,
+                  last_error_code = $4,
+                  last_error_message = $5,
+                  last_failed_at = clock_timestamp()
             WHERE id = $1 AND status = 'PENDING'`,
-          [row.id, attempts, now],
+          [
+            row.id,
+            attempts,
+            disposition.diagnostic.category,
+            disposition.diagnostic.code,
+            disposition.diagnostic.message,
+          ],
         ),
         row.id,
       );
       return { kind: "failed", eventId: row.id, attempts };
     });
   }
+}
+
+function requireUpdatedAvailability(
+  row: { readonly available_at: Date } | undefined,
+  eventId: string,
+): Date {
+  if (!row) {
+    throw new Error(`Outbox event ${eventId} lost its PENDING lock state`);
+  }
+  return row.available_at;
 }
 
 function mapPendingEvent(row: OutboxEventRow): PendingOutboxEvent {

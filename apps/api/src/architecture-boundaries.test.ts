@@ -55,19 +55,23 @@ describe("production database write architecture", () => {
     expect(violations).toEqual([]);
   });
 
-  it("confines cross-Tenant Outbox dispatcher context to its Repository", () => {
+  it("confines the dedicated Outbox database boundary to its config, adapter and Repository", () => {
+    const allowedFiles = new Set([
+      "apps/api/src/config.ts",
+      "apps/api/src/outbox-database.ts",
+      "apps/api/src/outbox-repository.ts",
+    ]);
     const violations = productionFiles
-      .filter(
-        (file) =>
-          file.relativePath !== "apps/api/src/database.ts" &&
-          file.relativePath !== "apps/api/src/outbox-repository.ts",
-      )
+      .filter((file) => !allowedFiles.has(file.relativePath))
       .filter((file) =>
-        /(?:withOutboxDispatcherTransaction|app\.outbox_dispatcher_context)/u.test(file.content),
+        /(?:OUTBOX_DATABASE_URL|OutboxDatabase|app\.outbox_dispatcher_context)/u.test(file.content),
       )
       .map((file) => file.relativePath);
 
     expect(violations).toEqual([]);
+    expect(
+      productionFiles.find((file) => file.relativePath === "apps/api/src/database.ts")?.content,
+    ).not.toContain("outbox_dispatcher_context");
   });
 
   it("prevents Query Engine and Worker modules from importing PostgreSQL or credentials", () => {
