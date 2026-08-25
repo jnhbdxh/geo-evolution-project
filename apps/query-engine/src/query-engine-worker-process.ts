@@ -45,6 +45,7 @@ const worker = new Worker<ExecutionQueuedJobData>(
           baseUrl: workerConfig.CORE_API_BASE_URL,
           executionRunId: envelope.aggregate_id,
           token,
+          traceId: envelope.trace_id,
         });
         const assignment = await core.getAssignment();
         const context = await browser.newContext({

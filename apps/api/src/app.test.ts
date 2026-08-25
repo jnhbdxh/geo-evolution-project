@@ -203,10 +203,15 @@ describe("authentication and Tenant Context", () => {
       observation,
     );
     const token = await issueToken(app);
+    const suppliedTraceId = randomId(7);
     const response = await app.inject({
       method: "POST",
       url: `/v1/projects/${projectId}/execution-runs`,
-      headers: { authorization: `Bearer ${token}`, "x-tenant-id": tenantId },
+      headers: {
+        authorization: `Bearer ${token}`,
+        "x-tenant-id": tenantId,
+        "x-geo-os-trace-id": suppliedTraceId,
+      },
       payload: {
         sampleSlotId,
         idempotencyKey: "run-anchor-question-1",
@@ -220,6 +225,7 @@ describe("authentication and Tenant Context", () => {
       expect.objectContaining({ sampleSlotId, idempotencyKey: "run-anchor-question-1" }),
       expect.any(String),
     );
+    expect(vi.mocked(observation.createExecutionRun).mock.calls[0]?.[3]).not.toBe(suppliedTraceId);
   });
 
   it("rejects Tenant attempts to declare actual execution facts while queuing", async () => {
@@ -351,12 +357,16 @@ describe("execution-scoped internal API", () => {
       observation,
     );
     const executionRunId = randomId(4);
+    const traceId = randomId(7);
     const token = issueInternalToken(executionRunId);
 
     const response = await app.inject({
       method: "POST",
       url: `/v1/internal/execution-runs/${executionRunId}/start`,
-      headers: { authorization: `Bearer ${token}` },
+      headers: {
+        authorization: `Bearer ${token}`,
+        "x-geo-os-trace-id": traceId,
+      },
       payload: runtimeContext(),
     });
 
@@ -365,7 +375,7 @@ describe("execution-scoped internal API", () => {
       { tenantId, userIdentityId: null, actorService: "QUERY_ENGINE" },
       executionRunId,
       runtimeContext(),
-      expect.any(String),
+      traceId,
     );
   });
 

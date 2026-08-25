@@ -35,6 +35,7 @@ export class CoreWorkerClient {
     readonly tenantId: string;
     readonly executionRunId: string;
     readonly eventId: string;
+    readonly traceId: string;
   }): Promise<ExecutionWorkerClaim> {
     const response = await this.fetchImplementation(
       `${this.baseUrl}/v1/internal/query-engine/execution-runs/${input.executionRunId}/claim`,
@@ -43,6 +44,7 @@ export class CoreWorkerClient {
         headers: {
           authorization: `Bearer ${this.workerToken}`,
           "content-type": "application/json",
+          "x-geo-os-trace-id": z.uuid().parse(input.traceId),
         },
         body: JSON.stringify({ tenantId: input.tenantId, eventId: input.eventId }),
       },

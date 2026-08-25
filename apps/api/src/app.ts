@@ -67,7 +67,13 @@ export interface AppDependencies {
 export async function buildApp(dependencies: AppDependencies): Promise<FastifyInstance> {
   const app = Fastify({
     logger: { level: dependencies.config.LOG_LEVEL },
-    genReqId: () => randomUUID(),
+    genReqId: (request) => {
+      const header = request.headers["x-geo-os-trace-id"];
+      const parsed = z.uuid().safeParse(Array.isArray(header) ? header[0] : header);
+      return request.url?.startsWith("/v1/internal/") === true && parsed.success
+        ? parsed.data
+        : randomUUID();
+    },
   });
 
   await app.register(fastifyJwt, { secret: dependencies.config.JWT_SECRET });

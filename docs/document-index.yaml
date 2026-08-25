@@ -208,6 +208,13 @@ documents:
     repository_state: COMMITTED
     baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
 
+  - id: slice_2_core_bound_doubao_live_run_v0_1
+    path: docs/contracts/slice-2-core-bound-doubao-live-run-record-v0.1.md
+    status: WORKING
+    authority_domains: [slice_2_runtime_acceptance_evidence]
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    baseline_ref: 811e0271148caaa8f9e8e68c1ea31fbf92b909a9
+
   - id: conversation_handoff_2026_08_24
     path: docs/handoff/GEO_OS_Conversation_Handoff_2026-08-24.md
     status: CONTEXT_ONLY

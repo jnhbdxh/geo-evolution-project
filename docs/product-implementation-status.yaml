@@ -18,9 +18,9 @@ repository:
   inventory: docs/worktree-change-inventory.yaml
   working_revision:
     state: IMPLEMENTED_IN_WORKTREE
-    branch: codex/slice2-core-bound-vertical
-    base_commit: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
-    scope: Dedicated ExecutionQueued queue routing, Core-verified Worker claims, fresh execution-scoped Token issuance, durable terminal-result deduplication, ambiguous-state fencing, correlated failure diagnostics, and a single-instance Query Engine BullMQ entry point
+    branch: codex/slice2-live-vertical-acceptance
+    base_commit: 811e0271148caaa8f9e8e68c1ea31fbf92b909a9
+    scope: Query Engine runtime dependency closure, validated end-to-end Trace propagation, and one real PostgreSQL-BullMQ-Core-Doubao-MinIO vertical run
 
 verification_summary:
   verified_at: "2026-08-24T18:24:44+08:00"
@@ -38,12 +38,13 @@ verification_summary:
   frozen_migration_hashes: unchanged
 
 working_revision_verification_summary:
-  verified_at: "2026-08-25T12:09:20+08:00"
-  default_tests: 110_of_110_passed
+  verified_at: "2026-08-25T15:14:59+08:00"
+  default_tests: 111_of_111_passed
   query_engine_tests: 12_of_12_passed
   postgresql_tests: 63_of_63_passed
   capture_minio_tests: 7_of_7_passed
-  outbox_bullmq_tests: 3_of_3_passed
+  outbox_bullmq_tests: 4_of_4_passed
+  live_core_bound_doubao: passed_with_single_trace_across_20_related_audit_and_outbox_facts
   typecheck: passed
   eslint: passed
   prettier: passed_for_changed_files
@@ -150,7 +151,7 @@ capabilities:
       - apps/query-engine/src/core-bound-web-execution.test.ts
     verification_environment: Automated API and Query Engine contract tests
     known_gaps:
-      - The committed dispatch core is not yet wired to BullMQ or production token delivery.
+      - Production lease, fencing, recovery, and secret-rotation controls remain outside this transport capability.
 
   - id: slice_2.doubao_web_adapter
     label: Authorized headed-Chromium Doubao Web surface
@@ -176,16 +177,15 @@ capabilities:
       - apps/query-engine/src/doubao-web-adapter.browser.integration.ts
     verification_environment: Authorized live headed Chromium plus deterministic local browser fixture
     known_gaps:
-      - One real Core-bound run through PostgreSQL and object storage is still required.
       - Headless mode is unsupported.
       - Browser-process-loss ambiguity recovery is unresolved.
       - UI Truth Manifest V1 preserves link-candidate array order and one Manifest-level assistant-message binding, but explicit occurrence ordinals and visible-region fields are not implemented.
 
   - id: slice_2.durable_dispatch_and_recovery
     label: Async delivery runtime, consumer idempotency, and ambiguous-side-effect recovery
-    repository_state: COMMITTED
-    baseline_ref: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
-    last_verified_at: "2026-08-25T10:13:09+08:00"
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    baseline_ref: 811e0271148caaa8f9e8e68c1ea31fbf92b909a9
+    last_verified_at: "2026-08-25T15:14:59+08:00"
     dimensions:
       object_defined: COMPLETE
       ddl_frozen: NOT_STARTED
@@ -195,12 +195,12 @@ capabilities:
       integration_verified: PARTIAL
       product_accepted: NOT_STARTED
     technical_acceptance:
-      status: BULLMQ_DISPATCH_INTEGRATION_PASSED
-      scope: Dedicated role and pool, bounded BullMQ publication, startup readiness gating, duplicate Job suppression, PostgreSQL delivery metadata, and no late enqueue after disconnected Redis recovery
+      status: VERTICAL_CHAIN_READY
+      scope: Dedicated Dispatcher controls, bounded BullMQ delivery, persistent terminal-result reuse after Consumer restart, single-instance Query Engine Worker, Core-only writes, real Doubao evidence and end-to-end Trace correlation
       decision_ref: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
     active_runtime_contract: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
     milestones:
-      vertical_chain_ready: PARTIAL
+      vertical_chain_ready: READY
       production_enablement_ready: NOT_STARTED
     security_conformance:
       status: CONFORMING
@@ -218,10 +218,13 @@ capabilities:
       - apps/api/src/bullmq-outbox-publisher.ts
       - apps/api/src/outbox-dispatcher-process.ts
       - apps/api/src/outbox-bullmq.queue.integration.ts
-    verification_environment: PostgreSQL 17 isolated geo_os_test plus deterministic publisher port
+      - apps/query-engine/src/query-engine-worker-process.ts
+      - apps/query-engine/src/execution-queued-job.ts
+      - tests/slice-2-consumer-restart.queue.integration.ts
+      - docs/contracts/slice-2-core-bound-doubao-live-run-record-v0.1.md
+    verification_environment: Isolated PostgreSQL 17, Redis 7, BullMQ and MinIO plus authorized live headed-Chromium Doubao execution
     known_gaps:
       - Migrations 0003 and 0004 are committed; the access migration set is not frozen.
-      - Consumer persistent deduplication and Worker execution are implemented only in the current worktree and are not yet committed or shared-CI verified.
       - Failed-event management commands are absent.
       - Ambiguous browser-side-effect recovery is absent.
       - Redis command and total publish waits are bounded; completed/failed Job retention, connection-budget capacity evidence, and the migration-set freeze decision remain unresolved.
@@ -251,8 +254,8 @@ capabilities:
   - id: runtime.worker_runtime
     label: Unified Query Engine and AI/Data Worker runtime lifecycle
     repository_state: IMPLEMENTED_IN_WORKTREE
-    baseline_ref: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
-    last_verified_at: null
+    baseline_ref: 811e0271148caaa8f9e8e68c1ea31fbf92b909a9
+    last_verified_at: "2026-08-25T15:14:59+08:00"
     dimensions:
       object_defined: COMPLETE
       ddl_frozen: NOT_APPLICABLE
@@ -271,17 +274,16 @@ capabilities:
       - apps/query-engine/src/query-engine-worker-process.ts
       - apps/api/src/bullmq-outbox-publisher.ts
       - apps/api/src/outbox-bullmq.queue.integration.ts
-    verification_environment: Unit contracts, PostgreSQL 17 Worker-claim state verification, and isolated Redis 7 two-queue routing; live BullMQ-to-Doubao execution not yet run
+    verification_environment: Unit contracts, PostgreSQL 17 Worker-claim verification, Redis 7 two-queue routing, and one authorized live BullMQ-to-Doubao Core-bound run
     known_gaps:
-      - The single-instance BullMQ entry point is implemented but has not completed a live Core-bound Doubao run.
       - RUNNING or partially finalized executions stop blind replay but still require a resumable recovery command and operator flow.
       - Heartbeat, leases, fencing, configurable concurrency, and full graceful-drain evidence remain Milestone B work.
       - No independent AI/Data Worker package or process exists.
 
   - id: runtime.observability_and_deployment_readiness
     label: Cross-process observability, health, packaging, and recovery readiness
-    repository_state: COMMITTED
-    last_verified_at: "2026-08-24T11:34:14+08:00"
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    last_verified_at: "2026-08-25T12:38:15+08:00"
     dimensions:
       object_defined: PARTIAL
       ddl_frozen: NOT_APPLICABLE
@@ -293,12 +295,14 @@ capabilities:
     active_runtime_contract: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
     evidence:
       - apps/api/src/app.ts
+      - apps/query-engine/src/core-worker-client.ts
+      - apps/query-engine/src/core-execution-client.ts
       - apps/api/src/server.ts
       - compose.yaml
       - .github/workflows/ci.yml
-    verification_environment: API contract tests and local/CI infrastructure services only
+      - docs/contracts/slice-2-core-bound-doubao-live-run-record-v0.1.md
+    verification_environment: API contract tests plus one isolated live vertical run with a single correlated Trace across API, Outbox, Job, evidence and Observation
     known_gaps:
-      - Trace context reaches correlated Worker completion/failure logs but is not yet propagated end-to-end through evidence processing.
       - Liveness, Readiness, dependency health, and Worker heartbeat are not separated.
       - API, Dispatcher, Query Engine, and Worker production images and deployment manifests are absent.
       - Database connection budgets, secret rotation, backup RPO/RTO, restore drills, alerts, and capacity thresholds are not accepted.

@@ -23,6 +23,7 @@ describe("ExecutionQueued job handling", () => {
       tenantId: fixture.tenantId,
       executionRunId: fixture.executionRunId,
       eventId: fixture.eventId,
+      traceId: fixture.traceId,
     });
     expect(execute).toHaveBeenCalledWith({
       token: "fresh-execution-token",
@@ -117,10 +118,12 @@ function jobFixture() {
   const tenantId = randomUUID();
   const executionRunId = randomUUID();
   const eventId = randomUUID();
+  const traceId = randomUUID();
   return {
     tenantId,
     executionRunId,
     eventId,
+    traceId,
     job: {
       envelope: {
         event_id: eventId,
@@ -130,7 +133,7 @@ function jobFixture() {
         aggregate_id: executionRunId,
         schema_version: 1,
         occurred_at: new Date().toISOString(),
-        trace_id: randomUUID(),
+        trace_id: traceId,
         data: {
           execution_run_id: executionRunId,
           question_version_id: randomUUID(),

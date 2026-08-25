@@ -58,6 +58,7 @@ export async function handleExecutionQueuedJob<TResult>(input: {
     tenantId: envelope.tenant_id,
     executionRunId: envelope.aggregate_id,
     eventId: envelope.event_id,
+    traceId: envelope.trace_id,
   });
   if (claim.execution_run_id !== envelope.aggregate_id) {
     throw new ExecutionClaimMismatchError();

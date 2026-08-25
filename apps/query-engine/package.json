@@ -14,6 +14,7 @@
   "dependencies": {
     "@geo-os/contracts": "workspace:*",
     "bullmq": "6.2.0",
+    "dotenv": "17.4.2",
     "ioredis": "5.11.1",
     "playwright": "1.62.1",
     "zod": "4.4.3"
