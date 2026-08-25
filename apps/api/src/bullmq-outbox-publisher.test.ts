@@ -2,7 +2,11 @@ import { randomUUID } from "node:crypto";
 
 import { describe, expect, it, vi } from "vitest";
 
-import { BullMqOutboxPublisher, type OutboxQueueJobData } from "./bullmq-outbox-publisher.js";
+import {
+  BullMqOutboxPublisher,
+  RoutedBullMqOutboxPublisher,
+  type OutboxQueueJobData,
+} from "./bullmq-outbox-publisher.js";
 import type { OutboxDelivery } from "./outbox-dispatcher.js";
 
 describe("BullMQ Outbox publisher", () => {
@@ -64,14 +68,38 @@ describe("BullMQ Outbox publisher", () => {
   });
 });
 
-function createDelivery(): OutboxDelivery {
+describe("routed BullMQ Outbox publisher", () => {
+  it("routes only ExecutionQueued events to the dedicated execution queue", async () => {
+    const domainPublisher = managedPublisher();
+    const executionPublisher = managedPublisher();
+    const publisher = new RoutedBullMqOutboxPublisher(domainPublisher, executionPublisher);
+    const execution = createDelivery("ExecutionQueued");
+    const project = createDelivery("ProjectCreated");
+
+    await publisher.initialize(100);
+    await publisher.publish(execution);
+    await publisher.publish(project);
+    await publisher.close();
+
+    expect(executionPublisher.publish).toHaveBeenCalledWith(execution);
+    expect(domainPublisher.publish).toHaveBeenCalledWith(project);
+    expect(executionPublisher.publish).not.toHaveBeenCalledWith(project);
+    expect(domainPublisher.publish).not.toHaveBeenCalledWith(execution);
+    expect(domainPublisher.initialize).toHaveBeenCalledWith(100);
+    expect(executionPublisher.initialize).toHaveBeenCalledWith(100);
+    expect(domainPublisher.close).toHaveBeenCalledOnce();
+    expect(executionPublisher.close).toHaveBeenCalledOnce();
+  });
+});
+
+function createDelivery(eventType = "ExecutionQueued"): OutboxDelivery {
   const eventId = randomUUID();
   return {
     deduplicationKey: eventId,
-    eventType: "ExecutionQueued",
+    eventType,
     envelope: {
       event_id: eventId,
-      event_type: "ExecutionQueued",
+      event_type: eventType,
       tenant_id: randomUUID(),
       aggregate_type: "ExecutionRun",
       aggregate_id: randomUUID(),
@@ -81,5 +109,13 @@ function createDelivery(): OutboxDelivery {
       data: { execution_run_id: randomUUID() },
     },
     headers: { source: "core" },
+  };
+}
+
+function managedPublisher() {
+  return {
+    initialize: vi.fn(async () => undefined),
+    publish: vi.fn(async () => undefined),
+    close: vi.fn(async () => undefined),
   };
 }

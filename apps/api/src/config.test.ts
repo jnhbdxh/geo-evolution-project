@@ -6,6 +6,7 @@ const baseEnvironment: NodeJS.ProcessEnv = {
   DATABASE_URL: "postgresql://geo_os_app:secret@localhost:5432/geo_os",
   JWT_SECRET: "test-secret-at-least-thirty-two-characters",
   INTERNAL_SERVICE_TOKEN_SECRET: "distinct-internal-test-secret-at-least-32-characters",
+  QUERY_ENGINE_WORKER_TOKEN: "distinct-query-worker-test-secret-at-least-32-characters",
 };
 
 describe("API configuration", () => {
@@ -19,6 +20,15 @@ describe("API configuration", () => {
     expect(
       loadConfig({ ...baseEnvironment, NODE_ENV: "production", AUTH_MODE: "oidc" }).AUTH_MODE,
     ).toBe("oidc");
+  });
+
+  it("keeps user, signing, and Worker credentials distinct", () => {
+    expect(() =>
+      loadConfig({
+        ...baseEnvironment,
+        QUERY_ENGINE_WORKER_TOKEN: baseEnvironment.INTERNAL_SERVICE_TOKEN_SECRET,
+      }),
+    ).toThrow("User, signing, and Query Engine Worker credentials must be distinct");
   });
 });
 
@@ -35,6 +45,7 @@ describe("Outbox Dispatcher configuration", () => {
       OUTBOX_STATEMENT_TIMEOUT_MS: 5_000,
       OUTBOX_IDLE_IN_TRANSACTION_TIMEOUT_MS: 10_000,
       OUTBOX_QUEUE_NAME: "geo-os-domain-events",
+      QUERY_EXECUTION_QUEUE_NAME: "geo-os-query-executions",
       OUTBOX_REDIS_STARTUP_TIMEOUT_MS: 5_000,
       OUTBOX_REDIS_COMMAND_TIMEOUT_MS: 3_000,
       OUTBOX_POLL_INTERVAL_MS: 250,
@@ -89,5 +100,15 @@ describe("Outbox Dispatcher configuration", () => {
         OUTBOX_MAX_RETRY_DELAY_MS: "1999",
       }),
     ).toThrow("OUTBOX_MAX_RETRY_DELAY_MS must not be lower than OUTBOX_BASE_RETRY_DELAY_MS");
+  });
+
+  it("requires a dedicated queue for Query Engine executions", () => {
+    expect(() =>
+      loadOutboxDispatcherConfig({
+        ...outboxEnvironment,
+        OUTBOX_QUEUE_NAME: "shared-queue",
+        QUERY_EXECUTION_QUEUE_NAME: "shared-queue",
+      }),
+    ).toThrow("QUERY_EXECUTION_QUEUE_NAME must be distinct from OUTBOX_QUEUE_NAME");
   });
 });

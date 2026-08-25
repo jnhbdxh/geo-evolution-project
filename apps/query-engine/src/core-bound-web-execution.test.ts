@@ -11,6 +11,7 @@ import type {
 
 const executionRunId = "11111111-1111-4111-8111-111111111111";
 const questionVersionId = "22222222-2222-4222-8222-222222222222";
+const traceId = "33333333-3333-4333-8333-333333333333";
 
 describe("Core-bound Web execution", () => {
   it("starts Core before submission and completes Capture → Candidate → terminal → Finalize", async () => {
@@ -20,6 +21,10 @@ describe("Core-bound Web execution", () => {
       const url = requestUrl(input);
       const command = url.split("/").at(-1) ?? "unknown";
       events.push(command);
+      expect(init?.headers).toMatchObject({
+        authorization: "Bearer scoped-token",
+        "x-geo-os-trace-id": traceId,
+      });
       if (command === "assignment") {
         return jsonResponse({ data: executionAssignment() });
       }
@@ -33,7 +38,6 @@ describe("Core-bound Web execution", () => {
       if (command === "finalize") {
         return jsonResponse({ data: { id: uuidWithSuffix(10) } }, 201);
       }
-      expect(init?.headers).toMatchObject({ authorization: "Bearer scoped-token" });
       return jsonResponse({ data: { id: executionRunId } });
     });
     const adapter = new LifecycleAwareAdapter(events);
@@ -41,6 +45,7 @@ describe("Core-bound Web execution", () => {
       baseUrl: "http://core.local/",
       executionRunId,
       token: "scoped-token",
+      traceId,
       fetch: fetchImplementation as typeof fetch,
     });
     const runner = new CoreBoundWebExecution({
@@ -104,6 +109,7 @@ describe("Core-bound Web execution", () => {
       baseUrl: "http://core.local",
       executionRunId,
       token: "scoped-token",
+      traceId,
       fetch: (async (input) => {
         const command = requestUrl(input).split("/").at(-1) ?? "unknown";
         commands.push(command);
@@ -137,6 +143,7 @@ describe("CoreExecutionClient", () => {
       baseUrl: "http://core.local",
       executionRunId,
       token: "scoped-token",
+      traceId,
       fetch: (async () => jsonResponse({ error: { code: "FORBIDDEN" } }, 403)) as typeof fetch,
     });
 

@@ -6,7 +6,11 @@ import { Queue } from "bullmq";
 import pg from "pg";
 import { afterEach, describe, expect, it } from "vitest";
 
-import { createBullMqOutboxPublisher, type OutboxQueueJobData } from "./bullmq-outbox-publisher.js";
+import {
+  createBullMqOutboxPublisher,
+  createRoutedBullMqOutboxPublisher,
+  type OutboxQueueJobData,
+} from "./bullmq-outbox-publisher.js";
 import { OutboxDatabase } from "./outbox-database.js";
 import { OutboxDispatcher } from "./outbox-dispatcher.js";
 import { PostgresOutboxStore } from "./outbox-repository.js";
@@ -24,6 +28,31 @@ afterEach(async () => {
 });
 
 describe("Outbox to BullMQ", () => {
+  it("isolates ExecutionQueued jobs from the general domain-event queue", async () => {
+    const domainQueueName = `geo-os-domain-${randomUUID()}`;
+    const executionQueueName = `geo-os-execution-${randomUUID()}`;
+    const publisher = createRoutedBullMqOutboxPublisher({
+      redisUrl,
+      domainQueueName,
+      executionQueueName,
+      commandTimeoutMs: 1_000,
+    });
+    closers.push(async () => publisher.close());
+    await publisher.initialize(2_000);
+    const domainReader = createQueueReader(domainQueueName);
+    const executionReader = createQueueReader(executionQueueName);
+    const execution = createDelivery("ExecutionQueued", "ExecutionRun");
+    const project = createDelivery("ProjectCreated", "Project");
+
+    await publisher.publish(execution);
+    await publisher.publish(project);
+
+    await expect(executionReader.getJob(execution.deduplicationKey)).resolves.toBeDefined();
+    await expect(executionReader.getJob(project.deduplicationKey)).resolves.toBeUndefined();
+    await expect(domainReader.getJob(project.deduplicationKey)).resolves.toBeDefined();
+    await expect(domainReader.getJob(execution.deduplicationKey)).resolves.toBeUndefined();
+  });
+
   it("publishes one retained job and commits PostgreSQL delivery metadata", async () => {
     const event = await insertPendingEvent();
     const queueName = `geo-os-outbox-${randomUUID()}`;
@@ -117,6 +146,27 @@ interface InsertedEvent {
   readonly id: string;
   readonly aggregateId: string;
   readonly envelope: OutboxQueueJobData["envelope"];
+}
+
+function createDelivery(eventType: string, aggregateType: string) {
+  const eventId = randomUUID();
+  const aggregateId = randomUUID();
+  return {
+    deduplicationKey: eventId,
+    eventType,
+    envelope: {
+      event_id: eventId,
+      event_type: eventType,
+      tenant_id: randomUUID(),
+      aggregate_type: aggregateType,
+      aggregate_id: aggregateId,
+      schema_version: 1,
+      occurred_at: new Date().toISOString(),
+      trace_id: randomUUID(),
+      data: {},
+    },
+    headers: {},
+  };
 }
 
 async function insertPendingEvent(): Promise<InsertedEvent> {

@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { randomUUID, timingSafeEqual } from "node:crypto";
 
 import fastifyJwt from "@fastify/jwt";
 import {
@@ -67,7 +67,13 @@ export interface AppDependencies {
 export async function buildApp(dependencies: AppDependencies): Promise<FastifyInstance> {
   const app = Fastify({
     logger: { level: dependencies.config.LOG_LEVEL },
-    genReqId: () => randomUUID(),
+    genReqId: (request) => {
+      const header = request.headers["x-geo-os-trace-id"];
+      const parsed = z.uuid().safeParse(Array.isArray(header) ? header[0] : header);
+      return request.url?.startsWith("/v1/internal/") === true && parsed.success
+        ? parsed.data
+        : randomUUID();
+    },
   });
 
   await app.register(fastifyJwt, { secret: dependencies.config.JWT_SECRET });
@@ -327,6 +333,33 @@ export async function buildApp(dependencies: AppDependencies): Promise<FastifyIn
 
   const internalPreHandler = internalExecutionPreHandler(dependencies.internalExecutionAuth);
 
+  app.post(
+    "/v1/internal/query-engine/execution-runs/:executionRunId/claim",
+    { preHandler: queryEngineWorkerPreHandler(dependencies.config.QUERY_ENGINE_WORKER_TOKEN) },
+    async (request) => {
+      const { executionRunId } = internalExecutionParamsSchema.parse(request.params);
+      const input = queryEngineWorkerClaimSchema.parse(request.body);
+      const state = await dependencies.observationRepository.resolveExecutionWorkerState(
+        {
+          tenantId: input.tenantId,
+          userIdentityId: null,
+          actorService: "QUERY_ENGINE",
+        },
+        executionRunId,
+        input.eventId,
+      );
+      return {
+        data: {
+          ...state,
+          token: dependencies.internalExecutionAuth.issue({
+            tenantId: input.tenantId,
+            executionRunId,
+          }),
+        },
+      };
+    },
+  );
+
   app.get(
     "/v1/internal/execution-runs/:executionRunId/assignment",
     { preHandler: internalPreHandler },
@@ -487,6 +520,35 @@ const internalCaptureUploadSchema = captureArtifactMetadataSchema
       .regex(/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/u),
   });
 const maximumCaptureBytes = 10 * 1_024 * 1_024;
+const queryEngineWorkerClaimSchema = z.strictObject({
+  tenantId: z.uuid(),
+  eventId: z.uuid(),
+});
+
+function queryEngineWorkerPreHandler(
+  expectedToken: string,
+): (request: FastifyRequest, reply: FastifyReply) => Promise<void> {
+  return async (request, reply) => {
+    const authorization = request.headers.authorization;
+    const supplied = authorization?.startsWith("Bearer ")
+      ? authorization.slice("Bearer ".length)
+      : "";
+    const expectedBytes = Buffer.from(expectedToken, "utf8");
+    const suppliedBytes = Buffer.from(supplied, "utf8");
+    if (
+      expectedBytes.length !== suppliedBytes.length ||
+      !timingSafeEqual(expectedBytes, suppliedBytes)
+    ) {
+      await reply.status(401).send({
+        error: {
+          code: "QUERY_ENGINE_WORKER_UNAUTHENTICATED",
+          message: "A valid Query Engine Worker credential is required",
+          traceId: request.id,
+        },
+      });
+    }
+  };
+}
 
 function authenticatedPreHandler(): (
   request: FastifyRequest,

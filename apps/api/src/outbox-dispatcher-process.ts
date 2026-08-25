@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-import { createBullMqOutboxPublisher } from "./bullmq-outbox-publisher.js";
+import { createRoutedBullMqOutboxPublisher } from "./bullmq-outbox-publisher.js";
 import { loadOutboxDispatcherConfig } from "./config.js";
 import { OutboxDatabase } from "./outbox-database.js";
 import { OutboxDispatcher } from "./outbox-dispatcher.js";
@@ -14,9 +14,10 @@ async function main(): Promise<void> {
     statementTimeoutMs: config.OUTBOX_STATEMENT_TIMEOUT_MS,
     idleInTransactionTimeoutMs: config.OUTBOX_IDLE_IN_TRANSACTION_TIMEOUT_MS,
   });
-  const publisher = createBullMqOutboxPublisher({
+  const publisher = createRoutedBullMqOutboxPublisher({
     redisUrl: config.REDIS_URL,
-    queueName: config.OUTBOX_QUEUE_NAME,
+    domainQueueName: config.OUTBOX_QUEUE_NAME,
+    executionQueueName: config.QUERY_EXECUTION_QUEUE_NAME,
     commandTimeoutMs: config.OUTBOX_REDIS_COMMAND_TIMEOUT_MS,
     onConnectionError: (error) => logFailure("OUTBOX_REDIS_CONNECTION_ERROR", error),
   });

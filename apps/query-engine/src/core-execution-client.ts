@@ -41,6 +41,7 @@ export interface CoreExecutionClientOptions {
   readonly baseUrl: string;
   readonly executionRunId: string;
   readonly token: string;
+  readonly traceId: string;
   readonly fetch?: typeof globalThis.fetch;
 }
 
@@ -48,12 +49,14 @@ export class CoreExecutionClient {
   private readonly baseUrl: string;
   private readonly executionRunId: string;
   private readonly token: string;
+  private readonly traceId: string;
   private readonly fetchImplementation: typeof globalThis.fetch;
 
   public constructor(options: CoreExecutionClientOptions) {
     this.baseUrl = options.baseUrl.replace(/\/$/u, "");
     this.executionRunId = z.uuid().parse(options.executionRunId);
     this.token = z.string().min(1).parse(options.token);
+    this.traceId = z.uuid().parse(options.traceId);
     this.fetchImplementation = options.fetch ?? globalThis.fetch;
   }
 
@@ -116,6 +119,7 @@ export class CoreExecutionClient {
         method,
         headers: {
           authorization: `Bearer ${this.token}`,
+          "x-geo-os-trace-id": this.traceId,
           ...(method === "POST" ? { "content-type": "application/json" } : {}),
         },
         ...(method === "POST" ? { body: JSON.stringify(body) } : {}),

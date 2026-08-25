@@ -21,6 +21,19 @@ export interface BullMqOutboxPublisherOptions {
   readonly onConnectionError?: (error: Error) => void;
 }
 
+export interface RoutedBullMqOutboxPublisherOptions extends Omit<
+  BullMqOutboxPublisherOptions,
+  "queueName"
+> {
+  readonly domainQueueName: string;
+  readonly executionQueueName: string;
+}
+
+interface ManagedOutboxPublisher extends OutboxPublisher {
+  initialize(timeoutMs: number): Promise<void>;
+  close(): Promise<void>;
+}
+
 export class BullMqOutboxPublisher implements OutboxPublisher {
   private initialized = false;
 
@@ -69,6 +82,33 @@ export class BullMqOutboxPublisher implements OutboxPublisher {
   }
 }
 
+export class RoutedBullMqOutboxPublisher implements OutboxPublisher {
+  public constructor(
+    private readonly domainPublisher: ManagedOutboxPublisher,
+    private readonly executionPublisher: ManagedOutboxPublisher,
+  ) {}
+
+  public async initialize(timeoutMs: number): Promise<void> {
+    await this.domainPublisher.initialize(timeoutMs);
+    await this.executionPublisher.initialize(timeoutMs);
+  }
+
+  public publish(delivery: OutboxDelivery): Promise<void> {
+    const publisher =
+      delivery.eventType === "ExecutionQueued" ? this.executionPublisher : this.domainPublisher;
+    return publisher.publish(delivery);
+  }
+
+  public async close(): Promise<void> {
+    const results = await Promise.allSettled([
+      this.domainPublisher.close(),
+      this.executionPublisher.close(),
+    ]);
+    const failure = results.find((result) => result.status === "rejected");
+    if (failure?.status === "rejected") throw failure.reason;
+  }
+}
+
 export function createBullMqOutboxPublisher(
   options: BullMqOutboxPublisherOptions,
 ): BullMqOutboxPublisher {
@@ -84,6 +124,22 @@ export function createBullMqOutboxPublisher(
   });
   queue.on("error", (error) => options.onConnectionError?.(error));
   return new BullMqOutboxPublisher(queue, () => connection.disconnect());
+}
+
+export function createRoutedBullMqOutboxPublisher(
+  options: RoutedBullMqOutboxPublisherOptions,
+): RoutedBullMqOutboxPublisher {
+  const sharedOptions = {
+    redisUrl: options.redisUrl,
+    commandTimeoutMs: options.commandTimeoutMs,
+    ...(options.onConnectionError === undefined
+      ? {}
+      : { onConnectionError: options.onConnectionError }),
+  };
+  return new RoutedBullMqOutboxPublisher(
+    createBullMqOutboxPublisher({ ...sharedOptions, queueName: options.domainQueueName }),
+    createBullMqOutboxPublisher({ ...sharedOptions, queueName: options.executionQueueName }),
+  );
 }
 
 async function withTimeout(operation: Promise<unknown>, timeoutMs: number): Promise<void> {

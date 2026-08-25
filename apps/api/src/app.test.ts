@@ -203,10 +203,15 @@ describe("authentication and Tenant Context", () => {
       observation,
     );
     const token = await issueToken(app);
+    const suppliedTraceId = randomId(7);
     const response = await app.inject({
       method: "POST",
       url: `/v1/projects/${projectId}/execution-runs`,
-      headers: { authorization: `Bearer ${token}`, "x-tenant-id": tenantId },
+      headers: {
+        authorization: `Bearer ${token}`,
+        "x-tenant-id": tenantId,
+        "x-geo-os-trace-id": suppliedTraceId,
+      },
       payload: {
         sampleSlotId,
         idempotencyKey: "run-anchor-question-1",
@@ -220,6 +225,7 @@ describe("authentication and Tenant Context", () => {
       expect.objectContaining({ sampleSlotId, idempotencyKey: "run-anchor-question-1" }),
       expect.any(String),
     );
+    expect(vi.mocked(observation.createExecutionRun).mock.calls[0]?.[3]).not.toBe(suppliedTraceId);
   });
 
   it("rejects Tenant attempts to declare actual execution facts while queuing", async () => {
@@ -246,6 +252,61 @@ describe("authentication and Tenant Context", () => {
 
     expect(response.statusCode).toBe(400);
     expect(observation.createExecutionRun).not.toHaveBeenCalled();
+  });
+});
+
+describe("Query Engine Worker claim API", () => {
+  it("rejects an invalid Worker credential before resolving an event", async () => {
+    const observation = createObservationRepository();
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/query-engine/execution-runs/${randomId(4)}/claim`,
+      headers: { authorization: "Bearer invalid-worker-token" },
+      payload: { tenantId, eventId: randomId(7) },
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(observation.resolveExecutionWorkerState).not.toHaveBeenCalled();
+  });
+
+  it("returns durable execution state with a fresh scoped token", async () => {
+    const observation = createObservationRepository();
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+    const executionRunId = randomId(4);
+    const eventId = randomId(7);
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/query-engine/execution-runs/${executionRunId}/claim`,
+      headers: {
+        authorization: "Bearer distinct-query-worker-test-secret-at-least-32-characters",
+      },
+      payload: { tenantId, eventId },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(observation.resolveExecutionWorkerState).toHaveBeenCalledWith(
+      { tenantId, userIdentityId: null, actorService: "QUERY_ENGINE" },
+      executionRunId,
+      eventId,
+    );
+    const body = response.json() as { data: { token: string; operational_status: string } };
+    expect(body.data.operational_status).toBe("QUEUED");
+    expect(
+      new InternalExecutionAuth("distinct-internal-test-secret-at-least-32-characters").verify(
+        body.data.token,
+      ),
+    ).toMatchObject({ tenantId, executionRunId, service: "QUERY_ENGINE" });
   });
 });
 
@@ -296,12 +357,16 @@ describe("execution-scoped internal API", () => {
       observation,
     );
     const executionRunId = randomId(4);
+    const traceId = randomId(7);
     const token = issueInternalToken(executionRunId);
 
     const response = await app.inject({
       method: "POST",
       url: `/v1/internal/execution-runs/${executionRunId}/start`,
-      headers: { authorization: `Bearer ${token}` },
+      headers: {
+        authorization: `Bearer ${token}`,
+        "x-geo-os-trace-id": traceId,
+      },
       payload: runtimeContext(),
     });
 
@@ -310,7 +375,7 @@ describe("execution-scoped internal API", () => {
       { tenantId, userIdentityId: null, actorService: "QUERY_ENGINE" },
       executionRunId,
       runtimeContext(),
-      expect.any(String),
+      traceId,
     );
   });
 
@@ -486,6 +551,14 @@ function createObservationRepository(): ObservationRepository & {
   createExecutionRun: ReturnType<typeof vi.fn>;
 } {
   return {
+    resolveExecutionWorkerState: vi.fn(async () => ({
+      execution_run_id: randomId(4),
+      operational_status: "QUEUED" as const,
+      response_outcome_kind: null,
+      completed_at: null,
+      observation_candidate_id: null,
+      raw_observation_id: null,
+    })),
     resolveExecutionAssignment: vi.fn(async () => ({
       execution_run_id: randomId(4),
       question_version_id: randomId(5),
@@ -559,6 +632,7 @@ async function createTestApp(
       DATABASE_URL: "postgresql://unused",
       JWT_SECRET: "test-secret-at-least-thirty-two-characters",
       INTERNAL_SERVICE_TOKEN_SECRET: "distinct-internal-test-secret-at-least-32-characters",
+      QUERY_ENGINE_WORKER_TOKEN: "distinct-query-worker-test-secret-at-least-32-characters",
       AUTH_MODE: "development",
     },
     accessControl,

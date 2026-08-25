@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   test: {
-    include: ["apps/api/src/*.queue.integration.ts"],
+    include: ["apps/api/src/*.queue.integration.ts", "tests/*.queue.integration.ts"],
     testTimeout: 15_000,
     hookTimeout: 15_000,
     fileParallelism: false,

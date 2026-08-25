@@ -149,6 +149,15 @@ export interface ObservationFinalizationEvidence {
   readonly artifacts: readonly FinalizationArtifactRow[];
 }
 
+export interface ExecutionWorkerStateRow {
+  readonly execution_run_id: string;
+  readonly operational_status: ExecutionOperationalStatus;
+  readonly response_outcome_kind: ExecutionResponseOutcomeKind | null;
+  readonly completed_at: Date | null;
+  readonly observation_candidate_id: string | null;
+  readonly raw_observation_id: string | null;
+}
+
 interface CandidateExecutionRow extends ExecutionRunRow {
   readonly project_status: string;
   readonly planned_platform: string;
@@ -167,6 +176,11 @@ interface FinalizationTargetRow extends ObservationCandidateRow {
 }
 
 export interface ObservationRepository {
+  resolveExecutionWorkerState(
+    context: DomainCommandContext,
+    executionRunId: string,
+    eventId: string,
+  ): Promise<ExecutionWorkerStateRow>;
   resolveExecutionAssignment(
     context: DomainCommandContext,
     executionRunId: string,
@@ -224,6 +238,44 @@ export interface ObservationRepository {
 
 export class PostgresObservationRepository implements ObservationRepository {
   public constructor(private readonly database: Database) {}
+
+  public resolveExecutionWorkerState(
+    context: DomainCommandContext,
+    executionRunId: string,
+    eventId: string,
+  ): Promise<ExecutionWorkerStateRow> {
+    return this.database.withTenantRead(context.tenantId, async (client) => {
+      const result = await client.query<ExecutionWorkerStateRow>(
+        `SELECT er.id AS execution_run_id,
+                er.operational_status,
+                er.response_outcome_kind,
+                er.completed_at,
+                oc.id AS observation_candidate_id,
+                ro.id AS raw_observation_id
+           FROM execution_runs er
+           JOIN outbox_events oe
+             ON oe.tenant_id = er.tenant_id
+            AND oe.aggregate_type = 'ExecutionRun'
+            AND oe.aggregate_id = er.id
+            AND oe.event_type = 'ExecutionQueued'
+            AND oe.id = $3
+           LEFT JOIN observation_candidates oc
+             ON oc.tenant_id = er.tenant_id
+            AND oc.project_id = er.project_id
+            AND oc.execution_run_id = er.id
+           LEFT JOIN raw_observations ro
+             ON ro.tenant_id = er.tenant_id
+            AND ro.project_id = er.project_id
+            AND ro.observation_candidate_id = oc.id
+          WHERE er.tenant_id = $1
+            AND er.id = $2`,
+        [context.tenantId, executionRunId, eventId],
+      );
+      const state = result.rows[0];
+      if (!state) throw notFound("ExecutionQueued worker assignment not found");
+      return state;
+    });
+  }
 
   public resolveExecutionAssignment(
     context: DomainCommandContext,
