@@ -11,6 +11,7 @@ const configSchema = z
     DATABASE_URL: z.url(),
     JWT_SECRET: z.string().min(32),
     INTERNAL_SERVICE_TOKEN_SECRET: z.string().min(32),
+    QUERY_ENGINE_WORKER_TOKEN: z.string().min(32),
     AUTH_MODE: z.enum(["development", "oidc"]).default("development"),
   })
   .superRefine((config, context) => {
@@ -19,6 +20,19 @@ const configSchema = z
         code: "custom",
         path: ["AUTH_MODE"],
         message: "AUTH_MODE=development is forbidden when NODE_ENV=production",
+      });
+    }
+    if (
+      new Set([
+        config.JWT_SECRET,
+        config.INTERNAL_SERVICE_TOKEN_SECRET,
+        config.QUERY_ENGINE_WORKER_TOKEN,
+      ]).size !== 3
+    ) {
+      context.addIssue({
+        code: "custom",
+        path: ["QUERY_ENGINE_WORKER_TOKEN"],
+        message: "User, signing, and Query Engine Worker credentials must be distinct",
       });
     }
   });
@@ -45,6 +59,16 @@ const outboxDispatcherConfigSchema = z
       .max(100)
       .regex(/^[A-Za-z0-9_-]+$/u, "OUTBOX_QUEUE_NAME must contain only letters, digits, _ or -")
       .default("geo-os-domain-events"),
+    QUERY_EXECUTION_QUEUE_NAME: z
+      .string()
+      .trim()
+      .min(1)
+      .max(100)
+      .regex(
+        /^[A-Za-z0-9_-]+$/u,
+        "QUERY_EXECUTION_QUEUE_NAME must contain only letters, digits, _ or -",
+      )
+      .default("geo-os-query-executions"),
     OUTBOX_REDIS_STARTUP_TIMEOUT_MS: z.coerce.number().int().min(100).max(60_000).default(5_000),
     OUTBOX_REDIS_COMMAND_TIMEOUT_MS: z.coerce.number().int().min(100).max(60_000).default(3_000),
     OUTBOX_POLL_INTERVAL_MS: z.coerce.number().int().min(10).max(60_000).default(250),
@@ -80,6 +104,13 @@ const outboxDispatcherConfigSchema = z
         code: "custom",
         path: ["OUTBOX_MAX_RETRY_DELAY_MS"],
         message: "OUTBOX_MAX_RETRY_DELAY_MS must not be lower than OUTBOX_BASE_RETRY_DELAY_MS",
+      });
+    }
+    if (config.QUERY_EXECUTION_QUEUE_NAME === config.OUTBOX_QUEUE_NAME) {
+      context.addIssue({
+        code: "custom",
+        path: ["QUERY_EXECUTION_QUEUE_NAME"],
+        message: "QUERY_EXECUTION_QUEUE_NAME must be distinct from OUTBOX_QUEUE_NAME",
       });
     }
   });

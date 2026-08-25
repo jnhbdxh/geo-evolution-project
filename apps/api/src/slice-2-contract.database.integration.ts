@@ -25,6 +25,46 @@ afterEach(async () => {
 });
 
 describe("Slice 2 live PostgreSQL contract candidate", () => {
+  it("binds a Worker claim to the persisted ExecutionQueued event and Core state", async () => {
+    const fixture = await createPlanningFixture("worker-claim-state");
+    const repository = new PostgresObservationRepository(fixture.database);
+    const executionRun = await repository.createExecutionRun(
+      fixtureContext(fixture),
+      fixture.projectId,
+      {
+        sampleSlotId: fixture.sampleSlotId,
+        idempotencyKey: `worker-claim-${randomUUID()}`,
+      },
+      randomUUID(),
+    );
+    const executionRunId = executionRun.id;
+    const eventId = await fixture.database.withTenantRead(fixture.tenantId, async (client) => {
+      const result = await client.query<{ id: string }>(
+        `SELECT id
+           FROM outbox_events
+          WHERE tenant_id = $1
+            AND aggregate_type = 'ExecutionRun'
+            AND aggregate_id = $2
+            AND event_type = 'ExecutionQueued'`,
+        [fixture.tenantId, executionRunId],
+      );
+      const event = result.rows[0];
+      if (!event) throw new Error("ExecutionQueued event was not returned");
+      return event.id;
+    });
+    await expect(
+      repository.resolveExecutionWorkerState(fixtureContext(fixture), executionRunId, eventId),
+    ).resolves.toMatchObject({
+      execution_run_id: executionRunId,
+      operational_status: "QUEUED",
+      observation_candidate_id: null,
+      raw_observation_id: null,
+    });
+    await expect(
+      repository.resolveExecutionWorkerState(fixtureContext(fixture), executionRunId, randomUUID()),
+    ).rejects.toMatchObject({ code: "NOT_FOUND" });
+  });
+
   it("resolves the canonical QuestionVersion assignment only for its queued Tenant run", async () => {
     const owner = await createPlanningFixture("core-assignment-owner");
     const outsider = await createPlanningFixture("core-assignment-outsider");

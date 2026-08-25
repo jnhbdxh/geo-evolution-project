@@ -5,11 +5,11 @@ as_of: "2026-08-25"
 repository:
   local_committed_baseline:
     branch: main
-    head: a44e5b03534ec917e491abed803100f66205653e
+    head: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
     state: PUBLISHED
   shared_baseline:
     branch: main
-    head: a44e5b03534ec917e491abed803100f66205653e
+    head: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
     state: PUBLISHED
   content_baseline_commit: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
   activation_commit: b1c032ff6b5c77081ee8df8715f66f7042decbb1
@@ -18,9 +18,9 @@ repository:
   inventory: docs/worktree-change-inventory.yaml
   working_revision:
     state: IMPLEMENTED_IN_WORKTREE
-    branch: codex/slice2-bullmq-dispatcher
-    base_commit: a44e5b03534ec917e491abed803100f66205653e
-    scope: BullMQ Outbox Publisher, mandatory startup readiness, bounded Redis producer settings, long-running Dispatcher lifecycle, and isolated queue integration tests
+    branch: codex/slice2-core-bound-vertical
+    base_commit: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
+    scope: Dedicated ExecutionQueued queue routing, Core-verified Worker claims, fresh execution-scoped Token issuance, durable terminal-result deduplication, ambiguous-state fencing, correlated failure diagnostics, and a single-instance Query Engine BullMQ entry point
 
 verification_summary:
   verified_at: "2026-08-24T18:24:44+08:00"
@@ -38,12 +38,12 @@ verification_summary:
   frozen_migration_hashes: unchanged
 
 working_revision_verification_summary:
-  verified_at: "2026-08-25T10:13:09+08:00"
-  default_tests: 96_of_96_passed
+  verified_at: "2026-08-25T12:09:20+08:00"
+  default_tests: 110_of_110_passed
   query_engine_tests: 12_of_12_passed
-  postgresql_tests: 62_of_62_passed
+  postgresql_tests: 63_of_63_passed
   capture_minio_tests: 7_of_7_passed
-  outbox_bullmq_tests: 2_of_2_passed
+  outbox_bullmq_tests: 3_of_3_passed
   typecheck: passed
   eslint: passed
   prettier: passed_for_changed_files
@@ -184,8 +184,8 @@ capabilities:
   - id: slice_2.durable_dispatch_and_recovery
     label: Async delivery runtime, consumer idempotency, and ambiguous-side-effect recovery
     repository_state: COMMITTED
-    baseline_ref: 824d0e021cfff58eb9bc855e80c6a6e1f744d654
-    last_verified_at: "2026-08-24T15:08:03+08:00"
+    baseline_ref: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
+    last_verified_at: "2026-08-25T10:13:09+08:00"
     dimensions:
       object_defined: COMPLETE
       ddl_frozen: NOT_STARTED
@@ -195,8 +195,8 @@ capabilities:
       integration_verified: PARTIAL
       product_accepted: NOT_STARTED
     technical_acceptance:
-      status: POSTGRES_DISPATCH_P1_TESTS_PASSED
-      scope: Dedicated role and pool, role-bound RLS, application-role delivery-update denial, bounded publish timeout and lock release, database success/retry time, and sanitized failure diagnostics
+      status: BULLMQ_DISPATCH_INTEGRATION_PASSED
+      scope: Dedicated role and pool, bounded BullMQ publication, startup readiness gating, duplicate Job suppression, PostgreSQL delivery metadata, and no late enqueue after disconnected Redis recovery
       decision_ref: docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
     active_runtime_contract: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
     milestones:
@@ -204,24 +204,7 @@ capabilities:
       production_enablement_ready: NOT_STARTED
     security_conformance:
       status: CONFORMING
-      baseline_scope: Committed 824d0e0 implementation with dedicated Dispatcher database identity, role-bound RLS, minimum grants, shared-role read/update denial, isolated connection pool, bounded publish transaction, and database-based retry deadline
-    working_revision:
-      repository_state: IMPLEMENTED_IN_WORKTREE
-      implementation_scope: BullMQ 6 Publisher with explicit ioredis producer, mandatory bounded startup readiness before database claiming, event-ID Job deduplication, bounded disconnected Redis behavior, retained queue jobs, stoppable long-running Dispatcher polling, and PostgreSQL-to-Redis integration coverage
-      evidence:
-        - apps/api/src/bullmq-outbox-publisher.ts
-        - apps/api/src/bullmq-outbox-publisher.test.ts
-        - apps/api/src/outbox-dispatcher-runner.ts
-        - apps/api/src/outbox-dispatcher-runner.test.ts
-        - apps/api/src/outbox-dispatcher-process.ts
-        - apps/api/src/outbox-bullmq.queue.integration.ts
-        - vitest.queue.config.mjs
-        - compose.yaml
-        - .github/workflows/ci.yml
-      verification_environment: PostgreSQL 17 geo_os_test plus isolated Redis 7 BullMQ queue
-      technical_acceptance:
-        status: WORKTREE_QUEUE_INTEGRATION_PASSED
-        scope: Real BullMQ delivery, duplicate Job suppression, PostgreSQL publish metadata, startup readiness gating, and no late enqueue after disconnected Redis recovery
+      baseline_scope: Committed 19ea20d implementation with dedicated Dispatcher identity, role-bound RLS, isolated connection pool, bounded BullMQ publication, startup readiness, and database-based retry deadlines
     evidence:
       - docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
       - packages/database/migrations/0003_outbox_dispatcher_access.sql
@@ -232,11 +215,14 @@ capabilities:
       - apps/api/src/outbox-repository.ts
       - apps/api/src/outbox-dispatcher.test.ts
       - apps/api/src/outbox-dispatcher.database.integration.ts
+      - apps/api/src/bullmq-outbox-publisher.ts
+      - apps/api/src/outbox-dispatcher-process.ts
+      - apps/api/src/outbox-bullmq.queue.integration.ts
     verification_environment: PostgreSQL 17 isolated geo_os_test plus deterministic publisher port
     known_gaps:
       - Migrations 0003 and 0004 are committed; the access migration set is not frozen.
-      - BullMQ Publisher and the long-running Dispatcher are implemented only in the worktree and are not yet committed or shared-CI verified.
-      - Consumer persistent deduplication and failed-event recovery are absent.
+      - Consumer persistent deduplication and Worker execution are implemented only in the current worktree and are not yet committed or shared-CI verified.
+      - Failed-event management commands are absent.
       - Ambiguous browser-side-effect recovery is absent.
       - Redis command and total publish waits are bounded; completed/failed Job retention, connection-budget capacity evidence, and the migration-set freeze decision remain unresolved.
 
@@ -264,23 +250,32 @@ capabilities:
 
   - id: runtime.worker_runtime
     label: Unified Query Engine and AI/Data Worker runtime lifecycle
-    repository_state: NOT_PRESENT
+    repository_state: IMPLEMENTED_IN_WORKTREE
     baseline_ref: docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
     last_verified_at: null
     dimensions:
       object_defined: COMPLETE
       ddl_frozen: NOT_APPLICABLE
-      command_implemented: NOT_STARTED
+      command_implemented: PARTIAL
       api_available: NOT_APPLICABLE
       ui_available: NOT_APPLICABLE
-      integration_verified: NOT_STARTED
+      integration_verified: PARTIAL
       product_accepted: NOT_STARTED
     evidence:
       - docs/contracts/slice-2-async-runtime-lease-and-recovery-contract-v0.1.md
-    verification_environment: NOT_VERIFIED
+      - apps/api/src/app.ts
+      - apps/api/src/observation-repository.ts
+      - apps/query-engine/src/core-worker-client.ts
+      - apps/query-engine/src/execution-queued-job.ts
+      - apps/query-engine/src/query-engine-worker-logging.ts
+      - apps/query-engine/src/query-engine-worker-process.ts
+      - apps/api/src/bullmq-outbox-publisher.ts
+      - apps/api/src/outbox-bullmq.queue.integration.ts
+    verification_environment: Unit contracts, PostgreSQL 17 Worker-claim state verification, and isolated Redis 7 two-queue routing; live BullMQ-to-Doubao execution not yet run
     known_gaps:
-      - No long-running BullMQ consumer entry point exists.
-      - Heartbeat, configurable concurrency, cancellation, timeout, and graceful drain are absent.
+      - The single-instance BullMQ entry point is implemented but has not completed a live Core-bound Doubao run.
+      - RUNNING or partially finalized executions stop blind replay but still require a resumable recovery command and operator flow.
+      - Heartbeat, leases, fencing, configurable concurrency, and full graceful-drain evidence remain Milestone B work.
       - No independent AI/Data Worker package or process exists.
 
   - id: runtime.observability_and_deployment_readiness
@@ -303,7 +298,7 @@ capabilities:
       - .github/workflows/ci.yml
     verification_environment: API contract tests and local/CI infrastructure services only
     known_gaps:
-      - Trace context is not propagated end-to-end through Outbox, BullMQ, Worker, and evidence processing.
+      - Trace context reaches correlated Worker completion/failure logs but is not yet propagated end-to-end through evidence processing.
       - Liveness, Readiness, dependency health, and Worker heartbeat are not separated.
       - API, Dispatcher, Query Engine, and Worker production images and deployment manifests are absent.
       - Database connection budgets, secret rotation, backup RPO/RTO, restore drills, alerts, and capacity thresholds are not accepted.

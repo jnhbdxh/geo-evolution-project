@@ -249,6 +249,61 @@ describe("authentication and Tenant Context", () => {
   });
 });
 
+describe("Query Engine Worker claim API", () => {
+  it("rejects an invalid Worker credential before resolving an event", async () => {
+    const observation = createObservationRepository();
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/query-engine/execution-runs/${randomId(4)}/claim`,
+      headers: { authorization: "Bearer invalid-worker-token" },
+      payload: { tenantId, eventId: randomId(7) },
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(observation.resolveExecutionWorkerState).not.toHaveBeenCalled();
+  });
+
+  it("returns durable execution state with a fresh scoped token", async () => {
+    const observation = createObservationRepository();
+    const app = await createTestApp(
+      createAccessControl(activeContext),
+      createWorkspaceRepository(),
+      observation,
+    );
+    const executionRunId = randomId(4);
+    const eventId = randomId(7);
+
+    const response = await app.inject({
+      method: "POST",
+      url: `/v1/internal/query-engine/execution-runs/${executionRunId}/claim`,
+      headers: {
+        authorization: "Bearer distinct-query-worker-test-secret-at-least-32-characters",
+      },
+      payload: { tenantId, eventId },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(observation.resolveExecutionWorkerState).toHaveBeenCalledWith(
+      { tenantId, userIdentityId: null, actorService: "QUERY_ENGINE" },
+      executionRunId,
+      eventId,
+    );
+    const body = response.json() as { data: { token: string; operational_status: string } };
+    expect(body.data.operational_status).toBe("QUEUED");
+    expect(
+      new InternalExecutionAuth("distinct-internal-test-secret-at-least-32-characters").verify(
+        body.data.token,
+      ),
+    ).toMatchObject({ tenantId, executionRunId, service: "QUERY_ENGINE" });
+  });
+});
+
 describe("execution-scoped internal API", () => {
   it("rejects missing internal credentials without invoking a command", async () => {
     const observation = createObservationRepository();
@@ -486,6 +541,14 @@ function createObservationRepository(): ObservationRepository & {
   createExecutionRun: ReturnType<typeof vi.fn>;
 } {
   return {
+    resolveExecutionWorkerState: vi.fn(async () => ({
+      execution_run_id: randomId(4),
+      operational_status: "QUEUED" as const,
+      response_outcome_kind: null,
+      completed_at: null,
+      observation_candidate_id: null,
+      raw_observation_id: null,
+    })),
     resolveExecutionAssignment: vi.fn(async () => ({
       execution_run_id: randomId(4),
       question_version_id: randomId(5),
@@ -559,6 +622,7 @@ async function createTestApp(
       DATABASE_URL: "postgresql://unused",
       JWT_SECRET: "test-secret-at-least-thirty-two-characters",
       INTERNAL_SERVICE_TOKEN_SECRET: "distinct-internal-test-secret-at-least-32-characters",
+      QUERY_ENGINE_WORKER_TOKEN: "distinct-query-worker-test-secret-at-least-32-characters",
       AUTH_MODE: "development",
     },
     accessControl,

@@ -490,6 +490,7 @@ async function createDatabaseApp(
       DATABASE_URL: databaseUrl,
       JWT_SECRET: "test-secret-at-least-thirty-two-characters",
       INTERNAL_SERVICE_TOKEN_SECRET: "distinct-internal-test-secret-at-least-32-characters",
+      QUERY_ENGINE_WORKER_TOKEN: "distinct-query-worker-test-secret-at-least-32-characters",
       AUTH_MODE: "development",
     },
     accessControl: new PostgresAccessControl(database),

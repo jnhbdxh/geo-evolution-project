@@ -11,6 +11,7 @@
     "build": "pnpm -r build",
     "dev": "pnpm --filter @geo-os/api dev",
     "dev:outbox": "pnpm --filter @geo-os/api dev:outbox",
+    "dev:query-worker": "pnpm --filter @geo-os/query-engine dev:worker",
     "docs:validate": "prettier --check \"docs/**/*.yaml\" && node tools/validate-doc-baseline.mjs",
     "docs:validate:sources": "prettier --check \"docs/**/*.yaml\" && node tools/validate-doc-baseline.mjs --require-external-sources",
     "format": "prettier --write .",
