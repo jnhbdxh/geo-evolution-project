@@ -10,6 +10,7 @@
   "scripts": {
     "build": "pnpm -r build",
     "dev": "pnpm --filter @geo-os/api dev",
+    "dev:outbox": "pnpm --filter @geo-os/api dev:outbox",
     "docs:validate": "prettier --check \"docs/**/*.yaml\" && node tools/validate-doc-baseline.mjs",
     "docs:validate:sources": "prettier --check \"docs/**/*.yaml\" && node tools/validate-doc-baseline.mjs --require-external-sources",
     "format": "prettier --write .",
@@ -19,6 +20,7 @@
     "test:db": "vitest run --config vitest.database.config.mjs",
     "test:capture": "vitest run --config vitest.capture.config.mjs",
     "test:query-engine": "vitest run --config vitest.query-engine.config.mjs",
+    "test:queue": "vitest run --config vitest.queue.config.mjs",
     "audit:prod": "pnpm audit --prod --audit-level high --registry=https://registry.npmjs.org",
     "auth:doubao": "pnpm --filter @geo-os/query-engine auth:doubao",
     "test:doubao:live": "pnpm --filter @geo-os/query-engine smoke:doubao",

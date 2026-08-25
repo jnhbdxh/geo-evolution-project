@@ -1,21 +1,26 @@
 schema_version: 1
 status: ACTIVE_WORKING_STATUS
 repository_state: COMMITTED
-as_of: "2026-08-24"
+as_of: "2026-08-25"
 repository:
   local_committed_baseline:
-    branch: codex/business-contract-clarifications
-    head: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
-    state: LOCAL_COMMITTED
+    branch: main
+    head: a44e5b03534ec917e491abed803100f66205653e
+    state: PUBLISHED
   shared_baseline:
     branch: main
-    head: 9b4b607103fc00749eefcc9196a7d03eb7ae8481
+    head: a44e5b03534ec917e491abed803100f66205653e
     state: PUBLISHED
   content_baseline_commit: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
-  activation_commit: THIS_DOCUMENT_COMMIT
-  publication_state: LOCAL_VERSION_CONTROLLED
+  activation_commit: b1c032ff6b5c77081ee8df8715f66f7042decbb1
+  publication_state: SHARED_PUBLISHED
   protected_untracked_artifacts: PRESENT
   inventory: docs/worktree-change-inventory.yaml
+  working_revision:
+    state: IMPLEMENTED_IN_WORKTREE
+    branch: codex/slice2-bullmq-dispatcher
+    base_commit: a44e5b03534ec917e491abed803100f66205653e
+    scope: BullMQ Outbox Publisher, mandatory startup readiness, bounded Redis producer settings, long-running Dispatcher lifecycle, and isolated queue integration tests
 
 verification_summary:
   verified_at: "2026-08-24T18:24:44+08:00"
@@ -31,6 +36,23 @@ verification_summary:
   document_validation: passed_with_5_external_source_byte_hashes
   compose_configuration: passed
   frozen_migration_hashes: unchanged
+
+working_revision_verification_summary:
+  verified_at: "2026-08-25T10:13:09+08:00"
+  default_tests: 96_of_96_passed
+  query_engine_tests: 12_of_12_passed
+  postgresql_tests: 62_of_62_passed
+  capture_minio_tests: 7_of_7_passed
+  outbox_bullmq_tests: 2_of_2_passed
+  typecheck: passed
+  eslint: passed
+  prettier: passed_for_changed_files
+  build: passed
+  production_dependency_audit: no_known_vulnerabilities_official_npm_registry
+  document_validation: passed_with_5_external_source_byte_hashes
+  compose_configuration: passed
+  frozen_migration_hashes: unchanged
+  repository_state: IMPLEMENTED_IN_WORKTREE
 
 dimension_values: [NOT_STARTED, PARTIAL, COMPLETE, NOT_APPLICABLE]
 repository_state_values: [NOT_PRESENT, IMPLEMENTED_IN_WORKTREE, COMMITTED, RELEASED]
@@ -183,6 +205,23 @@ capabilities:
     security_conformance:
       status: CONFORMING
       baseline_scope: Committed 824d0e0 implementation with dedicated Dispatcher database identity, role-bound RLS, minimum grants, shared-role read/update denial, isolated connection pool, bounded publish transaction, and database-based retry deadline
+    working_revision:
+      repository_state: IMPLEMENTED_IN_WORKTREE
+      implementation_scope: BullMQ 6 Publisher with explicit ioredis producer, mandatory bounded startup readiness before database claiming, event-ID Job deduplication, bounded disconnected Redis behavior, retained queue jobs, stoppable long-running Dispatcher polling, and PostgreSQL-to-Redis integration coverage
+      evidence:
+        - apps/api/src/bullmq-outbox-publisher.ts
+        - apps/api/src/bullmq-outbox-publisher.test.ts
+        - apps/api/src/outbox-dispatcher-runner.ts
+        - apps/api/src/outbox-dispatcher-runner.test.ts
+        - apps/api/src/outbox-dispatcher-process.ts
+        - apps/api/src/outbox-bullmq.queue.integration.ts
+        - vitest.queue.config.mjs
+        - compose.yaml
+        - .github/workflows/ci.yml
+      verification_environment: PostgreSQL 17 geo_os_test plus isolated Redis 7 BullMQ queue
+      technical_acceptance:
+        status: WORKTREE_QUEUE_INTEGRATION_PASSED
+        scope: Real BullMQ delivery, duplicate Job suppression, PostgreSQL publish metadata, startup readiness gating, and no late enqueue after disconnected Redis recovery
     evidence:
       - docs/contracts/GEO_OS_Engineering_Boundaries_Interaction_and_Release_Contract_V1.0.md
       - packages/database/migrations/0003_outbox_dispatcher_access.sql
@@ -196,10 +235,10 @@ capabilities:
     verification_environment: PostgreSQL 17 isolated geo_os_test plus deterministic publisher port
     known_gaps:
       - Migrations 0003 and 0004 are committed; the access migration set is not frozen.
-      - BullMQ publisher wiring and the long-running polling process are absent.
+      - BullMQ Publisher and the long-running Dispatcher are implemented only in the worktree and are not yet committed or shared-CI verified.
       - Consumer persistent deduplication and failed-event recovery are absent.
       - Ambiguous browser-side-effect recovery is absent.
-      - The generic Publisher port is bounded, but the real BullMQ adapter, Redis command timeout, connection-budget evidence, and migration-set freeze decision remain unresolved.
+      - Redis command and total publish waits are bounded; completed/failed Job retention, connection-budget capacity evidence, and the migration-set freeze decision remain unresolved.
 
   - id: runtime.query_identity_lease
     label: Query execution and AI-platform identity lease with fencing

@@ -35,6 +35,23 @@ const outboxDispatcherConfigSchema = z
       .min(200)
       .max(120_000)
       .default(10_000),
+    REDIS_URL: z.url().refine((value) => ["redis:", "rediss:"].includes(new URL(value).protocol), {
+      message: "REDIS_URL must use redis:// or rediss://",
+    }),
+    OUTBOX_QUEUE_NAME: z
+      .string()
+      .trim()
+      .min(1)
+      .max(100)
+      .regex(/^[A-Za-z0-9_-]+$/u, "OUTBOX_QUEUE_NAME must contain only letters, digits, _ or -")
+      .default("geo-os-domain-events"),
+    OUTBOX_REDIS_STARTUP_TIMEOUT_MS: z.coerce.number().int().min(100).max(60_000).default(5_000),
+    OUTBOX_REDIS_COMMAND_TIMEOUT_MS: z.coerce.number().int().min(100).max(60_000).default(3_000),
+    OUTBOX_POLL_INTERVAL_MS: z.coerce.number().int().min(10).max(60_000).default(250),
+    OUTBOX_ERROR_DELAY_MS: z.coerce.number().int().min(100).max(60_000).default(1_000),
+    OUTBOX_MAX_ATTEMPTS: z.coerce.number().int().min(1).max(100).default(8),
+    OUTBOX_BASE_RETRY_DELAY_MS: z.coerce.number().int().min(100).max(3_600_000).default(1_000),
+    OUTBOX_MAX_RETRY_DELAY_MS: z.coerce.number().int().min(100).max(86_400_000).default(300_000),
   })
   .superRefine((config, context) => {
     if (new URL(config.OUTBOX_DATABASE_URL).username !== "geo_os_outbox_dispatcher") {
@@ -49,6 +66,20 @@ const outboxDispatcherConfigSchema = z
         code: "custom",
         path: ["OUTBOX_IDLE_IN_TRANSACTION_TIMEOUT_MS"],
         message: "OUTBOX_IDLE_IN_TRANSACTION_TIMEOUT_MS must exceed OUTBOX_PUBLISH_TIMEOUT_MS",
+      });
+    }
+    if (config.OUTBOX_REDIS_COMMAND_TIMEOUT_MS > config.OUTBOX_PUBLISH_TIMEOUT_MS) {
+      context.addIssue({
+        code: "custom",
+        path: ["OUTBOX_REDIS_COMMAND_TIMEOUT_MS"],
+        message: "OUTBOX_REDIS_COMMAND_TIMEOUT_MS must not exceed OUTBOX_PUBLISH_TIMEOUT_MS",
+      });
+    }
+    if (config.OUTBOX_MAX_RETRY_DELAY_MS < config.OUTBOX_BASE_RETRY_DELAY_MS) {
+      context.addIssue({
+        code: "custom",
+        path: ["OUTBOX_MAX_RETRY_DELAY_MS"],
+        message: "OUTBOX_MAX_RETRY_DELAY_MS must not be lower than OUTBOX_BASE_RETRY_DELAY_MS",
       });
     }
   });

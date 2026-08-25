@@ -39,8 +39,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Start isolated PostgreSQL and MinIO
-        run: docker compose --profile database-test --profile capture-test up -d --wait --wait-timeout 120 postgres-test minio-test
+      - name: Start isolated PostgreSQL, Redis and MinIO
+        run: docker compose --profile database-test --profile capture-test --profile queue-test up -d --wait --wait-timeout 120 postgres-test minio-test redis-test
       - name: Apply database migrations
         run: pnpm db:migrate
         env:
@@ -62,9 +62,17 @@ jobs:
           TEST_OBJECT_STORAGE_SECRET_KEY: geo_os_minio_test_secret
           ALLOW_DATABASE_INTEGRATION_TESTS: "true"
           ALLOW_OBJECT_STORAGE_INTEGRATION_TESTS: "true"
+      - name: Outbox to BullMQ integration tests
+        run: pnpm test:queue
+        env:
+          TEST_OUTBOX_DATABASE_URL: postgresql://geo_os_outbox_dispatcher:geo_os_outbox_dispatcher@127.0.0.1:5433/geo_os_test
+          TEST_DATABASE_MIGRATION_URL: postgresql://geo_os_migrator:geo_os_migrator@127.0.0.1:5433/geo_os_test
+          TEST_REDIS_URL: redis://127.0.0.1:6380
+          ALLOW_DATABASE_INTEGRATION_TESTS: "true"
+          ALLOW_REDIS_INTEGRATION_TESTS: "true"
       - name: Stop isolated services
         if: always()
-        run: docker compose --profile database-test --profile capture-test down --volumes
+        run: docker compose --profile database-test --profile capture-test --profile queue-test down --volumes
 
   security:
     runs-on: ubuntu-latest

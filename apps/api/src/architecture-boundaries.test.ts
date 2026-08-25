@@ -15,6 +15,10 @@ const writeBoundaryFiles = new Set([
   "apps/api/src/outbox-repository.ts",
   "apps/api/src/repository-container.ts",
 ]);
+const databaseCompositionFiles = new Set([
+  ...writeBoundaryFiles,
+  "apps/api/src/outbox-dispatcher-process.ts",
+]);
 let productionFiles: SourceFile[] = [];
 
 beforeAll(async () => {
@@ -36,7 +40,7 @@ describe("production database write architecture", () => {
       .filter((file) => file.relativePath !== "apps/api/src/database.ts")
       .filter((file) => /from\s+["'][^"']*database(?:\.js)?["']/u.test(file.content))
       .filter((file) => {
-        if (writeBoundaryFiles.has(file.relativePath)) return false;
+        if (databaseCompositionFiles.has(file.relativePath)) return false;
         if (file.relativePath !== "apps/api/src/access.ts") return true;
         return !file.content.includes("import type { ReadDatabase, SqlExecutor }");
       })
@@ -59,6 +63,7 @@ describe("production database write architecture", () => {
     const allowedFiles = new Set([
       "apps/api/src/config.ts",
       "apps/api/src/outbox-database.ts",
+      "apps/api/src/outbox-dispatcher-process.ts",
       "apps/api/src/outbox-repository.ts",
     ]);
     const violations = productionFiles
