@@ -1,8 +1,17 @@
 # GEO OS Slice 2 Observation Domain Contract V0.1
 
-**Status:** ACTIVE IMPLEMENTATION CONTRACT — DDL FROZEN V1.0  
-**Scope:** Question release、Monitoring plan、Sample slot、Execution、Capture evidence、Observation existence、RawObservation finalization、Correction  
-**Effective version:** 0.1.0  
+**Status:** ACTIVE IMPLEMENTATION CONTRACT — DDL FROZEN V1.0
+
+**Documentation state:** COMMITTED
+
+**Content baseline:** `c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7`
+
+**Activation record:** `THIS_DOCUMENT_COMMIT`
+
+**Scope:** Question release、Monitoring plan、Sample slot、Execution、Capture evidence、Observation existence、RawObservation finalization、Correction
+
+**Effective version:** 0.1.0
+
 **Upstream DDL:** ZERO-FK FROZEN BASELINE — `0001_slice_1_foundation.sql`
 
 ## 1. Boundary
@@ -22,7 +31,9 @@ QuestionVersion
 
 Slice 2 records what was planned, what actually ran, whether a user-visible response outcome existed, and the exact raw evidence. It does not decide Observation quality, metric eligibility, production inclusion, Mention/Recommendation/Citation KPI, Review, Resolution or Snapshot membership. Those are later-slice assessments and decisions.
 
-Authoritative semantic inputs are Decision Pack A1 (Observation existence), A2 (quality and metric eligibility boundary) and A3 (immutability/review model), together with the active Product Object Map and Slice Implementation Map.
+Although Slice 2 does not make those later decisions, its finalized evidence must preserve the complete visible answer, visible ordering, ordered link occurrences and actual execution context needed to re-run versioned brand Mention, competitor occurrence, Consideration, Recommendation and Citation/Source evaluators without querying the external AI platform again.
+
+Authoritative semantic inputs are Decision Pack A1 (Observation existence), A2 (quality and metric eligibility boundary) and A3 (immutability/review model), together with the active Product Scope and Core Domain/Lifecycle/Authorization contracts.
 
 ## 2. Contract decisions
 
@@ -75,10 +86,11 @@ Creation-time target integrity is checked against the released MonitoringPlanVer
 - Artifact identity and payload metadata are immutable after insert.
 - Object keys must include Tenant context; an object-store authorization test is required before Slice 2 completion.
 - Upload completion must precede Finalization. Failed upload leaves no RawObservation and may be retried idempotently.
+- An object referenced by a finalized RawObservation is retained evidence, not an orphan. Object-storage lifecycle rules must not delete it. Moving it to cold storage is allowed only when the same bytes remain retrievable within the accepted recovery objective and continue to verify against the recorded size and SHA-256.
 - Published Question content hash is the SHA-256 of the UTF-8 PostgreSQL canonical `jsonb` representation of `{schema_version, prompt_text, locale, parameters}`. The database computes and validates it.
 - Published MonitoringPlanVersion content hash uses the same representation and includes platform/model/surface/locale/region, sampling configuration and the ordered QuestionVersion ID list.
 - Text raw-answer hash is SHA-256 over the exact UTF-8 text bytes. An artifact-only raw-answer hash must equal the referenced CaptureArtifact byte hash; that artifact must contain response bytes and belong to the same ExecutionRun.
-- Capture Manifest V1 is `{schema_version: 1, artifact_ids: [...]}`. Every ID must belong to the same Tenant, Project and ExecutionRun; the raw-answer artifact must be included. `capture_hash` is the SHA-256 of the database canonical `jsonb` representation.
+- Database-canonical `RawObservation.capture_manifest` V1 is `{schema_version: 1, artifact_ids: [...]}`. It is distinct from the Query Engine UI Truth Manifest artifact. Every ID must belong to the same Tenant, Project and ExecutionRun; the raw-answer artifact must be included. `capture_hash` is the SHA-256 of the database canonical `jsonb` representation.
 - The object uploader verifies file bytes before inserting CaptureArtifact. Core API computes Question/Plan/Manifest hashes through database functions so browser, Worker and Query Engine serializers cannot create divergent hashes.
 
 ### S2-D005 — Finalization is atomic, idempotent and irreversible
@@ -104,6 +116,7 @@ ObservationCandidate.CAPTURING
 ### S2-D006 — Fact, assessment and correction remain separate
 
 - Slice 2 does not write A2 quality or metric-eligibility fields onto RawObservation.
+- Mention, competitor occurrence, Consideration, Recommendation, Citation qualification and KPI outputs remain versioned derived projections. They may be recomputed from the same RawObservation but must not overwrite its original text, ordering, context, hashes or evidence objects.
 - Discovering after capture that the wrong target was used preserves Candidate and raw evidence; A2 may later mark it invalid.
 - Reprocessing the same RawObservation does not create a new Observation or SampleSlot.
 - Re-execution creates a new ExecutionRun and may create a new Candidate/RawObservation.
@@ -180,11 +193,13 @@ Core API owns commands, identities and business transactions. The independently 
 execution_run_id
 idempotency_key
 actual platform / model / surface
+locale / region
 operational outcome
 optional visible response outcome
-response_started_at / response_last_seen_at
+question_submitted_at / response_started_at / response_last_seen_at / completed_at
 correlation status + existence evidence
-capture artifact manifests
+adapter version / capability version
+capture artifact manifests + ordered visible-link occurrences
 ```
 
 The Query Engine uses its authenticated Start command to establish actual runtime context before capture. It may report signals; it cannot directly declare A2 validity, metric eligibility or a customer KPI. The first real platform adapter and credentials are a separate Slice 2 completion item; a mock adapter cannot satisfy the product acceptance criterion “real query”.
@@ -231,6 +246,7 @@ Slice 2 is not product-complete until, in addition to the database contract:
 2. evidence is persisted in Tenant-isolated object storage and hash-verified;
 3. Core API → Query Engine → capture → Finalize works through the async/idempotent boundary;
 4. the user can inspect Slot, Execution, raw evidence and immutable Observation;
-5. failure/retry telemetry and operational runbook exist.
+5. failure/retry telemetry and operational runbook exist;
+6. finalized evidence retention and cold-storage restoration are tested so a referenced object remains byte-verifiable and available for later evaluator reprocessing.
 
 Subsequent reviews focus on end-to-end product closure, correctness of business semantics, trustworthy and immutable data, Tenant isolation, retry/concurrency/historical-snapshot behavior, and risks that could cause structural rework.

@@ -1,7 +1,7 @@
 schema_version: 1
 status: ACTIVE_WORKING_INDEX
 repository_state: COMMITTED
-content_baseline_commit: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+content_baseline_commit: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
 activation_commit: THIS_DOCUMENT_COMMIT
 effective_date: "2026-08-24"
 purpose: >-
@@ -46,14 +46,14 @@ documents:
     path: docs/document-index.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+    baseline_ref: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
     authority_domains: [document_governance]
 
   - id: product_implementation_status
     path: docs/product-implementation-status.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+    baseline_ref: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
     authority_domains: [current_implementation]
 
   - id: worktree_change_inventory
@@ -93,7 +93,7 @@ documents:
     path: docs/contracts/GEO_OS_Rules_Metrics_Evidence_and_Attribution_Contract_V1.0.md
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: 30e146cb2cbb64c04f08eae1653e2484c7b9bf8f
+    baseline_ref: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
     authority_domains: [rule_mapping, metrics, evidence, comparability, attribution]
     does_not_supersede: [A1, A2, A3, B, C]
 
@@ -150,7 +150,7 @@ documents:
     path: docs/contracts/slice-2-observation-domain-contract-v0.1.md
     status: ACTIVE_WITH_ADDENDUM
     repository_state: COMMITTED
-    baseline_ref: 677c3fe1f6dba26b2db3a984dbe0afc108254216
+    baseline_ref: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
     authority_domains: [slice_2_detailed_domain]
     parent_baseline: docs/contracts/GEO_OS_Core_Domain_Lifecycle_and_Authorization_Contract_V1.0.md
     addendum: docs/contracts/slice-2-observation-domain-contract-v0.1-addendum-1.md
@@ -192,7 +192,7 @@ documents:
     status: ACTIVE
     authority_domains: [current_core_bound_implementation]
     repository_state: COMMITTED
-    baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
+    baseline_ref: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
 
   - id: doubao_web_contract_v0_1
     path: docs/contracts/query-engine-doubao-web-contract-v0.1.md

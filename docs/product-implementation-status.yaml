@@ -4,21 +4,21 @@ repository_state: COMMITTED
 as_of: "2026-08-24"
 repository:
   local_committed_baseline:
-    branch: codex/slice2-durable-dispatch
-    head: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+    branch: codex/business-contract-clarifications
+    head: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
     state: LOCAL_COMMITTED
   shared_baseline:
     branch: main
-    head: cb070a522cd9b82756bb6ee317a49368d3e810ab
+    head: 9b4b607103fc00749eefcc9196a7d03eb7ae8481
     state: PUBLISHED
-  content_baseline_commit: 02ff463138f679d8f7d5ba0735e3ef1a4c3c0af2
+  content_baseline_commit: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
   activation_commit: THIS_DOCUMENT_COMMIT
   publication_state: LOCAL_VERSION_CONTROLLED
   protected_untracked_artifacts: PRESENT
   inventory: docs/worktree-change-inventory.yaml
 
 verification_summary:
-  verified_at: "2026-08-24T15:08:03+08:00"
+  verified_at: "2026-08-24T18:24:44+08:00"
   default_tests: 89_of_89_passed
   query_engine_tests: 12_of_12_passed
   postgresql_tests: 62_of_62_passed
@@ -100,6 +100,7 @@ capabilities:
     known_gaps:
       - Tenant-facing Question, Plan, Execution, and Observation query APIs are incomplete.
       - No operator inspection UI exists.
+      - Referenced evidence-object retention and cold-storage restoration are not production accepted.
       - Slice 2 is not product accepted as a complete vertical slice.
 
   - id: slice_2.core_bound_transport
@@ -156,6 +157,7 @@ capabilities:
       - One real Core-bound run through PostgreSQL and object storage is still required.
       - Headless mode is unsupported.
       - Browser-process-loss ambiguity recovery is unresolved.
+      - UI Truth Manifest V1 preserves link-candidate array order and one Manifest-level assistant-message binding, but explicit occurrence ordinals and visible-region fields are not implemented.
 
   - id: slice_2.durable_dispatch_and_recovery
     label: Async delivery runtime, consumer idempotency, and ambiguous-side-effect recovery
@@ -325,6 +327,7 @@ capabilities:
     known_gaps:
       - No GEO OS frontend application exists.
       - Read/query APIs and evidence-downloading authorization are incomplete.
+      - No Slice 2 inspection view separately exposes operational status and Observation existence; A2 Validity and Metric Eligibility remain later-slice capabilities rather than Slice 2 blockers.
 
   - id: slice_3.resolution_measurement_report
     label: Assessment, Resolution, MetricContribution, Snapshot, and basic Report

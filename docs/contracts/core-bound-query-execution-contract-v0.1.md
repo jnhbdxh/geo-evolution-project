@@ -2,6 +2,8 @@
 
 - **Status:** ACTIVE IMPLEMENTATION CONTRACT
 - **Implementation state:** COMMITTED
+- **Content baseline:** `c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7`
+- **Activation record:** `THIS_DOCUMENT_COMMIT`
 - **Repository baseline:** `3a980cd13336675819c8df04744b8992d7dae90a`
 - **Database baseline:** frozen `0001` / `0002`; no DDL change
 - **First product surface:** `doubao_web`
@@ -66,7 +68,11 @@ The Core-bound runner uploads five independently hashed artifacts:
 4. viewport PNG (`SCREENSHOT`);
 5. deterministic JSON UI Truth manifest (`STRUCTURED_RESPONSE`).
 
-The manifest contains execution identity, actual surface context, question-response binding, timestamps, visible link candidates and per-artifact hashes. Uploads use deterministic idempotency keys. The current internal JSON transport limits each decoded artifact to 10 MiB; larger evidence requires a later pre-signed streaming upload contract.
+The UI Truth Manifest contains execution identity, actual surface context, question-response binding, timestamps, visible link candidates and per-artifact hashes. Its minimum actual-context contract is actual platform, disclosed-or-undisclosed model, actual surface, locale, region, question-submission time, response interval, completion time, adapter version and capability version. It is distinct from the database-canonical `RawObservation.capture_manifest`, which records the finalized CaptureArtifact membership used by Observation finalization. Uploads use deterministic idempotency keys. The current internal JSON transport limits each decoded artifact to 10 MiB; larger evidence requires a later pre-signed streaming upload contract.
+
+Every visible-link occurrence must remain distinct and preserve at least visible text, observed URL, one-based visible occurrence order and visible region (`ANSWER_BODY | SOURCE_AREA | OTHER_VISIBLE_AREA`). Response-message binding must remain unambiguous: when one Manifest contains exactly one assistant response message, every occurrence inherits the Manifest-level binding without duplicating the same message ID; a future Manifest that permits multiple response messages must bind each occurrence explicitly. UI Truth Manifest V1 already preserves text, URL, candidate-array order and one Manifest-level assistant-message binding, but it lacks an explicit occurrence ordinal and visible-region field. Those additions require a new versioned UI Truth Manifest schema and remain an implementation gap. A later qualifier may normalize, merge or reject occurrences, but capture must not overwrite the originally observed values or order.
+
+The raw answer text, final response HTML and their visible ordering must remain sufficient to re-run versioned Mention, Consideration, Recommendation, Citation and competitor-related evaluators. Those conclusions are not Web-adapter facts and must not be inserted into the Core-bound evidence manifest as final KPI values.
 
 Local object storage is MinIO. Production remains Tencent COS through the provider-neutral `EvidenceObjectStore`; the Core API does not expose provider credentials to Query Engine.
 
@@ -99,5 +105,6 @@ Still required before Slice 2 product completion:
 - durable Outbox/queue dispatcher and token delivery;
 - versioned production A1 outcome detector beyond the injected decision contract;
 - one real Core-bound Doubao execution through PostgreSQL + MinIO/COS-compatible Capture;
+- a versioned UI Truth Manifest that adds an explicit visible-link occurrence ordinal and visible region while retaining the existing Manifest-level response-message binding;
 - recovery policy for ambiguous browser side effects after process loss;
 - Tenant-operator/authorized-project-member execution and observation inspection UI.

@@ -2,8 +2,8 @@
 
 - **状态：** ACTIVE WORKING BASELINE
 - **版本库状态：** COMMITTED
-- **内容基线提交：** `30e146cb2cbb64c04f08eae1653e2484c7b9bf8f`
-- **激活提交：** `e7c0f510a8c642b57528e511167a5fb4171fad4c`
+- **内容基线提交：** `c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7`
+- **激活提交：** `THIS_DOCUMENT_COMMIT`
 - **生效日期：** 2026-08-24
 - **权威范围：** 冻结规则工程映射、指标贡献、证据分层、Snapshot、可比性、归因与报告表述
 - **上游权威：** A1/A2/A3/B/C 冻结决议包
@@ -50,6 +50,28 @@ UNKNOWN
 - INVALID、INELIGIBLE 和 UNKNOWN 不得转换为 0；
 - SampleSlot 是计划样本 N，ExecutionRun 重试不增加 N。
 
+### 2.4 面向业务的监测可用性展示
+
+Slice 2 操作界面和查询 API 必须先分别展示以下第 1、2 个维度。A2 与正式测量能力存在后，声明提供组合监测视图、指标查询或报告准备的界面/API 还必须分别展示第 3、4 个维度。任何阶段都不得把已经提供的维度压缩为单一“有效/无效”布尔值：
+
+1. ExecutionRun 的运行状态和运行错误；
+2. 是否存在 Candidate/RawObservation 及其可见 Response Outcome；
+3. A2 Validity 的实际决议或未决状态；
+4. Metric Eligibility 的实际决议或未决状态。
+
+对应 Evaluator 尚未部署时使用能力级 `NOT_AVAILABLE`；Evaluator 已存在但当前 Observation 尚未评估时使用 `NOT_EVALUATED`。两者都不等于 A2 或 Metric 语义中的 `UNKNOWN`，也不得伪装成已经产生但仍“未决”的正式决议。
+
+典型组合的业务含义为：
+
+| ExecutionRun | Observation | Validity / Eligibility | 业务展示                                                             |
+| ------------ | ----------- | ---------------------- | -------------------------------------------------------------------- |
+| `FAILED`     | 不存在      | 不适用                 | 执行失败且未形成 Observation；展示实际运行错误，不得解释为品牌未提及 |
+| `FAILED`     | 存在        | 未决或按实际决议       | 运行失败但捕获到可见回答，保留并继续评估                             |
+| `COMPLETED`  | 存在        | 无效或无资格           | 回答事实存在，但不进入对应指标口径                                   |
+| `COMPLETED`  | 存在        | 有效且有资格           | 可按实际 Resolution 和 MetricRelease 形成贡献                        |
+
+`NOT_AVAILABLE`、`NOT_EVALUATED`、“未决”“UNKNOWN”“无效”“无资格”“不存在”和“执行失败”必须保持不同含义。展示层不得把任一状态自动转换为品牌未提及、指标 0 或执行成功。
+
 ## 3. 证据分层
 
 ### 3.1 原始执行证据
@@ -77,7 +99,15 @@ visible link candidate
 
 页面链接只能先成为候选证据，不能直接成为正式 Citation。出现位置、资格判断、逻辑引用、来源身份和 Tenant 关系必须分层。
 
+每个可见链接出现事实至少保留观察 URL、可见文字、回答中的出现顺序、可见区域和所属回答消息。相同 URL 在同一回答中多次出现时先保留为多个 CitationOccurrence，再由后续资格和逻辑身份规则决定是否合并。
+
 全局 LogicalCitation、SourceDomain 或 SourceDocument 身份可以去重，但 Tenant 不得枚举其他租户的出现、资格、Binding、指标或证据。
+
+### 3.4 后续可重算边界
+
+RawObservation 及其正式证据必须足以在不重新查询外部 AI 平台的情况下，按新版本 Evaluator 重新计算品牌 Mention、竞品出现、Consideration、Recommendation、Citation 和 Source 相关投影。可重算依赖至少包括完整可见回答、回答顺序/结构、链接出现事实、实际执行条件和实际规则/能力版本。
+
+这些重新计算结果是带 Evaluator/Release 版本的新 Assessment、Resolution 或 MetricContribution，不是对 RawObservation 的修改。规则升级不得覆盖旧版本正式结果或已发布 Snapshot/ReportRelease。
 
 ## 4. Resolution—MetricContribution—Snapshot—Report 主合同
 
