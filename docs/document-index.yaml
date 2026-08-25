@@ -1,7 +1,7 @@
 schema_version: 1
 status: ACTIVE_WORKING_INDEX
 repository_state: COMMITTED
-content_baseline_commit: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
+content_baseline_commit: b1af2f995c7a57a052b8a0466f652b6151d7092b
 activation_commit: THIS_DOCUMENT_COMMIT
 effective_date: "2026-08-24"
 purpose: >-
@@ -46,14 +46,14 @@ documents:
     path: docs/document-index.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
+    baseline_ref: b1af2f995c7a57a052b8a0466f652b6151d7092b
     authority_domains: [document_governance]
 
   - id: product_implementation_status
     path: docs/product-implementation-status.yaml
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
-    baseline_ref: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
+    baseline_ref: b1af2f995c7a57a052b8a0466f652b6151d7092b
     authority_domains: [current_implementation]
 
   - id: worktree_change_inventory
@@ -210,10 +210,10 @@ documents:
 
   - id: slice_2_core_bound_doubao_live_run_v0_1
     path: docs/contracts/slice-2-core-bound-doubao-live-run-record-v0.1.md
-    status: WORKING
+    status: EVIDENCE_PASSED
     authority_domains: [slice_2_runtime_acceptance_evidence]
-    repository_state: IMPLEMENTED_IN_WORKTREE
-    baseline_ref: 811e0271148caaa8f9e8e68c1ea31fbf92b909a9
+    repository_state: COMMITTED
+    baseline_ref: b1af2f995c7a57a052b8a0466f652b6151d7092b
 
   - id: conversation_handoff_2026_08_24
     path: docs/handoff/GEO_OS_Conversation_Handoff_2026-08-24.md

@@ -4,40 +4,19 @@ repository_state: COMMITTED
 as_of: "2026-08-25"
 repository:
   local_committed_baseline:
-    branch: main
-    head: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
-    state: PUBLISHED
+    branch: codex/slice2-live-vertical-acceptance
+    head: b1af2f995c7a57a052b8a0466f652b6151d7092b
+    state: LOCAL_COMMITTED
   shared_baseline:
     branch: main
     head: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
     state: PUBLISHED
-  content_baseline_commit: c1e3b573b81ac9a7b78261f46d8cd6c268ed8cc7
-  activation_commit: b1c032ff6b5c77081ee8df8715f66f7042decbb1
-  publication_state: SHARED_PUBLISHED
+  content_baseline_commit: b1af2f995c7a57a052b8a0466f652b6151d7092b
+  activation_commit: THIS_DOCUMENT_COMMIT
+  publication_state: LOCAL_VERSION_CONTROLLED
   protected_untracked_artifacts: PRESENT
   inventory: docs/worktree-change-inventory.yaml
-  working_revision:
-    state: IMPLEMENTED_IN_WORKTREE
-    branch: codex/slice2-live-vertical-acceptance
-    base_commit: 811e0271148caaa8f9e8e68c1ea31fbf92b909a9
-    scope: Query Engine runtime dependency closure, validated end-to-end Trace propagation, and one real PostgreSQL-BullMQ-Core-Doubao-MinIO vertical run
-
 verification_summary:
-  verified_at: "2026-08-24T18:24:44+08:00"
-  default_tests: 89_of_89_passed
-  query_engine_tests: 12_of_12_passed
-  postgresql_tests: 62_of_62_passed
-  capture_minio_tests: 7_of_7_passed
-  typecheck: passed
-  eslint: passed
-  prettier: passed
-  build: passed
-  production_dependency_audit: no_known_vulnerabilities_official_npm_registry
-  document_validation: passed_with_5_external_source_byte_hashes
-  compose_configuration: passed
-  frozen_migration_hashes: unchanged
-
-working_revision_verification_summary:
   verified_at: "2026-08-25T15:14:59+08:00"
   default_tests: 111_of_111_passed
   query_engine_tests: 12_of_12_passed
@@ -53,7 +32,6 @@ working_revision_verification_summary:
   document_validation: passed_with_5_external_source_byte_hashes
   compose_configuration: passed
   frozen_migration_hashes: unchanged
-  repository_state: IMPLEMENTED_IN_WORKTREE
 
 dimension_values: [NOT_STARTED, PARTIAL, COMPLETE, NOT_APPLICABLE]
 repository_state_values: [NOT_PRESENT, IMPLEMENTED_IN_WORKTREE, COMMITTED, RELEASED]
@@ -183,8 +161,8 @@ capabilities:
 
   - id: slice_2.durable_dispatch_and_recovery
     label: Async delivery runtime, consumer idempotency, and ambiguous-side-effect recovery
-    repository_state: IMPLEMENTED_IN_WORKTREE
-    baseline_ref: 811e0271148caaa8f9e8e68c1ea31fbf92b909a9
+    repository_state: COMMITTED
+    baseline_ref: b1af2f995c7a57a052b8a0466f652b6151d7092b
     last_verified_at: "2026-08-25T15:14:59+08:00"
     dimensions:
       object_defined: COMPLETE
@@ -253,8 +231,8 @@ capabilities:
 
   - id: runtime.worker_runtime
     label: Unified Query Engine and AI/Data Worker runtime lifecycle
-    repository_state: IMPLEMENTED_IN_WORKTREE
-    baseline_ref: 811e0271148caaa8f9e8e68c1ea31fbf92b909a9
+    repository_state: COMMITTED
+    baseline_ref: b1af2f995c7a57a052b8a0466f652b6151d7092b
     last_verified_at: "2026-08-25T15:14:59+08:00"
     dimensions:
       object_defined: COMPLETE
@@ -282,7 +260,8 @@ capabilities:
 
   - id: runtime.observability_and_deployment_readiness
     label: Cross-process observability, health, packaging, and recovery readiness
-    repository_state: IMPLEMENTED_IN_WORKTREE
+    repository_state: COMMITTED
+    baseline_ref: b1af2f995c7a57a052b8a0466f652b6151d7092b
     last_verified_at: "2026-08-25T12:38:15+08:00"
     dimensions:
       object_defined: PARTIAL
