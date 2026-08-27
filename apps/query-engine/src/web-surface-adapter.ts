@@ -7,9 +7,13 @@ export interface WebSurfaceExecutionRequest {
   readonly region: string;
 }
 
-export interface VisibleLinkCandidate {
+export type VisibleLinkRegion = "ANSWER_BODY" | "SOURCE_AREA" | "OTHER_VISIBLE_AREA";
+
+export interface VisibleLinkOccurrence {
   readonly visibleText: string;
   readonly observedHref: string;
+  readonly occurrenceOrdinal: number;
+  readonly visibleRegion: VisibleLinkRegion;
 }
 
 export interface UiTruthCapture {
@@ -17,7 +21,7 @@ export interface UiTruthCapture {
   readonly responseHtmlBytes: Uint8Array;
   readonly responseScreenshotBytes: Uint8Array;
   readonly viewportScreenshotBytes: Uint8Array;
-  readonly visibleLinkCandidates: readonly VisibleLinkCandidate[];
+  readonly visibleLinkOccurrences: readonly VisibleLinkOccurrence[];
 }
 
 export interface QuestionResponseBinding {

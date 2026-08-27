@@ -30,11 +30,16 @@ export {
   type QueryEngineWorkerConfig,
 } from "./config.js";
 export { DoubaoWebAdapter, type DoubaoWebAdapterDependencies } from "./doubao-web-adapter.js";
-export { doubaoWebCapabilityV20260822, type DoubaoWebCapability } from "./doubao-web-capability.js";
+export {
+  DOUBAO_GOLDEN_QUERY_MANIFEST_SCHEMA_VERSION,
+  doubaoWebCapabilityV20260825,
+  type DoubaoWebCapability,
+} from "./doubao-web-capability.js";
 export {
   type UiTruthCapture,
   type QuestionResponseBinding,
-  type VisibleLinkCandidate,
+  type VisibleLinkOccurrence,
+  type VisibleLinkRegion,
   type WebSurfaceAdapter,
   type WebSurfaceExecutionRequest,
   type WebSurfaceExecutionLifecycle,

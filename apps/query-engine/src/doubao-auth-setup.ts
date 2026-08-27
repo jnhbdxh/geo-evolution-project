@@ -7,7 +7,7 @@ import { chromium } from "playwright";
 
 import { resolveBrowserExecutablePath } from "./browser-runtime.js";
 import { loadQueryEngineConfig } from "./config.js";
-import { doubaoWebCapabilityV20260822 } from "./doubao-web-capability.js";
+import { doubaoWebCapabilityV20260825 } from "./doubao-web-capability.js";
 
 const config = loadQueryEngineConfig();
 const statePath = path.resolve(config.DOUBAO_STORAGE_STATE_PATH);
@@ -31,7 +31,7 @@ try {
   const page = await context.newPage();
   await page.goto(config.DOUBAO_ENTRY_URL, {
     waitUntil: "domcontentloaded",
-    timeout: doubaoWebCapabilityV20260822.timing.navigationTimeoutMs,
+    timeout: doubaoWebCapabilityV20260825.timing.navigationTimeoutMs,
   });
 
   await terminal.question(
@@ -62,13 +62,13 @@ try {
     "utf8",
   );
 
-  const input = page.locator(doubaoWebCapabilityV20260822.selectors.input);
+  const input = page.locator(doubaoWebCapabilityV20260825.selectors.input);
   await input.waitFor({
     state: "visible",
-    timeout: doubaoWebCapabilityV20260822.timing.navigationTimeoutMs,
+    timeout: doubaoWebCapabilityV20260825.timing.navigationTimeoutMs,
   });
   const messageCount = await page
-    .locator(doubaoWebCapabilityV20260822.selectors.messageRoot)
+    .locator(doubaoWebCapabilityV20260825.selectors.messageRoot)
     .count();
   if (
     new URL(page.url()).pathname !== new URL(config.DOUBAO_ENTRY_URL).pathname ||

@@ -1,21 +1,26 @@
 schema_version: 1
 status: ACTIVE_WORKING_STATUS
 repository_state: COMMITTED
-as_of: "2026-08-25"
+as_of: "2026-08-27"
 repository:
   local_committed_baseline:
-    branch: codex/slice2-live-vertical-acceptance
-    head: b1af2f995c7a57a052b8a0466f652b6151d7092b
-    state: LOCAL_COMMITTED
+    branch: main
+    head: eef61a9568b36b7ac290db067e6db547aeef1cf1
+    state: PUBLISHED
   shared_baseline:
     branch: main
-    head: 19ea20d722e8e6443b548ef07d9da11cb02dfeef
+    head: eef61a9568b36b7ac290db067e6db547aeef1cf1
     state: PUBLISHED
   content_baseline_commit: b1af2f995c7a57a052b8a0466f652b6151d7092b
   activation_commit: THIS_DOCUMENT_COMMIT
-  publication_state: LOCAL_VERSION_CONTROLLED
+  publication_state: SHARED_PUBLISHED
   protected_untracked_artifacts: PRESENT
   inventory: docs/worktree-change-inventory.yaml
+  working_revision:
+    state: IMPLEMENTED_IN_WORKTREE
+    branch: codex/slice2-citation-source-statistics
+    base_commit: eef61a9568b36b7ac290db067e6db547aeef1cf1
+    scope: UI Truth Manifest V2 with ordered, duplicate-preserving visible-link occurrences and explicit visible-region facts
 verification_summary:
   verified_at: "2026-08-25T15:14:59+08:00"
   default_tests: 111_of_111_passed
@@ -32,6 +37,17 @@ verification_summary:
   document_validation: passed_with_5_external_source_byte_hashes
   compose_configuration: passed
   frozen_migration_hashes: unchanged
+
+working_revision_verification_summary:
+  verified_at: "2026-08-27T08:55:21+08:00"
+  default_tests: 111_of_111_passed
+  query_engine_tests: 14_of_14_passed
+  typecheck: passed
+  eslint: passed
+  prettier: passed_for_changed_files
+  build: passed
+  frozen_migration_hashes: unchanged
+  repository_state: IMPLEMENTED_IN_WORKTREE
 
 dimension_values: [NOT_STARTED, PARTIAL, COMPLETE, NOT_APPLICABLE]
 repository_state_values: [NOT_PRESENT, IMPLEMENTED_IN_WORKTREE, COMMITTED, RELEASED]
@@ -133,9 +149,9 @@ capabilities:
 
   - id: slice_2.doubao_web_adapter
     label: Authorized headed-Chromium Doubao Web surface
-    repository_state: COMMITTED
-    baseline_ref: 3a980cd13336675819c8df04744b8992d7dae90a
-    last_verified_at: "2026-08-24T10:41:13+08:00"
+    repository_state: IMPLEMENTED_IN_WORKTREE
+    baseline_ref: eef61a9568b36b7ac290db067e6db547aeef1cf1
+    last_verified_at: "2026-08-27T08:55:21+08:00"
     dimensions:
       object_defined: COMPLETE
       ddl_frozen: NOT_APPLICABLE
@@ -145,8 +161,8 @@ capabilities:
       integration_verified: COMPLETE
       product_accepted: NOT_STARTED
     technical_acceptance:
-      status: GOLDEN_QUERY_AND_BROWSER_CONTRACT_PASSED
-      scope: Authorized headed-Chromium Doubao Web adapter
+      status: MANIFEST_V2_BROWSER_CONTRACT_PASSED
+      scope: Authorized headed-Chromium Doubao Web adapter plus duplicate-preserving visible-link occurrence capture
       decision_ref: docs/contracts/query-engine-doubao-web-golden-query-record-v0.1.md
     evidence:
       - docs/contracts/query-engine-doubao-web-contract-v0.1.md
@@ -157,7 +173,8 @@ capabilities:
     known_gaps:
       - Headless mode is unsupported.
       - Browser-process-loss ambiguity recovery is unresolved.
-      - UI Truth Manifest V1 preserves link-candidate array order and one Manifest-level assistant-message binding, but explicit occurrence ordinals and visible-region fields are not implemented.
+      - UI Truth Manifest V2 occurrence capture is implemented only in the current worktree and has not completed a new authorized live Doubao run.
+      - Citation qualification, logical identity, Source binding and formal statistics remain later-slice projections and are not inferred from occurrence capture.
 
   - id: slice_2.durable_dispatch_and_recovery
     label: Async delivery runtime, consumer idempotency, and ambiguous-side-effect recovery
@@ -385,6 +402,7 @@ capabilities:
     verification_environment: NOT_VERIFIED
     known_gaps:
       - Anchor industry and minimum formal KPI pack are not yet selected.
+      - UI Truth Manifest V2 occurrence capture is a worktree-only prerequisite; Citation qualification and Source statistics remain NOT_PRESENT.
 
   - id: slice_5.geo_intelligence
     label: Gap, Hypothesis, and StrategyAction

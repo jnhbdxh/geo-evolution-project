@@ -2,9 +2,9 @@ import { createHash } from "node:crypto";
 
 import type { Locator, Page } from "playwright";
 
-import { doubaoWebCapabilityV20260822, type DoubaoWebCapability } from "./doubao-web-capability.js";
+import { doubaoWebCapabilityV20260825, type DoubaoWebCapability } from "./doubao-web-capability.js";
 import {
-  type VisibleLinkCandidate,
+  type VisibleLinkOccurrence,
   type WebSurfaceAdapter,
   type WebSurfaceExecutionRequest,
   type WebSurfaceExecutionLifecycle,
@@ -31,7 +31,7 @@ export class DoubaoWebAdapter implements WebSurfaceAdapter {
 
   public constructor(dependencies: DoubaoWebAdapterDependencies) {
     this.page = dependencies.page;
-    this.capability = dependencies.capability ?? doubaoWebCapabilityV20260822;
+    this.capability = dependencies.capability ?? doubaoWebCapabilityV20260825;
     this.now = dependencies.now ?? (() => new Date());
     this.interactiveVerificationTimeoutMs = dependencies.interactiveVerificationTimeoutMs ?? 0;
   }
@@ -88,7 +88,11 @@ export class DoubaoWebAdapter implements WebSurfaceAdapter {
     const { text, responseLastSeenAt } = await this.waitForCompleteResponse(responseRoot);
     const completedAt = this.now();
     const responseHtml = await responseRoot.evaluate((element) => element.outerHTML);
-    const visibleLinkCandidates = await extractVisibleLinks(responseRoot);
+    const visibleLinkOccurrences = await extractVisibleLinkOccurrences(
+      responseRoot,
+      this.capability.selectors.answerBodyMarker,
+      this.capability.selectors.sourceAreaMarkers,
+    );
     const responseScreenshotBytes = new Uint8Array(
       await responseRoot.screenshot({ animations: "disabled" }),
     );
@@ -120,7 +124,7 @@ export class DoubaoWebAdapter implements WebSurfaceAdapter {
         responseHtmlBytes: new TextEncoder().encode(responseHtml),
         responseScreenshotBytes,
         viewportScreenshotBytes,
-        visibleLinkCandidates,
+        visibleLinkOccurrences,
       },
       executionContextSnapshot,
     };
@@ -405,19 +409,52 @@ function sha256Text(value: string): string {
   return createHash("sha256").update(value, "utf8").digest("hex");
 }
 
-async function extractVisibleLinks(
+async function extractVisibleLinkOccurrences(
   responseRoot: Locator,
-): Promise<readonly VisibleLinkCandidate[]> {
-  return responseRoot.locator("a[href]").evaluateAll((links) =>
-    links
-      .filter((link): link is HTMLAnchorElement => link instanceof HTMLAnchorElement)
-      .filter((link) => {
-        const style = window.getComputedStyle(link);
-        return style.display !== "none" && style.visibility !== "hidden";
-      })
-      .map((link) => ({
-        visibleText: link.innerText.trim(),
-        observedHref: link.href,
-      })),
+  answerBodyMarker: string,
+  sourceAreaMarkers: readonly string[],
+): Promise<readonly VisibleLinkOccurrence[]> {
+  return responseRoot.locator("a[href]").evaluateAll(
+    (links, selectors) => {
+      const isActuallyVisible = (link: HTMLAnchorElement): boolean => {
+        if (!Array.from(link.getClientRects()).some((rect) => rect.width > 0 && rect.height > 0)) {
+          return false;
+        }
+        for (
+          let element: HTMLElement | null = link;
+          element !== null;
+          element = element.parentElement
+        ) {
+          const style = window.getComputedStyle(element);
+          if (
+            style.display === "none" ||
+            style.visibility === "hidden" ||
+            style.visibility === "collapse" ||
+            style.opacity === "0"
+          ) {
+            return false;
+          }
+        }
+        return true;
+      };
+      const visibleRegion = (link: HTMLAnchorElement) => {
+        if (selectors.sourceAreaMarkers.some((selector) => link.closest(selector) !== null)) {
+          return "SOURCE_AREA" as const;
+        }
+        if (link.closest(selectors.answerBodyMarker) !== null) return "ANSWER_BODY" as const;
+        return "OTHER_VISIBLE_AREA" as const;
+      };
+
+      return links
+        .filter((link): link is HTMLAnchorElement => link instanceof HTMLAnchorElement)
+        .filter(isActuallyVisible)
+        .map((link, index) => ({
+          visibleText: link.innerText.trim(),
+          observedHref: link.href,
+          occurrenceOrdinal: index + 1,
+          visibleRegion: visibleRegion(link),
+        }));
+    },
+    { answerBodyMarker, sourceAreaMarkers },
   );
 }

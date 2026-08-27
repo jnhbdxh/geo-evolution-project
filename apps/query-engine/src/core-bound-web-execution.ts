@@ -71,7 +71,7 @@ export class CoreBoundWebExecution {
     const rawAnswerBytes = new TextEncoder().encode(result.uiTruth.responseText);
     const manifestBytes = new TextEncoder().encode(
       stableJson({
-        schema_version: 1,
+        schema_version: 2,
         execution_run_id: result.executionRunId,
         question_version_id: result.questionVersionId,
         actual_platform: result.actualPlatform,
@@ -82,7 +82,12 @@ export class CoreBoundWebExecution {
         response_last_seen_at: result.responseLastSeenAt.toISOString(),
         completed_at: result.completedAt.toISOString(),
         question_response_binding: result.questionResponseBinding,
-        visible_link_candidates: result.uiTruth.visibleLinkCandidates,
+        visible_link_occurrences: result.uiTruth.visibleLinkOccurrences.map((occurrence) => ({
+          visible_text: occurrence.visibleText,
+          observed_url: occurrence.observedHref,
+          occurrence_ordinal: occurrence.occurrenceOrdinal,
+          visible_region: occurrence.visibleRegion,
+        })),
         artifact_sha256: {
           raw_response: sha256Bytes(rawAnswerBytes),
           response_html: sha256Bytes(result.uiTruth.responseHtmlBytes),
@@ -123,7 +128,7 @@ export class CoreBoundWebExecution {
         bytes: result.uiTruth.viewportScreenshotBytes,
       }),
       this.dependencies.core.capture({
-        idempotencyKey: "core-bound-v1:manifest",
+        idempotencyKey: "core-bound-v2:manifest",
         artifactKind: "STRUCTURED_RESPONSE",
         mediaType: "application/json",
         capturedAt,
