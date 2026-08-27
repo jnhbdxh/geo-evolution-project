@@ -97,6 +97,23 @@ describe("Core-bound Web execution", () => {
       artifactKind: "RAW_RESPONSE",
       bytesBase64: Buffer.from("visible answer", "utf8").toString("base64"),
     });
+    const manifestUpload = requests.find(
+      (request) => request.body.idempotencyKey === "core-bound-v2:manifest",
+    );
+    const manifest = JSON.parse(
+      Buffer.from(String(manifestUpload?.body.bytesBase64), "base64").toString("utf8"),
+    ) as Record<string, unknown>;
+    expect(manifest).toMatchObject({
+      schema_version: 2,
+      visible_link_occurrences: [
+        {
+          visible_text: "source",
+          observed_url: "https://source.example/article",
+          occurrence_ordinal: 1,
+          visible_region: "ANSWER_BODY",
+        },
+      ],
+    });
     expect(requests.at(-1)?.body).toMatchObject({
       observationCandidateId: uuidWithSuffix(9),
       rawAnswerArtifactId: uuidWithSuffix(4),
@@ -189,7 +206,14 @@ class LifecycleAwareAdapter implements WebSurfaceAdapter {
         responseHtmlBytes: new TextEncoder().encode("<p>visible answer</p>"),
         responseScreenshotBytes: new Uint8Array([1, 2, 3]),
         viewportScreenshotBytes: new Uint8Array([4, 5, 6]),
-        visibleLinkCandidates: [],
+        visibleLinkOccurrences: [
+          {
+            visibleText: "source",
+            observedHref: "https://source.example/article",
+            occurrenceOrdinal: 1,
+            visibleRegion: "ANSWER_BODY",
+          },
+        ],
       },
     };
   }

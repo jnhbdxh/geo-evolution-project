@@ -6,7 +6,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { resolveBrowserExecutablePath } from "./browser-runtime.js";
 import { DoubaoWebAdapter } from "./doubao-web-adapter.js";
-import { doubaoWebCapabilityV20260822, type DoubaoWebCapability } from "./doubao-web-capability.js";
+import { doubaoWebCapabilityV20260825, type DoubaoWebCapability } from "./doubao-web-capability.js";
 import { WebSurfaceExecutionError } from "./web-surface-adapter.js";
 
 let browser: Browser | undefined;
@@ -35,6 +35,8 @@ beforeAll(async () => {
         noResponse: request.url === "/no-response",
         secondUserBeforeAssistant: request.url === "/second-user-before-assistant",
         systemBeforeAssistant: request.url === "/system-before-assistant",
+        duplicateLinks: request.url === "/duplicate-links",
+        regionLinks: request.url === "/region-links",
       }),
     );
   });
@@ -79,11 +81,17 @@ describe("Doubao Web Playwright adapter", () => {
       },
       uiTruth: {
         responseText: "可见回答正文\n来源一",
-        visibleLinkCandidates: [
-          { visibleText: "来源一", observedHref: "https://source.example/article" },
+        visibleLinkOccurrences: [
+          {
+            visibleText: "来源一",
+            observedHref: "https://source.example/article",
+            occurrenceOrdinal: 1,
+            visibleRegion: "ANSWER_BODY",
+          },
         ],
       },
       executionContextSnapshot: {
+        adapter_version: "doubao-web-playwright/0.3.0",
         capability_version: "doubao-web/test-fixture",
         conversation_mode: "fresh_entry_url",
         model_disclosure: "UNDISCLOSED",
@@ -100,6 +108,74 @@ describe("Doubao Web Playwright adapter", () => {
     expect(await page.locator("#conversation-title").innerText()).not.toBe(
       result.questionResponseBinding.submittedPromptRaw,
     );
+    await context.close();
+  });
+
+  it("preserves repeated visible URLs as ordered occurrences", async () => {
+    const context = await getBrowser().newContext();
+    const page = await context.newPage();
+    const adapter = new DoubaoWebAdapter({
+      page,
+      capability: testCapability("/duplicate-links"),
+    });
+
+    const result = await adapter.execute(executionRequest());
+
+    expect(result.uiTruth.visibleLinkOccurrences).toEqual([
+      {
+        visibleText: "来源一",
+        observedHref: "https://source.example/article",
+        occurrenceOrdinal: 1,
+        visibleRegion: "ANSWER_BODY",
+      },
+      {
+        visibleText: "再次引用",
+        observedHref: "https://source.example/article",
+        occurrenceOrdinal: 2,
+        visibleRegion: "ANSWER_BODY",
+      },
+    ]);
+    await context.close();
+  });
+
+  it("classifies visible link regions and excludes hidden or zero-area links", async () => {
+    const context = await getBrowser().newContext();
+    const page = await context.newPage();
+    const adapter = new DoubaoWebAdapter({ page, capability: testCapability("/region-links") });
+
+    const result = await adapter.execute(executionRequest());
+
+    expect(
+      await page.locator('a[href="https://source.example/zero-area"]').evaluate((link) => {
+        const rect = link.getClientRects()[0];
+        return {
+          rectCount: link.getClientRects().length,
+          width: rect?.width,
+          height: rect?.height,
+        };
+      }),
+    ).toEqual({ rectCount: 1, width: 0, height: 0 });
+
+    expect(result.uiTruth.visibleLinkOccurrences).toEqual([
+      {
+        visibleText: "来源一",
+        observedHref: "https://source.example/article",
+        occurrenceOrdinal: 1,
+        visibleRegion: "ANSWER_BODY",
+      },
+      {
+        visibleText: "来源卡片",
+        observedHref: "https://source.example/card",
+        occurrenceOrdinal: 2,
+        visibleRegion: "SOURCE_AREA",
+      },
+      {
+        visibleText: "其他可见链接",
+        observedHref: "https://source.example/other",
+        occurrenceOrdinal: 3,
+        visibleRegion: "OTHER_VISIBLE_AREA",
+      },
+    ]);
     await context.close();
   });
 
@@ -279,7 +355,7 @@ describe("Doubao Web Playwright adapter", () => {
 
 function testCapability(path: string): DoubaoWebCapability {
   return {
-    ...doubaoWebCapabilityV20260822,
+    ...doubaoWebCapabilityV20260825,
     capabilityVersion: "doubao-web/test-fixture",
     entryUrl: `${origin}${path}`,
     timing: {
@@ -322,11 +398,13 @@ async function captureExecutionError(
 
 function fixtureHtml(options: {
   readonly contaminatedConversation: boolean;
+  readonly duplicateLinks: boolean;
   readonly formattedUserMessage: boolean;
   readonly humanVerification: boolean;
   readonly humanVerificationBeforeUser: boolean;
   readonly noUserMessage: boolean;
   readonly noResponse: boolean;
+  readonly regionLinks: boolean;
   readonly secondUserBeforeAssistant: boolean;
   readonly systemBeforeAssistant: boolean;
 }): string {
@@ -389,7 +467,13 @@ function fixtureHtml(options: {
         const assistant = document.createElement('section');
         assistant.dataset.messageId = 'assistant-1';
         assistant.dataset.responseKind = 'assistant';
-        assistant.innerHTML = '<article class="md-box-root" data-streaming="true">可见回答正文<br><a href="https://source.example/article">来源一</a></article>';
+        assistant.innerHTML = '<article class="md-box-root" data-streaming="true">可见回答正文<br><a href="https://source.example/article">来源一</a>${
+          options.duplicateLinks ? '<br><a href="https://source.example/article">再次引用</a>' : ""
+        }</article>${
+          options.regionLinks
+            ? '<div style="display: none"><a href="https://source.example/hidden">祖先隐藏链接</a></div><a href="https://source.example/zero-area" style="display: inline-block; width: 0; height: 0; overflow: hidden">零面积链接</a><section aria-label="参考来源"><a href="https://source.example/card">来源卡片</a></section><nav><a href="https://source.example/other">其他可见链接</a></nav>'
+            : ""
+        }';
         messages.appendChild(assistant);
         setTimeout(() => assistant.firstElementChild.dataset.streaming = 'false', 30);`
         }

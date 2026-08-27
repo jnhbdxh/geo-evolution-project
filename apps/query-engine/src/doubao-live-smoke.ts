@@ -7,7 +7,10 @@ import { chromium } from "playwright";
 import { resolveBrowserExecutablePath } from "./browser-runtime.js";
 import { loadQueryEngineConfig } from "./config.js";
 import { DoubaoWebAdapter } from "./doubao-web-adapter.js";
-import { doubaoWebCapabilityV20260822 } from "./doubao-web-capability.js";
+import {
+  DOUBAO_GOLDEN_QUERY_MANIFEST_SCHEMA_VERSION,
+  doubaoWebCapabilityV20260825,
+} from "./doubao-web-capability.js";
 
 const promptText = process.env.DOUBAO_TEST_PROMPT?.trim();
 if (!promptText) throw new Error("DOUBAO_TEST_PROMPT is required");
@@ -37,7 +40,7 @@ try {
     page,
     interactiveVerificationTimeoutMs: config.DOUBAO_INTERACTIVE_VERIFICATION_TIMEOUT_MS,
     capability: {
-      ...doubaoWebCapabilityV20260822,
+      ...doubaoWebCapabilityV20260825,
       entryUrl: config.DOUBAO_ENTRY_URL,
     },
   });
@@ -68,7 +71,7 @@ try {
       path.join(outputDirectory, "manifest.json"),
       `${JSON.stringify(
         {
-          manifest_schema_version: "doubao-web-golden-query/1.0",
+          manifest_schema_version: DOUBAO_GOLDEN_QUERY_MANIFEST_SCHEMA_VERSION,
           execution_run_id: result.executionRunId,
           question_version_id: result.questionVersionId,
           actual_platform: result.actualPlatform,
@@ -109,7 +112,12 @@ try {
               sha256: sha256(result.uiTruth.viewportScreenshotBytes),
             },
           },
-          visible_link_candidates: result.uiTruth.visibleLinkCandidates,
+          visible_link_occurrences: result.uiTruth.visibleLinkOccurrences.map((occurrence) => ({
+            visible_text: occurrence.visibleText,
+            observed_url: occurrence.observedHref,
+            occurrence_ordinal: occurrence.occurrenceOrdinal,
+            visible_region: occurrence.visibleRegion,
+          })),
           execution_context_snapshot: result.executionContextSnapshot,
         },
         null,

@@ -10,7 +10,7 @@ import { CoreExecutionClient } from "./core-execution-client.js";
 import { CoreWorkerClient } from "./core-worker-client.js";
 import { loadQueryEngineConfig, loadQueryEngineWorkerConfig } from "./config.js";
 import { DoubaoWebAdapter } from "./doubao-web-adapter.js";
-import { doubaoWebCapabilityV20260822 } from "./doubao-web-capability.js";
+import { doubaoWebCapabilityV20260825 } from "./doubao-web-capability.js";
 import { handleExecutionQueuedJob, type ExecutionQueuedJobData } from "./execution-queued-job.js";
 import { classifyExecutionJobError, executionJobLogFields } from "./query-engine-worker-logging.js";
 
@@ -60,7 +60,7 @@ const worker = new Worker<ExecutionQueuedJobData>(
             interactiveVerificationTimeoutMs:
               queryConfig.DOUBAO_INTERACTIVE_VERIFICATION_TIMEOUT_MS,
             capability: {
-              ...doubaoWebCapabilityV20260822,
+              ...doubaoWebCapabilityV20260825,
               entryUrl: queryConfig.DOUBAO_ENTRY_URL,
             },
           });

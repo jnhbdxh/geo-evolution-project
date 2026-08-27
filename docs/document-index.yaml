@@ -4,6 +4,14 @@ repository_state: COMMITTED
 content_baseline_commit: b1af2f995c7a57a052b8a0466f652b6151d7092b
 activation_commit: THIS_DOCUMENT_COMMIT
 effective_date: "2026-08-24"
+working_revision:
+  state: IMPLEMENTED_IN_WORKTREE
+  branch: codex/slice2-citation-source-statistics
+  base_commit: eef61a9568b36b7ac290db067e6db547aeef1cf1
+  document_verified_at: "2026-08-27T08:55:21+08:00"
+  verification_scope: manifest_v2_contract_tests_and_strict_document_validation
+  scope:
+    - Worktree-only UI Truth Manifest V2 visible-link occurrence capture
 purpose: >-
   Defines document authority by decision domain, records status and supersession, and
   separates normative sources from implementation evidence and historical context.
@@ -54,6 +62,7 @@ documents:
     status: ACTIVE_WORKING_BASELINE
     repository_state: COMMITTED
     baseline_ref: b1af2f995c7a57a052b8a0466f652b6151d7092b
+    working_revision_state: IMPLEMENTED_IN_WORKTREE
     authority_domains: [current_implementation]
 
   - id: worktree_change_inventory
